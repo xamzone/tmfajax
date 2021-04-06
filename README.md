@@ -19,7 +19,7 @@ If there are any update from tecnickcom/tcexam i will update this version too if
 3. Email: mamansulaeman86@gmail.com
 
 ## Community / Telegram Group
-1. [TCExam Mobile Friendly](https://t.me/tcexam_mobile)
+1. [TCExam Mobile Friendly (Indonesian Language)](https://t.me/tcexam_mobile)
 
 
 # TCExam - README
