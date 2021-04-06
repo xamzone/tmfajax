@@ -87,7 +87,8 @@ echo '<meta name="description" content="'.htmlspecialchars($thispage_description
 echo '<meta name="author" content="nick"/>'.K_NEWLINE;
 echo '<meta name="reply-to" content="'.htmlspecialchars($thispage_reply, ENT_COMPAT, $l['a_meta_charset']).'" />'.K_NEWLINE;
 echo '<meta name="keywords" content="'.htmlspecialchars($thispage_keywords, ENT_COMPAT, $l['a_meta_charset']).'" />'.K_NEWLINE;
-
+echo '<meta name="robots" content="noindex">'.K_NEWLINE;
+echo '<meta name="googlebot" content="noindex">'.K_NEWLINE;
 echo '<link rel="stylesheet" href="'.K_PATH_HOST.K_PATH_TCEXAM.'public/styles/normalize.css">'.K_NEWLINE;
 echo '<link rel="stylesheet" href="'.K_PATH_HOST.K_PATH_TCEXAM.'public/styles/main.css">'.K_NEWLINE;
 echo '<link rel="stylesheet" href="'.K_PATH_HOST.K_PATH_TCEXAM.'admin/styles/selectize.css">'.K_NEWLINE;
