@@ -103,6 +103,8 @@ if (isset($login_error) and $login_error) {
   echo '<meta name="reply-to" content="'.htmlspecialchars($thispage_reply, ENT_COMPAT, $l['a_meta_charset']).'" />'.K_NEWLINE;
   echo '<meta name="keywords" content="'.htmlspecialchars($thispage_keywords, ENT_COMPAT, $l['a_meta_charset']).'" />'.K_NEWLINE;
   echo '<meta name="google" content="notranslate">'.K_NEWLINE;
+  echo '<meta name="robots" content="noindex">'.K_NEWLINE;
+  echo '<meta name="googlebot" content="noindex">'.K_NEWLINE;	
   echo '<meta property="og:title" content="'.htmlspecialchars($thispage_title, ENT_NOQUOTES, $l['a_meta_charset']).'">'.K_NEWLINE;
   echo '<meta property="og:type" content="">'.K_NEWLINE;
   echo '<meta property="og:url" content="">'.K_NEWLINE;
