@@ -4,21 +4,14 @@ TCExam Mobile Friendly (TMF) Project created from HTML5 Boiler Plate Template st
 
 If there are any update from tecnickcom/tcexam i will update this version too if possible.
 
-## Screenshot
-
-###### Login Page - Mobile View
-![Login Page - Mobile View](https://1.bp.blogspot.com/-iFxj0A0RRQY/X-wgdSfP1DI/AAAAAAAASrw/ChJWM3Ko9I80WklFkJaPruXerWPWFZFHwCLcBGAsYHQ/s511/TMF_login_screen.PNG?raw=true)
-
-You can find other screenshot here: https://tkj.yayasan-gondang.com/2020/12/tcexam-mobile-friendly-tmf-enhancement.html
-
 ## TO DO LIST
 - [x] Add unsure answer mark in test page
 - [x] Add text zooming in test page
 - [x] Add question number on top of question description
 - [x] Create button to toggle question list on top of question description
 - [x] Create mobile friendly Admin Area
-- [ ] Add HTML WYSIWFG Editor switcher to Questions/answers
-- [ ] Word Format Import Question
+- [x] Add HTML WYSIWFG Editor switcher to Questions/answers
+- [x] Copy and paste Word Format Question 
 
 ## Contact
 1. Blog: [mamans86.blogspot.com](https://mamans86.blogspot.com)
