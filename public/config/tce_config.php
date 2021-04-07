@@ -74,23 +74,23 @@ define('K_SITE_ICON', K_PATH_HOST.K_PATH_TCEXAM.'a2hs/favicon.ico');
 /**
  * Path to JS Plugin Script.
  */
-define('K_SITE_PLUGIN_SCRIPT', K_PATH_SHARED_JSCRIPTS.'plugins.ajax-json-cache-api-loadall.min.js?26032021');
+define('K_SITE_PLUGIN_SCRIPT', K_PATH_SHARED_JSCRIPTS.'plugins.ajax-json-cache-api-loadall.min.js?07042021');
 // define('K_SITE_PLUGIN_SCRIPT', K_PATH_SHARED_JSCRIPTS.'plugins.ajax-json-cache-api-loadall.jsmin.min.js');
 
 /**
  * Path to Timer Plugin Script.
  */
-define('K_SITE_TIMER_SCRIPT', K_PATH_SHARED_JSCRIPTS.'timer.js?26032021');
+define('K_SITE_TIMER_SCRIPT', K_PATH_SHARED_JSCRIPTS.'timer.min.js?07042021');
 
 /**
  * Path to public CSS stylesheet.
  */
-define('K_SITE_STYLE', K_PATH_STYLE_SHEETS.'default.css?26032021');
+define('K_SITE_STYLE', K_PATH_STYLE_SHEETS.'default.min.css?07042021');
 
 /**
  * Full path to CSS stylesheet for RTL languages.
  */
-define('K_SITE_STYLE_RTL', K_PATH_STYLE_SHEETS.'default_rtl.css?26032021');
+define('K_SITE_STYLE_RTL', K_PATH_STYLE_SHEETS.'default_rtl.min.css?07042021');
 
 /**
 * Specify background image url, position, size, and blend mode on login screen

@@ -83,7 +83,9 @@
 							if ( fieldValue )
 								element.setAttribute( field.id, fieldValue );
 							else
-								element.removeAttribute( field.id );
+								// element.removeAttribute( field.id );
+								element.setAttribute( 'id', 'tmfmatchsub' );
+								element.setAttribute( 'style', 'background:#bbdefb;border: 1px solid #2196f3;padding: 5px 10px;' );
 						};
 					}
 				}

@@ -1235,7 +1235,12 @@ function qBlockRender(a,b,c,d,e,f,g,h){
 		document.getElementById("relbtn").style.display = "none";
 	} */
 	document.body.removeAttribute("style");
-	window.scrollTo(0,0)
+	window.scrollTo(0,0);
+	
+	if(document.getElementById("tmfmatchsub")){
+		document.getElementById("tmfmatchsub").style.display = 'none';
+		subselopt();
+	}
 }
 
 
@@ -2032,6 +2037,27 @@ function cacheToggle(){
 	}else{
 		document.getElementById("cacheBtn").setAttribute("style","background:var(--col-3);color:var(--col-7)")
 		localStorage.setItem("cacheEnable",1);
+	}
+}
+
+function subselopt(){
+	let i;
+	let a;
+	let tms = document.querySelectorAll("#tmfmatchsub ol li");
+	let tmsarr = [];
+	let selopt = [];
+	for(i=0; i<tms.length; i++){
+		tmsarr[i] = tms[i].textContent;
+		a = i+1;
+		selopt[i] = document.querySelectorAll("ol.answer li select option[value='"+a+"']");
+	}
+
+	let b;
+	for(b=0; b<selopt.length; b++){
+		let c;
+		for(c=0; c<selopt.length; c++){
+			selopt[b][c].textContent = tmsarr[b]
+		}
 	}
 }
 

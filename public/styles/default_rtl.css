@@ -389,7 +389,7 @@ div#utilTop{background:var(--col-5l);border-bottom:var(--bor-1);box-shadow:0px 0
 .utilTopTest,.utilTopClock{padding:0.5em}
 .utilTopClock{display:none!important}
 
-div#footer{height:70px;margin-top:auto;padding:0 0.25em 0.75em 0.25em}
+div#footer{height:90px;margin-top:auto;padding:0 0.25em 0.95em 0.25em}
 div#footer div:nth-child(3){display: none}
 span#txtInfo{display:none}
 
@@ -458,6 +458,7 @@ label[for=xuser_name],label[for=xuser_password]{position:absolute;top:7px;left:1
 
 .scrolledFloat{position:fixed;z-index:1;top:0;left:0;right:0}
 .pos-rel{position:relative}
+.pos-fix{position:fixed}
 .darkCont{color:var(--col-7)!important;background:var(--col-13)!important}
 
 .btn-outlined{background: none !important;border:1px solid var(--col-3);color:var(--col-3) !important}
@@ -468,6 +469,8 @@ label[for=xuser_name],label[for=xuser_password]{position:absolute;top:7px;left:1
 .table-item tbody tr td{border-bottom: 1px solid #dadada}
 .table-item tbody tr:last-child td{border-bottom: 2px solid #757575}
 .confirmbox{text-align:center;padding: 15px}
+.c-red{color:var(--col-10) !important}
+.c-white{color:var(--col-7) !important}
 .c-gray1{color:var(--col-11) !important}.c-gray4{color:var(--col-13) !important}
 .ta-center{text-align:center !important}
 .ft-bold{font-weight:bold !important}
@@ -476,6 +479,9 @@ label[for=xuser_name],label[for=xuser_password]{position:absolute;top:7px;left:1
 .txt-small{font-size:small !important}
 .txt-xsmall{font-size:x-small !important}
 .txt-lg{font-size:large !important}
+.txt-xlg{font-size:x-large !important}
+.txt-xxlg{font-size:xx-large !important}
+.txt-xxxlg{font-size:xxx-large !important}
 .pb-0{padding-bottom:0 !important}
 .px-0{padding-left:0 !important;padding-right:0 !important}
 .py-1em{padding-top:1em !important;padding-bottom:1em !important}
