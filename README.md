@@ -12,7 +12,7 @@ Daftar Ujian
 ## Mendukung beberapa tipe soal seperti:
 - Pilihan ganda jawaban tunggal
 - Pilihan ganda jawaban jamak
-- Menjodohkan
+- Menjodohkan / mengurutkan jawaban
 - Isian singkat koreksi Otomatis
 - Uraian panjang dengan kemampuan tambahan upload jawaban dari gambar / foto
 
