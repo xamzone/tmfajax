@@ -22,6 +22,7 @@ Daftar Ujian
 - Mengijinkan editing soal/jawaban/setting ujian meskipun Test sedang berjalan
 - Upload gambar utk jenis soal Uraian
 - Export hasil Test format EXCEL
+- Halaman General Setting untuk mengatur beberapa bagian CBT dengan lebih mudah
 - Opsi penjodohan bisa berupa angka maupun Teks
 - Theme yang lebih modern dan fresh :)
 
