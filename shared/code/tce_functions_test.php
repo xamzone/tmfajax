@@ -140,11 +140,20 @@ function F_getUserTests()
                             break;
                         }
 						case 9: {
-							if($istestpw===1){
+							/* if($istestpw===1){
 								$str .= '<a onclick="reloadCont.style.display=\'block\';backdrop(\'1\',\'1\');window.location.replace(\'tce_test_execute.php?starttest=1&testid='.$m['test_id'].'&'.$testpw.'\')" title="'.$l['h_execute'].'" class="buttongreen fuchsia"><span class="icon-chevron-circle-right"></span> '.$l['w_execute'].'</a>';
 							}else{
 								$str .= '<a onclick="reloadCont.style.display=\'block\';backdrop(\'1\',\'1\');setTimeout(function(){window.location.replace(\'tce_test_execute.php?starttest=1&testid='.$m['test_id'].'&'.$testpw.'\')},K_ENABLE_DELAY)" title="'.$l['h_execute'].'" class="buttongreen fuchsia"><span class="icon-chevron-circle-right"></span> '.$l['w_execute'].'</a>';
-							}
+							} */
+							$str .= '<a onclick="reloadCont.style.display=\'block\';backdrop(\'1\',\'1\');window.location.replace(\'';
+                            if (K_DISPLAY_TEST_DESCRIPTION or !empty($m['test_password'])) {
+                                // display test description before starting
+                                $str .= 'tce_test_start.php';
+                            } else {
+                                // directly execute test
+                                $str .= 'tce_test_execute.php';
+                            }
+                            $str .= '?testid='.$m['test_id'].'&'.$testpw.'\')" title="'.$l['h_execute'].'" class="buttongreen fuchsia"><span class="icon-chevron-circle-right"></span> '.$l['w_execute'].'</a>';
 							break;
 						}
                         default: { // 4 or greater = test can be repeated

@@ -1397,7 +1397,7 @@ if (isset($test_id) and ($test_id > 0)) {
 	        echo '</span>'.K_NEWLINE;
 	        echo '<span class="formw">'.K_NEWLINE;
 		    echo "<a id='del_gen_test' href='#del_gen_test' class='xmlbutton bg-red'><i class='fa fa-trash-alt'></i> Delete Generated Test Data</a>&nbsp;";
-		    echo "<a href='tmf_generate_test_json_user.php?test_id=".$test_id."' class='xmlbutton bg-teal'><i class='fa fa-code'></i> Generate JSON Data</a>";
+		    echo "<a onclick='return confirm(\"Continue?\")' href='tmf_generate_test_json_user.php?test_id=".$test_id."' class='xmlbutton bg-teal'><i class='fa fa-code'></i> Generate JSON Data</a>";
 	        echo '</span>'.K_NEWLINE;
             echo '</div>'.K_NEWLINE;
 	    $hide_tag_start='<!-- ';
@@ -1538,8 +1538,9 @@ echo '//]]>'.K_NEWLINE;
 	echo '})'.K_NEWLINE;
 
 	echo '$("a#del_gen_test").click(function(){'.K_NEWLINE;
+	echo 'if(confirm("Continue?")){'.K_NEWLINE;
 	echo '	delGenTest();'.K_NEWLINE;
-	echo '})'.K_NEWLINE;
+	echo '}})'.K_NEWLINE;
 
 echo '</script>'.K_NEWLINE;
 

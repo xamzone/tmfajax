@@ -73,7 +73,8 @@ if(isset($_REQUEST['del_generated_test'])){
 ///////////////////////////////////////////////
 
 $test_id=$_REQUEST['test_id'];
-$sql = 'SELECT usrgrp_user_id FROM '.K_TABLE_USERGROUP.' INNER JOIN '.K_TABLE_TEST_GROUPS.' ON '.K_TABLE_USERGROUP.'.usrgrp_group_id = '.K_TABLE_TEST_GROUPS.'.tstgrp_group_id WHERE '.K_TABLE_TEST_GROUPS.'.tstgrp_test_id='.$test_id;
+// $sql = 'SELECT usrgrp_user_id FROM '.K_TABLE_USERGROUP.' INNER JOIN '.K_TABLE_TEST_GROUPS.' ON '.K_TABLE_USERGROUP.'.usrgrp_group_id = '.K_TABLE_TEST_GROUPS.'.tstgrp_group_id WHERE '.K_TABLE_TEST_GROUPS.'.tstgrp_test_id='.$test_id;
+$sql = 'SELECT usrgrp_user_id FROM '.K_TABLE_USERGROUP.' INNER JOIN '.K_TABLE_TEST_GROUPS.' ON '.K_TABLE_USERGROUP.'.usrgrp_group_id = '.K_TABLE_TEST_GROUPS.'.tstgrp_group_id WHERE '.K_TABLE_TEST_GROUPS.'.tstgrp_test_id='.$test_id.' GROUP BY usrgrp_user_id';
 $testdata = F_getTestData($test_id);
 
 $userTestEntry=array();	
