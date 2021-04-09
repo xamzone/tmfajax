@@ -21,6 +21,7 @@ Daftar Ujian
 - Generate Test Data untuk loading soal lebih cepat
 - Mengijinkan editing soal/jawaban/setting ujian meskipun Test sedang berjalan
 - Upload gambar utk jenis soal Uraian
+- Opsi penjodohan bisa berupa angka maupun Teks
 - Theme yang lebih modern dan fresh :)
 
 ## Contact
