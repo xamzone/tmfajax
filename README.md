@@ -1,24 +1,27 @@
-# TCExam Mobile Friendly (TMF) Project
+# TCExam Mobile Friendly (TMF) Project with AJAX Support
 
-TCExam Mobile Friendly (TMF) Project created from HTML5 Boiler Plate Template started by forking TCExam v14.3.0. TCExam Mobile Friendly version applied to Public Area (test taker page) and Admin Area Page too :)
-
-If there are any update from tecnickcom/tcexam i will update this version too if possible.
+CBT Forking dari TMF (TCExam Mobile Friendly) dengan modifikasi pada loading soal dan kirim jawaban melalui AJAX.
 
 Login Screen
 <img src="https://1.bp.blogspot.com/-3a273pl2fYY/YGwaHMtlOEI/AAAAAAAATfc/ziojUbNS4XI8YvIjFkuPQLZoU8uRJbNrACLcBGAsYHQ/s1862/Screenshot_2021-04-06-15-18-21-007_com.android.chrome.png" width="200px"/>
 
 Daftar Ujian
+
 <img src="https://1.bp.blogspot.com/-xS6uPb0zYQI/YGwbjk6RaKI/AAAAAAAATfo/oNzqY_NPMjUlr3uAvdc0xQPbiv9dTRxcACLcBGAsYHQ/s1857/Screenshot_2021-04-06-15-26-38-765_com.android.chrome.png" width="200px"/>
 
+## Mendukung beberapa tipe soal seperti:
+- Pilihan ganda jawaban tunggal
+- Pilihan ganda jawaban jamak
+- Menjodohkan
+- Isian singkat koreksi Otomatis
+- Uraian panjang dengan kemampuan tambahan upload jawaban dari gambar / foto
 
-## TO DO LIST
-- [x] Add unsure answer mark in test page
-- [x] Add text zooming in test page
-- [x] Add question number on top of question description
-- [x] Create button to toggle question list on top of question description
-- [x] Create mobile friendly Admin Area
-- [x] Add HTML WYSIWFG Editor switcher to Questions/answers
-- [x] Copy and paste Word Format Question 
+## Fitur improvement dari TCExam
+- Editing soal menggunakan antar muka HTML Editor, support konversi otomatis equation dari MS Word
+- Generate Test Data untuk loading soal lebih cepat
+- Mengijinkan editing soal/jawaban/setting ujian meskipun Test sedang berjalan
+- Upload gambar utk jenis soal Uraian
+- Theme yang lebih modern dan fresh :)
 
 ## Contact
 1. Blog: [mamans86.blogspot.com](https://mamans86.blogspot.com)
