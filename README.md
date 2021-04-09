@@ -20,6 +20,7 @@ Daftar Ujian
 - Editing soal menggunakan antar muka HTML Editor, support konversi otomatis equation dari MS Word
 - Generate Test Data untuk loading soal lebih cepat
 - Mengijinkan editing soal/jawaban/setting ujian meskipun Test sedang berjalan
+- Laporan rekap kehadiran Test
 - Upload gambar utk jenis soal Uraian
 - Export hasil Test format EXCEL
 - Halaman General Setting untuk mengatur beberapa bagian CBT dengan lebih mudah
