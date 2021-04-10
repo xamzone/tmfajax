@@ -3,6 +3,7 @@
 CBT Forking dari TMF (TCExam Mobile Friendly) dengan modifikasi pada loading soal dan kirim jawaban melalui AJAX.
 
 Login Screen
+
 <img src="https://1.bp.blogspot.com/-3a273pl2fYY/YGwaHMtlOEI/AAAAAAAATfc/ziojUbNS4XI8YvIjFkuPQLZoU8uRJbNrACLcBGAsYHQ/s1862/Screenshot_2021-04-06-15-18-21-007_com.android.chrome.png" width="200px"/>
 
 Daftar Ujian
@@ -29,7 +30,7 @@ Daftar Ujian
 
 ## CARA INSTALASI PADA KOMPUTER LOKAL (LOCALHOST - XAMPP)
 Asumsikan user database pada XAMPP adalah root dan TANPA password.
-1. Unduh sebagai zip repository TMFAJAX yang berada di github
+1. Unduh repository TMFAJAX yang berada di github ini sebagai zip 
 2. Extract dan letakkan folder hasil extract (tmfajax-main) ke htdocs pada XAMPP
 3. Buka web browser, ketikkan http://localhost/tmfajax-main/install/install.php
 4. Sesuai asumsi di atas, pastikan Db User adalah root
