@@ -70,6 +70,8 @@ CKEDITOR.editorConfig = function( config ) {
 		'uploadimage,' +
 		'wysiwygarea';
 	// %REMOVE_END%
+	config.extraPlugins = 'eqneditor';
+	// config.extraPlugins = 'mathedit';
 	// config.imageUploadUrl = '../../cache/tmf_image_upload_url.php';
 	//config.pasteFromWordRemoveFontStyles=false;
 	//config.pasteFromWordRemoveStyles=false;
