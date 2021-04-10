@@ -27,6 +27,17 @@ Daftar Ujian
 - Opsi penjodohan bisa berupa angka maupun Teks, labelnya bisa berupa angka, teks, gambar atau media lain seperti video
 - Theme yang lebih modern dan fresh :)
 
+## CARA INSTALASI PADA KOMPUTER LOKAL (LOCALHOST - XAMPP)
+Asumsikan user database pada XAMPP adalah root dan TANPA password.
+1. Unduh sebagai zip repository TMFAJAX yang berada di github
+2. Extract dan letakkan folder hasil extract (tmfajax-main) ke htdocs pada XAMPP
+3. Buka web browser, ketikkan http://localhost/tmfajax-main/install/install.php
+4. Sesuai asumsi di atas, pastikan Db User adalah root
+5. Sesuai asumsi di atas, pastikan Db Password dibiarkan kosong
+6. Pada bagian DB Name, ketikkan nama database yang akan dipakai oleh TMFAJAX, apabila database belum dibuat maka otomatis akan dibuat oleh installer apabila bagian Create New Database DICENTANG.
+7. Apabila kita melakukan instalasi baru, Drop Existing Database biarkan dalam kondisi tercentang. Apabila database sudah ada sebelumnya dan sudah ada data penting, sebaiknya JANGAN DICENTANG
+8. Opsi Create New Database? bisa dicentang apabila kita ingin installer otomatis membuatkan database.   
+
 ## Contact
 1. Blog: [mamans86.blogspot.com](https://mamans86.blogspot.com)
 2. Telegram: [@mamans86](https://t.me/mamans86)
