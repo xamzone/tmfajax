@@ -24,7 +24,7 @@ Daftar Ujian
 - Upload gambar utk jenis soal Uraian
 - Export hasil Test format EXCEL
 - Halaman General Setting untuk mengatur beberapa bagian CBT dengan lebih mudah
-- Opsi penjodohan bisa berupa angka maupun Teks
+- Opsi penjodohan bisa berupa angka maupun Teks, labelnya bisa berupa angka, teks, gambar atau media lain seperti video
 - Theme yang lebih modern dan fresh :)
 
 ## Contact
