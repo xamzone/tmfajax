@@ -30,7 +30,7 @@ Daftar Ujian
 
 ## CARA INSTALASI PADA KOMPUTER LOKAL (LOCALHOST - XAMPP)
 Asumsikan user database pada XAMPP adalah root dan TANPA password.
-1. Unduh sebagai zip repository TMFAJAX yang berada di github
+1. Unduh repository TMFAJAX yang berada di github ini sebagai zip 
 2. Extract dan letakkan folder hasil extract (tmfajax-main) ke htdocs pada XAMPP
 3. Buka web browser, ketikkan http://localhost/tmfajax-main/install/install.php
 4. Sesuai asumsi di atas, pastikan Db User adalah root
