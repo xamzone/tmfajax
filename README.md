@@ -40,10 +40,11 @@ Asumsikan user database pada XAMPP adalah root dan TANPA password.
 8. Opsi Create New Database? bisa dicentang apabila kita ingin installer otomatis membuatkan database.   
 9. Klik tombol INSTALL
 10. Tunggu proses install
-11. Apabila terdapat 3 (tiga) WARNING, biarkan saja
-12. Klik link click here di bawah untuk memulai login ke sistem
-13. Gunakan akun default dengan username: admin password: 1234
-14. Setelah berhasil login, klik MENU UTAMA, dan klik link Admin untuk mulai mengelola CBT TMFAJAX
+11. Apabila terdapat FATAL ERROR: Maximum execution time of 30 seconds exceeced in bla bla bla ...., silakan setting php.ini pada XAMPP, cari bagian max_execution_time=30, ganti 30 menjadi 120 atau yang lebih tinggi. Simpan file php.ini. Hentikan Apache melalui tombol Stop, kemudian tekan lagi tombol Start pada Apache. 
+12. Apabila terdapat 3 (tiga) WARNING, biarkan saja
+13. Klik link click here di bawah untuk memulai login ke sistem
+14. Gunakan akun default dengan username: admin password: 1234
+15. Setelah berhasil login, klik MENU UTAMA, dan klik link Admin untuk mulai mengelola CBT TMFAJAX
 
 ## Contact
 1. Blog: [mamans86.blogspot.com](https://mamans86.blogspot.com)
