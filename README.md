@@ -49,6 +49,7 @@ Asumsikan user database pada XAMPP adalah root dan TANPA password.
 17. Unduh file tmf_general_settings.json di link ini https://raw.githubusercontent.com/xamzone/tmfajax/main/shared/config/tmf_general_settings.json
 18. Letakkan / timpakan ke dalam folder shared/config/
 19. Masuk ke Admin, masuk ke General Setting, lalu klik tombol UPDATE berwarna abu-abu gelap
+20. Anda diperbolehkan untuk mengubah nilai yang ada di General Setting sesuai kebutuhan masing-masing, termasuk Site Author, Deskripsi aplikasi dan lain-lain.
 
 ## Contact
 1. Blog: [mamans86.blogspot.com](https://mamans86.blogspot.com)
