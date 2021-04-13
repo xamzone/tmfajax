@@ -45,6 +45,10 @@ Asumsikan user database pada XAMPP adalah root dan TANPA password.
 13. Klik link click here di bawah untuk memulai login ke sistem
 14. Gunakan akun default dengan username: admin password: 1234
 15. Setelah berhasil login, klik MENU UTAMA, dan klik link Admin untuk mulai mengelola CBT TMFAJAX
+16. Apabila terdapat Notice: unserialize(): Error at offset bla bla bla, Notice: Undefined variable: tmx in bla bla bla, Notice: date_default_timezone_set(): bla bla bla... cara perbaikannya adalah :
+17. Unduh file tmf_general_settings.json di link ini https://raw.githubusercontent.com/xamzone/tmfajax/main/shared/config/tmf_general_settings.json
+18. Letakkan / timpakan ke dalam folder shared/config/
+19. Masuk ke Admin, masuk ke General Setting, lalu klik tombol UPDATE berwarna abu-abu gelap
 
 ## Contact
 1. Blog: [mamans86.blogspot.com](https://mamans86.blogspot.com)
