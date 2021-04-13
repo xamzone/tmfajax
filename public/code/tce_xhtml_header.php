@@ -218,16 +218,17 @@ echo '<!-- '.'T'.'C'.'E'.'x'.'a'.'m'.'19'.'73'.'01'.'04'.' -->'.K_NEWLINE;
   if(isset($_SESSION['session_user_level']) and $_SESSION['session_user_level']<1 and strlen(LOGIN_BG_IMAGE)>0){
 	echo '<style>';
 	echo '.tmfpatch{color: var(--col-11)!important;border:1px solid var(--col-15t);border-radius:50em;padding:0.05em 0.35em;}';
+	echo 'body{background-image:url('.LOGIN_BG_IMAGE.');background-position:'.LOGIN_BG_IMAGE_POSITION.';background-size:'.LOGIN_BG_IMAGE_SIZE.';background-blend-mode:'.LOGIN_BG_IMAGE_BLEND_MODE.'}';
 	echo '</style>';
 	}
+	// if(isset($_SESSION['session_user_level']) and $_SESSION['session_user_level']<1){
+	// echo ' style="background-image:url('.LOGIN_BG_IMAGE.');background-position:'.LOGIN_BG_IMAGE_POSITION.';background-size:'.LOGIN_BG_IMAGE_SIZE.';background-blend-mode:'.LOGIN_BG_IMAGE_BLEND_MODE.'"';
+	// }
   ?>
+  
 </head>
 <?php
-echo '<body';
-if(isset($_SESSION['session_user_level']) and $_SESSION['session_user_level']<1){
-	echo ' style="background-image:url('.LOGIN_BG_IMAGE.');background-position:'.LOGIN_BG_IMAGE_POSITION.';background-size:'.LOGIN_BG_IMAGE_SIZE.';background-blend-mode:'.LOGIN_BG_IMAGE_BLEND_MODE.'"';
-}
-echo '>'.K_NEWLINE;
+echo '<body>'.K_NEWLINE;
 
 
 
