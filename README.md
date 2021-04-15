@@ -10,7 +10,7 @@ Daftar Ujian
 
 <img src="https://1.bp.blogspot.com/-xS6uPb0zYQI/YGwbjk6RaKI/AAAAAAAATfo/oNzqY_NPMjUlr3uAvdc0xQPbiv9dTRxcACLcBGAsYHQ/s1857/Screenshot_2021-04-06-15-26-38-765_com.android.chrome.png" width="200px"/>
 
-## Mendukung beberapa tipe soal seperti:
+## Mendukung beberapa tipe soal seperti
 - Pilihan ganda jawaban tunggal
 - Pilihan ganda jawaban jamak
 - Menjodohkan / mengurutkan jawaban
@@ -50,6 +50,11 @@ Asumsikan user database pada XAMPP adalah root dan TANPA password.
 18. Letakkan / timpakan ke dalam folder shared/config/
 19. Masuk ke Admin, masuk ke General Setting, lalu klik tombol UPDATE berwarna abu-abu gelap
 20. Anda diperbolehkan untuk mengubah nilai yang ada di General Setting sesuai kebutuhan masing-masing, termasuk Site Author, Deskripsi aplikasi dan lain-lain.
+
+## Kebutuhan Sistem
+1. Web server (Apache/nginx/OLS, dan lainnya)
+2. PHP 5.6 s.d 7.4 
+3. Database MySQL/MariaDB/Postgre/Oracle
 
 ## Contact
 1. Blog: [mamans86.blogspot.com](https://mamans86.blogspot.com)
