@@ -10,7 +10,7 @@ Daftar Ujian
 
 <img src="https://1.bp.blogspot.com/-xS6uPb0zYQI/YGwbjk6RaKI/AAAAAAAATfo/oNzqY_NPMjUlr3uAvdc0xQPbiv9dTRxcACLcBGAsYHQ/s1857/Screenshot_2021-04-06-15-26-38-765_com.android.chrome.png" width="200px"/>
 
-## Mendukung beberapa tipe soal seperti:
+## Mendukung beberapa tipe soal seperti
 - Pilihan ganda jawaban tunggal
 - Pilihan ganda jawaban jamak
 - Menjodohkan / mengurutkan jawaban
@@ -46,10 +46,15 @@ Asumsikan user database pada XAMPP adalah root dan TANPA password.
 14. Gunakan akun default dengan username: admin password: 1234
 15. Setelah berhasil login, klik MENU UTAMA, dan klik link Admin untuk mulai mengelola CBT TMFAJAX
 16. Apabila terdapat Notice: unserialize(): Error at offset bla bla bla, Notice: Undefined variable: tmx in bla bla bla, Notice: date_default_timezone_set(): bla bla bla... cara perbaikannya adalah :
-17. Unduh file tmf_general_settings.json di link ini https://raw.githubusercontent.com/xamzone/tmfajax/main/shared/config/tmf_general_settings.json
+17. Unduh file tmf_general_settings.json di link ini https://drive.google.com/file/d/1K7i1EoLXWFOMkodDsspNbBR9LkdCKbBf/view?usp=sharing
 18. Letakkan / timpakan ke dalam folder shared/config/
 19. Masuk ke Admin, masuk ke General Setting, lalu klik tombol UPDATE berwarna abu-abu gelap
 20. Anda diperbolehkan untuk mengubah nilai yang ada di General Setting sesuai kebutuhan masing-masing, termasuk Site Author, Deskripsi aplikasi dan lain-lain.
+
+## Kebutuhan Sistem
+1. Web server (Apache/nginx/OLS, dan lainnya)
+2. PHP 5.6 s.d 7.4 
+3. Database MySQL/MariaDB/Postgre/Oracle
 
 ## Contact
 1. Blog: [mamans86.blogspot.com](https://mamans86.blogspot.com)
