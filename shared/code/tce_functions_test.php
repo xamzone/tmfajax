@@ -162,7 +162,7 @@ function F_getUserTests()
 								// echo $m['test_repeatable'];
 								
                                 // print execute test link
-								if((F_countUserTest($_SESSION['session_user_id'], $m['test_id']) < $m['test_repeatable']) or ($m['test_repeatable']==-1)){
+								if((F_getTestRetried($_SESSION['session_user_id'], $m['test_id']) < $m['test_repeatable']) or ($m['test_repeatable']==-1)){
 									$str .= '<a onclick="reloadCont.style.display=\'block\';backdrop(\'1\',\'1\');window.location.replace(\'';
 									if (K_DISPLAY_TEST_DESCRIPTION or !empty($m['test_password'])) {
 										// display test description before starting
@@ -453,31 +453,13 @@ function F_terminateUserTest($test_id)
 }
 
 /**
- * Check and returns count executed test.<br>
+ * Count the number times of retries.<br>
+ * @param $user_id (int) user ID
+ * @param $test_id (int) test ID
+ * @return retried times
  */
-function F_countUserTest($user_id, $test_id)
-{
-    require_once('../config/tce_config.php');
-    global $db, $l;
-    // get current date-time
-    // $test_status = 0;
-    $user_id = intval($user_id);
-    $test_id = intval($test_id);
-    // $testuser_id = 0;
-    // get current test status for the selected user
-    $sql = 'SELECT COUNT(1)
-		FROM '.K_TABLE_TEST_USER.'
-		WHERE testuser_test_id='.$test_id.'
-			AND testuser_user_id='.$user_id.'
-		LIMIT 1';
-    if ($r = F_db_query($sql, $db)) {
-        if ($m = F_db_fetch_array($r)) {
-			$numExecutedUserTest = $m[0]-1;
-        }
-    } else {
-        F_display_db_error();
-    }
-    return $numExecutedUserTest;
+function F_getTestRetried($user_id, $test_id){
+  return F_count_rows(K_TABLE_TEST_USER,'WHERE testuser_test_id='.$test_id.' AND testuser_user_id='.$user_id.' AND testuser_status >= 4');
 }
 
 /**
@@ -847,7 +829,7 @@ function F_executeTest($test_id)
                     // this test can be repeated - create new test session for the current user
                     // return F_createTest($test_id, $_SESSION['session_user_id']);
 					// echo F_countUserTest($test_id, $_SESSION['session_user_id']);
-					if((F_countUserTest($_SESSION['session_user_id'], $test_id) < $m['test_repeatable']) or ($m['test_repeatable']==-1)){
+					if((F_getTestRetried($_SESSION['session_user_id'], $test_id) < $m['test_repeatable']) or ($m['test_repeatable']==-1)){
 						return F_createTest($test_id, $_SESSION['session_user_id']);
 					}
                 }
