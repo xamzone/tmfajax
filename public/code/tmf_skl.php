@@ -33,7 +33,7 @@ $kopline2='XAMZONE SCHOOL UNIVERSE';
 $kopline3='WONOPRINGGO - PEKALONGAN';
 $kopline4='PROVINSI JAWA TENGAH';
 
-// jarak kop dengan info alamat SKL
+// jarak kop dengan info alamat sekolah
 $spasi_bawah_kop = '5px';
 
 // info alamat SKL
