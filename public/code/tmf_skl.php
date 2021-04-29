@@ -36,7 +36,7 @@ $kopline4='PROVINSI JAWA TENGAH';
 // jarak kop dengan info alamat sekolah
 $spasi_bawah_kop = '5px';
 
-// info alamat SKL
+// info alamat sekolah
 $infoline1='Alamat: Kampus Pendidikan Xamzone Universe Wonopringgo - Pekalongan Kode Pos 51181';
 $infoline2='Website: xamzonelinux.blogspot.com, Email: xamzone.linux@gmail.com, Telp. +628561575817';
 
