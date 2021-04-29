@@ -28,6 +28,8 @@ Daftar Ujian
 - Opsi penjodohan bisa berupa angka maupun Teks, labelnya bisa berupa angka, teks, gambar atau media lain seperti video
 - Jumlah pengulangan ujian dapat diset sesuai keinginan, tidak lagi unlimited, namun opsi unlimited masih tersedia.
 - Theme yang lebih modern dan fresh :)
+- Export dan Import user melalui format file Excel
+- Terdapat fitur pengumuman Surat Keterangan Lulus Online, namun dengan teknik yang masih sederhana.
 
 ## CARA INSTALASI PADA KOMPUTER LOKAL (LOCALHOST - XAMPP)
 Asumsikan user database pada XAMPP adalah root dan TANPA password.
