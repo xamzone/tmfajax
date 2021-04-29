@@ -453,6 +453,11 @@ if($_SESSION['session_user_level']<2){
 	<?php
 }
 
+if(strlen($_SESSION['session_user_ssn'])<1){
+	echo 'Data SKL untuk <strong>'.$_SESSION['session_user_firstname'].'</strong> belum disiapkan. Silakan import data user terlebih dahulu menggunakan template yang telah disediakan.';
+	die();
+}
+
 echo '<p>'.$text_siap.'</p>
 <a href="#" id="bismillah" class="xmlbutton">'.$text_tombol_siap.'</a><br/>
 </div>
