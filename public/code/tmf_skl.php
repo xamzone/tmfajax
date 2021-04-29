@@ -454,7 +454,7 @@ if($_SESSION['session_user_level']<2){
 }
 
 if(strlen($_SESSION['session_user_ssn'])<1){
-	echo 'Data SKL untuk <strong>'.$_SESSION['session_user_firstname'].'</strong> belum disiapkan. Silakan import data user terlebih dahulu menggunakan template yang telah disediakan. <a href="index.php">Klik disini</a> untuk kembali ke beranda.';
+	echo 'Data SKL untuk <strong>'.$_SESSION['session_user_firstname'].'</strong> belum disiapkan. Silakan import data user terlebih dahulu menggunakan template yang telah disediakan. <a href="index.php" class="xmlbutton">Klik disini</a> untuk kembali ke beranda.';
 	die();
 }
 
