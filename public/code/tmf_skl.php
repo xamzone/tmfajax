@@ -30,7 +30,7 @@ if($currentMonth >=7){$tahun_pelajaran=date('Y').'/'.(date('Y')+1);}else{$tahun_
 $data_date_skl= '2021-04-27 22:14:00'; 
 
 // apabila SKL telah selesai di setting dan siap dipublikasikan, silakan ganti false menjadi true
-$siap_publikasi = true;
+$siap_publikasi = false;
 
 $jenis_kurikulum = 'Kurikulum 2013 Revisi';
 
@@ -151,23 +151,23 @@ $tampilkan_qrcode = true;
 * Untuk mapel muatan lokal, cara penulisannya adalah seperti contoh pada array di bawah ini 
 **/
 $nama_mapel = array(
-	'Muatan Nasional#1]Pendidikan Agama dan Budi Pekerti',
-					'2]Pendidikan Pancasila dan Kewarganegaraan',
-					'3]Bahasa Indonesia',
-					'4]Matematika',
-					'5]Sejarah Indonesia',
-					'6]Bahasa Inggris dan Bahasa Asing lainnya',
-	'Muatan Kewilayahan#1]Seni Budaya',
-					'2]Penjaskes',
-					'3]Muatan Lokal@a. Mulok 1',
-									'b. Mulok 2',
-									'c. Mulok 3',
-	'Muatan Peminatan Kejuruan#1]Simkomdig',
-					'2]Fisika',
-					'3]Biologi',
-					'4]Kimia',
-					'5]Dasar Program Keahlian',
-					'6]Kompetensi Keahlian',
+	'Muatan Nasional#Pendidikan Agama dan Budi Pekerti',
+					'Pendidikan Pancasila dan Kewarganegaraan',
+					'Bahasa Indonesia',
+					'Matematika',
+					'Sejarah Indonesia',
+					'Bahasa Inggris dan Bahasa Asing lainnya',
+	'Muatan Kewilayahan#Seni Budaya',
+					   'Penjaskes',
+					   '[]Muatan Lokal@a. Mulok 1',
+									  'b. Mulok 2',
+									  'c. Mulok 3',
+	'Muatan Peminatan Kejuruan#Simkomdig',
+							  'Fisika',
+							  'Biologi',
+							  'Kimia',
+							  'Dasar Program Keahlian',
+							  'Kompetensi Keahlian',
 	'Mapel 16',
 	'Mapel 17',
 	'Mapel 18',
@@ -240,23 +240,23 @@ $admin['j_kekhususan']	= 0; // jenis kekhususan diisi bila SMALB, SMPLB, SDLB. s
 $admin['ortu']			= 'Daryono'; // diisi nama orang tua
 $admin['nis'] 			= '18.0001'; // diisi nis
 $admin['nisn'] 			= '1111111111'; // diisi nisn
-$admin['nil1']			= 80.35; 
-$admin['nil2']			= 82.51;
-$admin['nil3']			= 83.72;
-$admin['nil4']			= 84.93;
-$admin['nil5']			= 85.24;
-$admin['nil6']			= 86.35;
-$admin['nil7']			= 87.46;
-$admin['nil8']			= 88.57;
-$admin['nil9']			= 89.68;
-$admin['nil10']			= 90.25;
-$admin['nil11']			= 91.35;
-$admin['nil12']			= 92.45;
-$admin['nil13']			= 93.55;
-$admin['nil14']			= 94.65;
-$admin['nil15']			= 95.75;
-$admin['nil16']			= 98.00;
-$admin['nil17']			= 100.00;
+$admin['nil1']			= 100; 
+$admin['nil2']			= 100;
+$admin['nil3']			= 100;
+$admin['nil4']			= 100;
+$admin['nil5']			= 100;
+$admin['nil6']			= 100;
+$admin['nil7']			= 100;
+$admin['nil8']			= 100;
+$admin['nil9']			= 100;
+$admin['nil10']			= 100;
+$admin['nil11']			= 100;
+$admin['nil12']			= 100;
+$admin['nil13']			= 100;
+$admin['nil14']			= 100;
+$admin['nil15']			= 100;
+$admin['nil16']			= 100;
+$admin['nil17']			= 100;
 $admin['nil18']			= 0;
 $admin['nil19']			= 0;
 $admin['nil20']			= 0;
@@ -777,11 +777,13 @@ echo '<div style="margin-bottom:5px">'.$text_keputusan.$dot.'<span '.$tabel_nila
 <!--tr style="border-bottom:2px solid"><th width="25px">No</th><th>Nama Mata Pelajaran</th><th width="60px">Nilai</th></tr-->
 <tr><th style="border-right:0.1px solid black" width="25px">No</th><th style="border-right:0.1px solid black;padding:5px">Mata Pelajaran<br/><?php echo '( '.$jenis_kurikulum.' )'; ?></th><th width="95px">Nilai Ujian Sekolah</th></tr>
 <?php
+$on=1;
 $no=1;
 $sum_nil=array();
 foreach ($mapel as $data){
 	$sum_nil[]=$data[1];
 	if(strpos($data[0],'#')){
+		$no=0;
 		$xxx = preg_split ("/\#/", $data[0]);
 		$data[0] = strstr($data[0], '#');
 		$data[0] = str_replace('#','',$data[0]);
@@ -800,7 +802,12 @@ foreach ($mapel as $data){
 			$aaa = preg_split ("/\]/", $yyy[0]);
 			$yyy[0] = strstr($yyy[0], ']');
 			$yyy[0] = str_replace(']','',$yyy[0]);
-			$newtr2 = '<tr><td style="border-top:0.1px solid black; border-right:0.1px solid black" class="ta-center">'.$aaa[0].'</td><td style="border-top:0.1px solid black; border-right:0.1px solid black">'.$yyy[0].'</td><td style="border-top:0.1px solid black"></td></tr>';
+			$newtr2 = '<tr><td style="border-top:0.1px solid black; border-right:0.1px solid black" class="ta-center">'.($no+1).'</td><td style="border-top:0.1px solid black; border-right:0.1px solid black">'.$yyy[0].'</td><td style="border-top:0.1px solid black"></td></tr>';
+			// break;
+			$no=-100;
+			if($no<0){
+				$no='<span class="hidden">xxx</span>';
+			}
 		}else{
 			$newtr2 = array('','');
 		}	
@@ -818,10 +825,11 @@ foreach ($mapel as $data){
 	}
 	
 	$no++;
-	echo $newtr2.$newtr.'<tr><td style="border-top:0.1px solid black; border-right:0.1px solid black" class="ta-center">'.$zzz[0].'</td><td style="border-top:0.1px solid black; border-right:0.1px solid black">'.$data[0].'</td><td style="border-top:0.1px solid black" class="center">'.number_format($data[1],0,',','.').'</td></tr>';
+	$on++;
+	echo $newtr2.$newtr.'<tr><td style="border-top:0.1px solid black; border-right:0.1px solid black" class="ta-center">'.$no.'</td><td style="border-top:0.1px solid black; border-right:0.1px solid black">'.$data[0].'</td><td style="border-top:0.1px solid black" class="center">'.number_format($data[1],0,',','.').'</td></tr>';
 }
 ?>
-<tr><th style="border-top:0.1px solid black; border-right:0.1px solid black" colspan=2>RATA-RATA</th><td style="border-top:0.1px solid black" class="center ft-bold"><?php echo number_format(array_sum($sum_nil)/($no-1),$decnum,',','.'); ?></td></tr>
+<tr><th style="border-top:0.1px solid black; border-right:0.1px solid black" colspan=2>RATA-RATA</th><td style="border-top:0.1px solid black" class="center ft-bold"><?php echo number_format(array_sum($sum_nil)/($on-1),$decnum,',','.'); ?></td></tr>
 </table>
 <?php
 echo "<span class='break'>&nbsp;</span>";
