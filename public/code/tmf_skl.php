@@ -145,9 +145,9 @@ $tampilkan_qrcode = true;
 * Nanti pada saat pengisian nilai di Excel, mapel yang tidak diterima siswa cukup diberi nilai 0, maka otomatis mapel tersebut tidak ditampilkan pada tabel nilai.
 * Ganti nama mapel sesuai dengan yang diinginkan, jumlah total mapel di bawah ini biarkan tetap 30, apabila tidak ingin dipakai cukup biarkan namanya sesuai asalnya
 * Untuk memberikan label kelompok mapel, ketikkan nama kelompok mapel diikuti tanda # sebelum nama mapel contoh:
-* Kelompok A#1]Pendidikan Agama dan Budi Pekerti
-* contoh di atas adalah memberikan nama mapel nomor 1 yaitu Pendidikan Agama dan Budi Pekerti, ke dalam kelompok A. Pemberian nomor harus diikuti dengan tanda ]
-* agar mapel nomor 2 juga masuk ke dalam kelompok A, cukup ketikkan 2]Pendidikan Pancasila dan Kewarganegaraan di bawah nya
+* Kelompok A#Pendidikan Agama dan Budi Pekerti
+* contoh di atas adalah memberikan nama mapel yaitu Pendidikan Agama dan Budi Pekerti, ke dalam kelompok A. 
+* agar mapel nomor 2 juga masuk ke dalam kelompok A, cukup ketikkan 'Pendidikan Pancasila dan Kewarganegaraan' di bawah nya
 * Untuk mapel muatan lokal, cara penulisannya adalah seperti contoh pada array di bawah ini 
 **/
 $nama_mapel = array(
