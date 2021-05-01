@@ -21,12 +21,18 @@ date_default_timezone_set(K_TIMEZONE);
 $currentMonth=date("n"); 
 if($currentMonth >=7){$tahun_pelajaran=date('Y').'/'.(date('Y')+1);}else{$tahun_pelajaran=(date('Y')-1).'/'.date('Y');}
 
-
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 /////////////// AWAL KONFIGURASI SKL ////////////////////////////
 
 //tanggal mulai dibukanya SKL
 //format pengisian : yyyy-mm-dd jj-mm-dd, contoh: agar halaman SKL bisa dibuka pada tanggal 31 Desember 2021 Pukul 15:00:00, maka isikan: 2021-12-31 15:00:00
 $data_date_skl= '2021-04-27 22:14:00'; 
+
+// apabila SKL telah selesai di setting dan siap dipublikasikan, silakan ganti false menjadi true
+$siap_publikasi = true;
+
+$jenis_kurikulum = 'Kurikulum 2013 Revisi';
 
 // kop SKL
 $kopline1='XZ FOUNDATION INTERNATIONAL';
@@ -34,15 +40,25 @@ $kopline2='XAMZONE SCHOOL UNIVERSE';
 $kopline3='WONOPRINGGO - PEKALONGAN';
 $kopline4='PROVINSI JAWA TENGAH';
 
-// jarak kop dengan info alamat sekolah
-$spasi_bawah_kop = '5px';
+// ukuran kopline1 dan seterusnya
+$ukuran_kopline1 = '12px';
+$ukuran_kopline2 = '18px';
+$ukuran_kopline3 = '14px';
+$ukuran_kopline4 = '14px';
+
+// spasi atas info alamat sekolah
+$spasi_atas_alamat_sekolah = '0px';
+$ukuran_bordertebal_atas_alamat = '0px';
+$ukuran_bordertebal_bawah_alamat = '3px';
+$ukuran_bordertipis_atas_alamat = '0px';
+$ukuran_bordertipis_bawah_alamat = '1px';
 
 // info alamat sekolah
 $infoline1='Alamat: Kampus Pendidikan Xamzone Universe Wonopringgo - Pekalongan Kode Pos 51181';
 $infoline2='Website: xamzonelinux.blogspot.com, Email: xamzone.linux@gmail.com, Telp. +628561575817';
 
 // nama dokumen dan nomor surat
-$docname = 'SURAT KETERANGAN';
+$docname = 'SURAT KETERANGAN LULUS';
 $docnumber = 'Nomor: 030/Sk.02/XZSCH/V/2021';
 
 // ucapan
@@ -80,10 +96,14 @@ $nama_ttd_skl = 'MAMAN SULAEMAN, S. Kom., M. Kom';
 $nip_ttd_skl = '-';
 
 // ukuran tanda tangan pejabat
-$ukuran_ttd_img = '90px';
+$ukuran_ttd_img = '80px';
 
 // ukuran margin kiri ttd pejabat
 $margin_kiri_ttd = '420px';
+$margin_atas_ttd = '-55px';
+$padding_atas_ttd = '31px';
+$padding_bawah_ttd = '6px';
+
 
 // ukuran margin kiri nama pejabat dan yang sejajar dengannya
 $margin_kiri_nm_pejabat = '400px';
@@ -91,39 +111,63 @@ $margin_kiri_nm_pejabat = '400px';
 // ukuran spasi baris pada SKL
 $ukuran_spasi_baris='1.1';
 
-$ukuran_font_global = '15px';
-$ukuran_info_alamat = '13px';
+$ukuran_font_global = '14px';
+$ukuran_info_alamat = '12px';
 
 $tampilkan_tabel_nilai = true;
 // apabila tabel nilai tidak ingin ditampilkan ganti true menjadi false
+$ukuran_font_tabel_nilai = '12px';
+// padding jarak dari teks ke tepi atas/bawah, cukup isi angka tanpa satuan apapun 
+$padding_vertical_font_tabel_nilai = '2';
+
+//jumlah desimal di belakang koma
+$decnum = 2;
 
 $tampilkan_tanda_tangan = true;
 // apabila tanda tangan tidak ingin ditampilkan ganti true menjadi false
+
+$tampilkan_foto_user = true;
+// apabila foto user tidak ingin ditampilkan ganti true menjadi false
+
+// margin dan ukuran foto
+$margin_atas = '-30px';
+$margin_kiri = '215px';
+// lebar / tinggi foto juga bisa menggunakan satuan cm atau px, misal 3cm, 110px
+$lebar_foto = '3cm';
+$tinggi_foto = '4cm';
 
 $tampilkan_qrcode = true;
 // apabila QR Code tidak ingin ditampilkan ganti true menjadi false
 // QR Code dipakai sebagai validasi dokumen SKL
 
-
-// pengaturan nama mapel, isikan semua mapel secara keseluruhan baik yang diterima peserta atau tidak
-// nanti pada saat pengisian nilai di Excel, mapel yang tidak diterima siswa cukup diberi nilai 0, maka otomatis mapel tersebut tidak ditampilkan pada tabel nilai
-// ganti nama mapel sesuai dengan yang diinginkan, jumlah total mapel di bawah ini biarkan tetap 30, apabila tidak ingin dipakai cukup biarkan namanya sesuai asalnya
+/** PENGATURAN NAMA MAPEL
+* Isikan semua mapel secara keseluruhan baik yang diterima peserta atau tidak.
+* Nanti pada saat pengisian nilai di Excel, mapel yang tidak diterima siswa cukup diberi nilai 0, maka otomatis mapel tersebut tidak ditampilkan pada tabel nilai.
+* Ganti nama mapel sesuai dengan yang diinginkan, jumlah total mapel di bawah ini biarkan tetap 30, apabila tidak ingin dipakai cukup biarkan namanya sesuai asalnya
+* Untuk memberikan label kelompok mapel, ketikkan nama kelompok mapel diikuti tanda # sebelum nama mapel contoh:
+* Kelompok A#1]Pendidikan Agama dan Budi Pekerti
+* contoh di atas adalah memberikan nama mapel nomor 1 yaitu Pendidikan Agama dan Budi Pekerti, ke dalam kelompok A. Pemberian nomor harus diikuti dengan tanda ]
+* agar mapel nomor 2 juga masuk ke dalam kelompok A, cukup ketikkan 2]Pendidikan Pancasila dan Kewarganegaraan di bawah nya
+* Untuk mapel muatan lokal, cara penulisannya adalah seperti contoh pada array di bawah ini 
+**/
 $nama_mapel = array(
-	'Mapel 1',
-	'Mapel 2',
-	'Mapel 3',
-	'Mapel 4',
-	'Mapel 5',
-	'Mapel 6',
-	'Mapel 7',
-	'Mapel 8',
-	'Mapel 9',
-	'Mapel 10',
-	'Mapel 11',
-	'Mapel 12',
-	'Mapel 13',
-	'Mapel 14',
-	'Mapel 15',
+	'Muatan Nasional#1]Pendidikan Agama dan Budi Pekerti',
+					'2]Pendidikan Pancasila dan Kewarganegaraan',
+					'3]Bahasa Indonesia',
+					'4]Matematika',
+					'5]Sejarah Indonesia',
+					'6]Bahasa Inggris dan Bahasa Asing lainnya',
+	'Muatan Kewilayahan#1]Seni Budaya',
+					'2]Penjaskes',
+					'3]Muatan Lokal@a. Mulok 1',
+									'b. Mulok 2',
+									'c. Mulok 3',
+	'Muatan Peminatan Kejuruan#1]Simkomdig',
+					'2]Fisika',
+					'3]Biologi',
+					'4]Kimia',
+					'5]Dasar Program Keahlian',
+					'6]Kompetensi Keahlian',
 	'Mapel 16',
 	'Mapel 17',
 	'Mapel 18',
@@ -136,23 +180,21 @@ $nama_mapel = array(
 	'Mapel 25',
 	'Mapel 26',
 	'Mapel 27',
-	'Mapel 28',
-	'Mapel 29',
-	'Mapel 30',
+	'Mapel 28'
 );
 
 // ukuran gambar / logo pada kop SKL
 $ukuran_kopimg_atas = '410px';
-$ukuran_kopimg_kiri = '70px';
-$ukuran_kopimg_kanan = '70px';
+$ukuran_kopimg_kiri = '66px';
+$ukuran_kopimg_kanan = '58px';
 
 
 // gambar pada kop SKL
 // upload gambar yang dibutuhkan pada folder cache/logo
 
-// gambar paling atas pada kop SKL (kosongkan apabila tidak dibutuhkan)
+// gambar paling atas pada kop SKL (kosongkan apabila tidak dibutuhkan, seperti contoh di bawah)
 // $topimg = '';
-$topimg = '../../cache/logo/logo-atas-kop.png';
+$topimg = '';
 
 // gambar sebelah kiri pada kop SKL
 $leftimg = '../../cache/logo/xz-logo.png';
@@ -162,6 +204,9 @@ $leftimg = '../../cache/logo/xz-logo.png';
 $rightimg='../../cache/logo/gounbk-logo.png';
 
 // gambar tanda tangan pejabat
+// untuk gambar stempel tidak terpisah, silakan tandatangan diedit terlebih dahulu pada aplikasi lain, lalu gabungkan dengan stempel.
+// atau bisa juga dengan cara men-scan tanda tangan yang sudah berstempel
+// jangan khawatir, tampilan gambar tandantangan yang berstempel akan tetap di bawah sehingga tidak menutupi nama pejabat atau keterangan lainnya.
 $ttd_img='../../cache/logo/ttd-xamzone.png';
 
 // random quote ditampilkan pada saat halaman SKL belum dibuka
@@ -182,7 +227,49 @@ $quotes = array(
 );
 
 /////////////// AKHIR KONFIGURASI SKL ////////////////////////////
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
 
+// DATA SKL USER ADMIN
+// ini hanyalah data dummy untuk sekedar menguji coba SKL
+// data ini bisa juga diisi melalui template Excel dengan mencantumkan username admin pada kolom username
+$admin['prodi'] 		= 'Teknik Komputer dan Informatika'; // prodi diisi bila SMK. selain SMK diisi angka 0
+$admin['kompetensi']	= 'Teknik Komputer dan Jaringan'; // kompetensi diisi bila SMK. selain SMK diisi angka 0
+$admin['peminatan']		= 0; // peminatan diisi bila SMA. selain SMA diisi angka 0
+$admin['j_kekhususan']	= 0; // jenis kekhususan diisi bila SMALB, SMPLB, SDLB. selain itu diisi dengan angka 0
+$admin['ortu']			= 'Daryono'; // diisi nama orang tua
+$admin['nis'] 			= '18.0001'; // diisi nis
+$admin['nisn'] 			= '1111111111'; // diisi nisn
+$admin['nil1']			= 80.35; 
+$admin['nil2']			= 82.51;
+$admin['nil3']			= 83.72;
+$admin['nil4']			= 84.93;
+$admin['nil5']			= 85.24;
+$admin['nil6']			= 86.35;
+$admin['nil7']			= 87.46;
+$admin['nil8']			= 88.57;
+$admin['nil9']			= 89.68;
+$admin['nil10']			= 90.25;
+$admin['nil11']			= 91.35;
+$admin['nil12']			= 92.45;
+$admin['nil13']			= 93.55;
+$admin['nil14']			= 94.65;
+$admin['nil15']			= 95.75;
+$admin['nil16']			= 98.00;
+$admin['nil17']			= 100.00;
+$admin['nil18']			= 0;
+$admin['nil19']			= 0;
+$admin['nil20']			= 0;
+$admin['nil21']			= 0;
+$admin['nil22']			= 0;
+$admin['nil23']			= 0;
+$admin['nil24']			= 0;
+$admin['nil25']			= 0;
+$admin['nil26']			= 0;
+$admin['nil27']			= 0;
+$admin['nil28']			= 0;
+$admin['nil29']			= 0;
+$admin['nil30']			= 0;
 
 // semua kode pada baris di bawah ini boleh dimodifikasi namun Anda harus memahami segala resiko yang ditimbulkan apabila terjadi kesalahan / error. 
 if($tampilkan_tabel_nilai){
@@ -292,23 +379,42 @@ require_once('../code/tce_page_header.php');
 
 .break {line-height:0.3;display:block}
 table {border-collapse: collapse; width:100%}
-td, th {border: 1px solid black; padding: 0px 10px}
+td, th {padding: 0px 10px}
 .center {text-align:center}
 div#alamat_skl span{font-size:<?php echo $ukuran_info_alamat; ?>}
 .splbl_skl {width: 240px; display: inline-block}
 .shadow_skl {box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5); padding:30px 30px 30px 30px}
-div#skl.shadow_skl{display:none}
-div#hamdalah{
-    position: relative;
-    top: -700px;
-}    
+<?php
+
+if($siap_publikasi){
+	echo 'div#skl.shadow_skl{display:none}';
+}
+?>
+<?php
+if($siap_publikasi){
+	echo 'div#hamdalah{'.K_NEWLINE;
+    echo 'position: relative;'.K_NEWLINE;
+    echo 'top: -700px;'.K_NEWLINE;
+	echo '}'.K_NEWLINE;
+}
+?>
+
+.img_user{
+	margin-top:<?php echo $margin_atas; ?>;
+	margin-left:<?php echo $margin_kiri; ?>;
+	position:absolute;
+	z-index:1;
+	padding:0px;
+	width:<?php echo $lebar_foto; ?> !important;
+	height:<?php echo $tinggi_foto; ?> !important;
+}
+ 
 .ttd_skl {
-	/* width: 192px; */
     margin-left: <?php echo $margin_kiri_ttd; ?>;
     position: relative;
-    top: -39px;
+    top: <?php echo $margin_atas_ttd; ?>;
     z-index: 1;
-    padding: 31px 0 16px 0;
+    padding: <?php echo $padding_atas_ttd; ?> 0 <?php echo $padding_bawah_ttd; ?> 0;
     height: <?php echo $ukuran_ttd_img; ?>;
 }
 .print_skl {/**width: 734px;**/ margin:0 auto; margin-bottom: 10px}
@@ -323,6 +429,12 @@ div#qrcode img {width:137px}
 .purple {background: #9c27b0}
 .orange {background: #ff9800}
 .fuchsia {background: #e91e63}
+
+#table_nilai td {
+    font-size: <?php echo $ukuran_font_tabel_nilai; ?>;
+    padding-top: <?php echo $padding_vertical_font_tabel_nilai; ?>px;
+    padding-bottom: <?php echo $padding_vertical_font_tabel_nilai+2; ?>px;
+}
 
 @media print {
     div#skl.shadow_skl {display:block}
@@ -343,10 +455,40 @@ $url = K_PATH_HOST.K_PATH_TCEXAM."public/code/tmf_skl.php?id=".$base64id;
 require_once('../../shared/tcpdf/tcpdf_barcodes_2d_tmf_skl.php');
 $qrcode = new TCPDF2DBarcode($url, 'QRCODE,H');
 
+$userskldata = array();
+$sqlusrdata = 'SELECT user_birthdate,user_birthplace,user_ssn FROM '.K_TABLE_USERS.' WHERE user_id='.$_SESSION['session_user_id'].' LIMIT 1';
+if ($r = F_db_query($sqlusrdata, $db)) {
+        while ($m = F_db_fetch_array($r)) {
+			$userskldata['user_birthdate']=$m['user_birthdate'];
+			$userskldata['user_birthplace']=$m['user_birthplace'];
+			$userskldata['user_ssn']=$m['user_ssn'];
+		}
+}else {
+	F_display_db_error();
+}
+
+// var_dump($userskldata);
+
+if(($siap_publikasi==false)and($_SESSION['session_user_level']<10)){
+	echo '<div class="container">'.K_NEWLINE;
+	echo '<div class="subcont" id="bismillahbox">SKL belum dipublikasikan. <a href="index.php" class="xmlbutton">Klik disini</a> untuk kembali ke beranda.</div>'.K_NEWLINE;
+	echo '</div>'.K_NEWLINE;
+	die();
+}
+
 echo '<div class="container" style="line-height:'.$ukuran_spasi_baris.'">'.K_NEWLINE;
 echo '<div class="x-scrollable" style="overflow-x:auto; padding-bottom:10px">'.K_NEWLINE;
 echo '<div class="print_skl">
 <div class="subcont" id="bismillahbox">'.K_NEWLINE;
+
+// echo $_SESSION['session_user_id'];
+if((strlen($userskldata['user_ssn'])<1) and ($_SESSION['session_user_id']==2)){
+	// $sqlu = 'UPDATE '.K_TABLE_USERS.' SET user_ssn="Teknik Komputer dan Informatika,Teknik Komputer dan Jaringan,Daryono,18.0001,1111111111,0,0,80.50,80.51,80.52,80.53,80.54,80.55,80.56,80.57,80.58,80.59,80.60,80.61,80.62,80.63,81.64,80.65,75,0,0,0,0,0,0,0,0,0,0,0,0,0" WHERE user_id=2';
+	
+	// F_db_query($sqlu, $db);
+	
+	$userskldata['user_ssn']=$admin['prodi'].','.$admin['kompetensi'].','.$admin['ortu'].','.$admin['nis'].','.$admin['nisn'].','.$admin['peminatan'].','.$admin['j_kekhususan'].','.$admin['nil1'].','.$admin['nil2'].','.$admin['nil3'].','.$admin['nil4'].','.$admin['nil5'].','.$admin['nil6'].','.$admin['nil7'].','.$admin['nil8'].','.$admin['nil9'].','.$admin['nil10'].','.$admin['nil11'].','.$admin['nil12'].','.$admin['nil13'].','.$admin['nil14'].','.$admin['nil15'].','.$admin['nil16'].','.$admin['nil17'].','.$admin['nil18'].','.$admin['nil19'].','.$admin['nil20'].','.$admin['nil21'].','.$admin['nil22'].','.$admin['nil23'].','.$admin['nil24'].','.$admin['nil25'].','.$admin['nil26'].','.$admin['nil27'].','.$admin['nil28'].','.$admin['nil29'].','.$admin['nil30'];
+}
 
 if(isset($_REQUEST['id']) and $_REQUEST['id']!=null){
 	echo '<style>
@@ -369,6 +511,8 @@ if(isset($_REQUEST['id']) and $_REQUEST['id']!=null){
 			echo '<h3 style="padding: 0 0 0.5em 0;border-bottom: 1px solid #336799;color: var(--col-2)"><span class="icon-star"></span> SKL VALID</h3>'.K_NEWLINE;
 			echo '<p>Surat Keterangan Lulus ini didapatkan secara sah dari laman resmi pengambilan SKL '.K_INSTITUTION_NAME.' dengan rincian data sebagai berikut :</p>'.K_NEWLINE;
 			// echo "<span class='splbl_skl'>Nomor Peserta </span>: <span class='spvalue blue'>".$m['user_name']."</span><br/><br/>";
+			echo "<div class='d-flex jc-sb fwrap'>";
+			echo "<div>";
 			echo "<span class='splbl_skl'>Nama Lengkap </span>: <span class='spvalue fuchsia'>".$m['user_firstname']."</span><br/><br/>";
 
 			$user_birthdate = date("j F Y", strtotime($m['user_birthdate']));
@@ -408,9 +552,20 @@ if(isset($_REQUEST['id']) and $_REQUEST['id']!=null){
 				echo "<span class='splbl_skl'>Jenis Kekhususan </span>: <span class='spvalue red'>".$str_arr[6]."</span><br/>";
 			}
 			//$ortu = str_replace("%27", " '", $str_arr[1]);
-			echo "</div><br/><br/>".K_NEWLINE;
-			//echo "</div>".K_NEWLINE;
+			echo "</div>".K_NEWLINE;
+			// echo "</div>".K_NEWLINE;
+			echo "<div style='align-self:start'>";
 			
+			if(@file_get_contents(K_PATH_CACHE.'photo/'.$m['user_name'])){
+				$userphoto = $m['user_name'];
+			}else{
+				$userphoto = 'default';
+			}
+
+			echo "<img src='../../cache/photo/".$userphoto.".jpg'>";
+			echo "</div>".K_NEWLINE;
+			echo "</div>".K_NEWLINE;
+			echo "<br/>";
 			// echo 'xxx'.$str_arr[7];
 			
 			$mapel = array();
@@ -430,12 +585,53 @@ if(isset($_REQUEST['id']) and $_REQUEST['id']!=null){
 			
 			$no=1;
 			$sum_nil=array();
-			foreach ($mapel as $data){
+			/* foreach ($mapel as $data){
 				$sum_nil[]=$data[1];
-				echo '<tr><td class="center">'.$no++.'</td><td>'.$data[0].'</td><td class="center">'.$data[1].'</td></tr>';
+				echo '<tr><td class="center">'.$no++.'</td><td>'.$data[0].'</td><td class="center">'.number_format($data[1],$decnum,',','.').'</td></tr>';
+			} */
+			foreach ($mapel as $data){
+			$sum_nil[]=$data[1];
+			if(strpos($data[0],'#')){
+				$xxx = preg_split ("/\#/", $data[0]);
+				$data[0] = strstr($data[0], '#');
+				$data[0] = str_replace('#','',$data[0]);
+				$newtr = '<tr style="text-align: left;background: var(--col-4);color: #fff;"><td colspan="2" class="ft-bold">'.$xxx[0].'</td><td></td></tr>';
+			}else{
+				$xxx = array('','');
+				$newtr = '';
 			}
 			
-			echo '<tr class="ft-bold ta-center" style="background:#336799 !important;color:var(--col-7)"><td colspan=2>RATA-RATA</td><td class="ta-center">'.array_sum($sum_nil)/($no-1).'</td></tr>';
+			if(strpos($data[0],'@')){
+				$yyy = preg_split ("/\@/", $data[0]);
+				$data[0] = strstr($data[0], '@');
+				$data[0] = str_replace('@','',$data[0]);
+				
+				if(strpos($yyy[0],']')){
+					$aaa = preg_split ("/\]/", $yyy[0]);
+					$yyy[0] = strstr($yyy[0], ']');
+					$yyy[0] = str_replace(']','',$yyy[0]);
+					$newtr2 = '<tr><td class="ta-center">'.$aaa[0].'</td><td>'.$yyy[0].'</td><td></td></tr>';
+				}else{
+					$newtr2 = array('','');
+				}	
+			}else{
+				$yyy = array('','');
+				$newtr2 = '';
+			}
+			
+			if(strpos($data[0],']')){
+				$zzz = preg_split ("/\]/", $data[0]);
+				$data[0] = strstr($data[0], ']');
+				$data[0] = str_replace(']','',$data[0]);
+			}else{
+				$zzz = array('','');
+			}
+			
+			$no++;
+			echo $newtr2.$newtr.'<tr><td class="ta-center">'.$zzz[0].'</td><td>'.$data[0].'</td><td class="center">'.number_format($data[1],0,',','.').'</td></tr>';
+		}
+			
+			echo '<tr class="ft-bold ta-center" style="background:var(--col-1) !important;color:var(--col-7)"><td colspan=2>RATA-RATA</td><td class="ta-center ft-bold">'.number_format(array_sum($sum_nil)/($no-1),$decnum,',','.').'</td></tr>';
 			echo '</table>';
 			
 		}else{
@@ -454,7 +650,7 @@ if($_SESSION['session_user_level']<2){
 	<?php
 }
 
-if(strlen($_SESSION['session_user_ssn'])<1){
+if(strlen($userskldata['user_ssn'])<1){
 	echo 'Data SKL untuk <strong>'.$_SESSION['session_user_firstname'].'</strong> belum disiapkan. Silakan import data user terlebih dahulu menggunakan template yang telah disediakan. <a href="index.php" class="xmlbutton">Klik disini</a> untuk kembali ke beranda.';
 	die();
 }
@@ -485,8 +681,9 @@ if($_SESSION['session_user_level']>=4){
 }
 
 echo '<div class="subcont" id="hamdalah"><p><b>'.$text_syukur.'</b>, <br/>'.$firstname.', Anda '.$text_keputusan.'.<br/><br/><span class="'.$textclass.'" style="background:var(--col-4t);display: inline-block;padding: 1em;border-radius: 5px;border-left: 3px solid var(--col-4)">Anda bisa mencetak tanda bukti kelulusan dengan menekan tombol Print / PDF di bawah ini. Apabila tombol tersebut tidak berfungsi pada perangkat handphone / smartphone, silakan tekan menu setting pada browser Anda, tekan Share / Bagikan, kemudian tekan menu Cetak / Print.</span></p>
-<a class="'.$textclass.' xmlbutton" href="#" id="print_skl" class="xmlbutton">Print / PDF</a></div></div>'.K_NEWLINE;
-echo '<div id="skl" class="shadow_skl" style="background:#ffffff; width:669px; height:auto; margin: 0 auto">'.K_NEWLINE;
+<a class="'.$textclass.' xmlbutton" href="#" id="print_skl" class="xmlbutton">Print / Cetak</a>&nbsp;<a class="'.$textclass.' xmlbutton" href="#" id="unduh_skl" class="xmlbutton">Unduh PDF</a></div></div>'.K_NEWLINE;
+
+echo '<div id="skl" class="shadow_skl" style="line-height:'.$ukuran_spasi_baris.'; background:#ffffff; width:669px; height:auto; margin: 0 auto">'.K_NEWLINE;
 //echo $_SESSION['session_user_name'].K_NEWLINE;
 
 if(strlen($topimg)>0){
@@ -502,15 +699,16 @@ if(strlen($rightimg)>0){
 echo "<center ".$topimg_class.">
 <div style='width:100%; display:inline-block'><img ".$topimg_class." width='".$ukuran_kopimg_atas."' src='".$topimg."' /></div>
 </center>".K_NEWLINE;
-echo "<div style='margin: 0 0 ".$spasi_bawah_kop." 0;display: flex;justify-content: space-between;align-items: center;text-align: center'><div style='width:".$ukuran_kopimg_kiri."; display:inline-block'><img src='".$leftimg."' /></div>
-<div style='font-weight:bold; width:275px; display:inline-block'>".$kopline1."<br/>".$kopline2."<br/>".$kopline3."<br/>".$kopline4."</div>
+echo "<div style='margin: 0 0 ".$spasi_atas_alamat_sekolah." 0;display: flex;justify-content: space-between;align-items: center;text-align: center'><div style='width:".$ukuran_kopimg_kiri."; display:inline-block'><img src='".$leftimg."' /></div>
+<div style='font-weight:bold; width:275px; display:inline-block'><span style='font-size:".$ukuran_kopline1."'>".$kopline1."</span><br/><span style='font-size:".$ukuran_kopline2."'>".$kopline2."</span><br/><span style='font-size:".$ukuran_kopline3."'>".$kopline3."</span><br/><span style='font-size:".$ukuran_kopline4."'>".$kopline4."</span></div>
 <div style='width:".$ukuran_kopimg_kanan."; display:inline-block'><img ".$rightimg_class." src='".$rightimg."' /></div>
 </div>".K_NEWLINE;
-echo "<center><div id='alamat_skl' style='border-top: 3px solid #000000; border-bottom: 3px solid #333333'><span style='width:100%; display:inline-block;margin-top:1px;padding-top:3px; border-top:1px solid #333'>".$infoline1."</span><br/><span style='width:100%; display:inline-block;margin-bottom:1px;padding-bottom:3px; border-bottom: 1px solid #333'>".$infoline2."</span></div></center><br/>".K_NEWLINE;
-echo "<center><b><u>".$docname."</u></b><br/>".$docnumber."</center><br/>".K_NEWLINE;
-echo "<center><b>".K_INSTITUTION_NAME."</b></center>";
 
-$c_array = urldecode($_SESSION['session_user_ssn']);
+echo "<center><div id='alamat_skl' style='border-top: ".$ukuran_bordertebal_atas_alamat." solid #000000; border-bottom: ".$ukuran_bordertebal_bawah_alamat." solid #333333'><span style='width:100%; display:inline-block;margin-top:1px;padding-top:3px; border-top:".$ukuran_bordertipis_atas_alamat." solid #333'>".$infoline1."</span><br/><span style='width:100%; display:inline-block;margin-bottom:1px;padding-bottom:3px; border-bottom: ".$ukuran_bordertipis_bawah_alamat." solid #333'>".$infoline2."</span></div></center><br/>".K_NEWLINE;
+echo "<center><b>".$docname."</b></center>".K_NEWLINE;
+echo "<center><b>".strtoupper(K_INSTITUTION_NAME)."</b></center>";
+
+$c_array = urldecode($userskldata['user_ssn']);
 $str_arr = preg_split ("/\,/", $c_array);
 if((strlen($str_arr[0])>1) or ($str_arr[0]!=0)){
 	echo "<center style='text-transform:uppercase'><b>PROGRAM STUDI KEAHLIAN : ".$str_arr[0]."</b></center>";
@@ -525,7 +723,8 @@ if((strlen($str_arr[6])>1) or ($str_arr[6]!=0)){
 	echo "<center style='text-transform:uppercase'><b>JENIS KEKHUSUSAN : ".$str_arr[6]."</b></center>";
 }
 
-echo "<center><b>TAHUN PELAJARAN ".$tahun_pelajaran."</b></center><br/>";
+echo "<center><b>TAHUN PELAJARAN ".$tahun_pelajaran."</b><br/><br/>".$docnumber."<br/><br/></center>";
+
 echo $text_skl1.K_NEWLINE;
 echo "<span class='break'>&nbsp;</span>";
 echo "<span class='break'>&nbsp;</span>";
@@ -534,7 +733,7 @@ echo "<span class='splbl_skl'>Nama </span>: <span style='text-transform:uppercas
 // $user_birthdate = date("j F Y", strtotime($str_arr[2]);
 // echo $str_arr[2];
 // echo '<br/>';
-$user_birthdate = date("j F Y", strtotime($_SESSION['session_user_birthdate']));
+$user_birthdate = date("j F Y", strtotime($userskldata['user_birthdate']));
 // $user_birthdate = date("Y-m-d", strtotime("2005-12-31"));
 $user_birthdate = str_replace('January', 'Januari', $user_birthdate);
 $user_birthdate = str_replace('February', 'Februari', $user_birthdate);
@@ -545,7 +744,7 @@ $user_birthdate = str_replace('July', 'Juli', $user_birthdate);
 $user_birthdate = str_replace('August', 'Agustus', $user_birthdate);
 $user_birthdate = str_replace('October', 'Oktober', $user_birthdate);
 $user_birthdate = str_replace('December', 'Desember', $user_birthdate);
-echo "<span class='splbl_skl'>Tempat dan Tanggal Lahir </span>: ".$_SESSION['session_user_birthplace'].", ".$user_birthdate."<br/>".K_NEWLINE;
+echo "<span class='splbl_skl'>Tempat dan Tanggal Lahir </span>: ".$userskldata['user_birthplace'].", ".$user_birthdate."<br/>".K_NEWLINE;
 
 // $c_array = urldecode($_SESSION['session_user_lastname']);
 // $c_array = str_replace('%2C', ',', $_SESSION['session_user_lastname']);
@@ -574,17 +773,55 @@ echo "<span class='break'>&nbsp;</span>";
 echo '<div style="margin-bottom:5px">'.$text_keputusan.$dot.'<span '.$tabel_nilai_class.'>, dengan nilai sebagai berikut :</span></div>'.K_NEWLINE;
 
 ?>
-<table style="border:2px solid" <?php echo $tabel_nilai_class; ?>>
-<tr style="border-bottom:2px solid"><th width="25px">No</th><th>Nama Mata Pelajaran</th><th width="60px">Nilai</th></tr>
+<table id="table_nilai" cellspacing="0" style="border-collapse: collapse; border:2px solid" <?php echo $tabel_nilai_class; ?>>
+<!--tr style="border-bottom:2px solid"><th width="25px">No</th><th>Nama Mata Pelajaran</th><th width="60px">Nilai</th></tr-->
+<tr><th style="border-right:0.1px solid black" width="25px">No</th><th style="border-right:0.1px solid black;padding:5px">Mata Pelajaran<br/><?php echo '( '.$jenis_kurikulum.' )'; ?></th><th width="95px">Nilai Ujian Sekolah</th></tr>
 <?php
 $no=1;
 $sum_nil=array();
 foreach ($mapel as $data){
 	$sum_nil[]=$data[1];
-	echo '<tr><td class="center">'.$no++.'</td><td>'.$data[0].'</td><td class="center">'.$data[1].'</td></tr>';
+	if(strpos($data[0],'#')){
+		$xxx = preg_split ("/\#/", $data[0]);
+		$data[0] = strstr($data[0], '#');
+		$data[0] = str_replace('#','',$data[0]);
+		$newtr = '<tr><td style="border-top:0.1px solid black; border-right:0.1px solid black" colspan="2" class="ft-bold">'.$xxx[0].'</td><td style="border-top:0.1px solid black"></td></tr>';
+	}else{
+		$xxx = array('','');
+		$newtr = '';
+	}
+	
+	if(strpos($data[0],'@')){
+		$yyy = preg_split ("/\@/", $data[0]);
+		$data[0] = strstr($data[0], '@');
+		$data[0] = str_replace('@','',$data[0]);
+		
+		if(strpos($yyy[0],']')){
+			$aaa = preg_split ("/\]/", $yyy[0]);
+			$yyy[0] = strstr($yyy[0], ']');
+			$yyy[0] = str_replace(']','',$yyy[0]);
+			$newtr2 = '<tr><td style="border-top:0.1px solid black; border-right:0.1px solid black" class="ta-center">'.$aaa[0].'</td><td style="border-top:0.1px solid black; border-right:0.1px solid black">'.$yyy[0].'</td><td style="border-top:0.1px solid black"></td></tr>';
+		}else{
+			$newtr2 = array('','');
+		}	
+	}else{
+		$yyy = array('','');
+		$newtr2 = '';
+	}
+	
+	if(strpos($data[0],']')){
+		$zzz = preg_split ("/\]/", $data[0]);
+		$data[0] = strstr($data[0], ']');
+		$data[0] = str_replace(']','',$data[0]);
+	}else{
+		$zzz = array('','');
+	}
+	
+	$no++;
+	echo $newtr2.$newtr.'<tr><td style="border-top:0.1px solid black; border-right:0.1px solid black" class="ta-center">'.$zzz[0].'</td><td style="border-top:0.1px solid black; border-right:0.1px solid black">'.$data[0].'</td><td style="border-top:0.1px solid black" class="center">'.number_format($data[1],0,',','.').'</td></tr>';
 }
 ?>
-<tr><th colspan=2>RATA-RATA</th><td class="center"><?php echo array_sum($sum_nil)/($no-1); ?></td></tr>
+<tr><th style="border-top:0.1px solid black; border-right:0.1px solid black" colspan=2>RATA-RATA</th><td style="border-top:0.1px solid black" class="center ft-bold"><?php echo number_format(array_sum($sum_nil)/($no-1),$decnum,',','.'); ?></td></tr>
 </table>
 <?php
 echo "<span class='break'>&nbsp;</span>";
@@ -612,6 +849,19 @@ if($tampilkan_tanda_tangan){
 }else{
 	$stylettd='style="visibility:hidden"';
 }
+
+if($tampilkan_foto_user){
+	$stylefoto='';
+}else{
+	$stylefoto='style="visibility:hidden;display:none"';
+}
+
+if(@file_get_contents(K_PATH_CACHE.'photo/'.$_SESSION['session_user_name'])){
+	$userphoto = $_SESSION['session_user_name'];
+}else{
+	$userphoto = 'default';
+}
+echo "<img ".$stylefoto." class='img_user' src='../../cache/photo/".$userphoto.".jpg' /><br/>";
 echo "<img ".$stylettd." class='ttd_skl' src='".$ttd_img."' /><br/>";
 echo "<span id='nm_ks' style='position:relative; margin-left:".$margin_kiri_nm_pejabat."; font-weight: bold; text-decoration:underline; display:inline-block; top: -64px; z-index:9'>".$nama_ttd_skl."</span>".K_NEWLINE;
 echo "<span id='nip_ks' style='position:relative; margin-left:".$margin_kiri_nm_pejabat."; font-weight: bold; text-decoration:none; display:inline-block; top: -64px; z-index:9'>NIP. ".$nip_ttd_skl."</span>".K_NEWLINE;
@@ -620,7 +870,25 @@ echo "<span id='nip_ks' style='position:relative; margin-left:".$margin_kiri_nm_
 echo '</div>'.K_NEWLINE;
 echo '</div>'.K_NEWLINE;
 echo '</div>'.K_NEWLINE;
+
 //echo '<p>Scan QR-Codes di bawah ini untuk memeriksa keabsahan SKL ini</p>'.K_NEWLINE;
+// comma separated list of user's groups
+$grp = '';
+$sqlg = 'SELECT *
+	FROM '.K_TABLE_GROUPS.', '.K_TABLE_USERGROUP.'
+	WHERE usrgrp_group_id=group_id
+		AND usrgrp_user_id='.$_SESSION['session_user_id'].'
+	ORDER BY group_name';
+if ($rg = F_db_query($sqlg, $db)) {
+	while ($mg = F_db_fetch_array($rg)) {
+		$grp .= $mg['group_name'].', ';
+	}
+} else {
+	F_display_db_error();
+}
+
+$grp = rtrim($grp, ', ');
+// echo $grp;
 
 
 require_once('../code/tce_page_footer.php');
@@ -629,23 +897,52 @@ require_once('../code/tce_page_footer.php');
 // END OF FILE
 //============================================================+
 ?>
+<script src="../../shared/jscripts/html2pdf.bundle.min.js"></script>
 <script>
 	const thispage_title = "<?php echo $thispage_title; ?>"
 	const firstname = "<?php echo $firstname; ?>"
-	const jurusan = "<?php echo $str_arr[1]; ?>"
+	const groups = "<?php echo $grp; ?>"
+	
+	var element = document.getElementById('skl');
+	var opt = {
+	  margin:       0,
+	  filename:     thispage_title+'-'+firstname+'-'+groups+'.pdf',
+	  image:        { type: 'jpeg', quality: 1 },
+	  html2canvas:  { scale: 4 },
+	  jsPDF:        { unit:'in', format:[8.2, 13], orientation:'portrait' }
+	};
+
+	// New Promise-based usage:
+	function unduhPDF(){
+		backdrop("1","1");
+		document.getElementById("backdrop").style.background = 'black';
+		element.style.display = 'block';
+		html2pdf().set(opt).from(element).save().then(function(){
+			element.style.display = 'none';
+			backdrop("0","1");
+			document.getElementById("backdrop").style.background = 'rgba(0,0,0,.5)';
+			document.body.removeAttribute("style");
+		});
+		// html2pdf(element, opt);
+		// element.style.display = 'none';
+	}
+	
+	
+</script>
+<script>
 	function xyz(){
 		this.innerHTML="<div style='display:flex'><div class='anim-rotate'><span class='icon-spinner11'></span></div><span style='margin-left:1em'><?php echo $text_tunggu; ?></span></div>";
 		setTimeout(function(){
 			document.getElementById("bismillahbox").style.display = "none";
 			document.getElementById("hamdalah").style.top = "0px";
 		},3000);
-		
-		
 	}
 	function printSKL(){
+		document.getElementById("skl").setAttribute("style","line-height: 1.1;background: rgb(255, 255, 255);width: 669px;height: auto;margin: 0px auto;");
 		window.print();
 	}
+	document.getElementById("unduh_skl").addEventListener("click", unduhPDF);
 	document.getElementById("bismillah").addEventListener("click", xyz);
 	document.getElementById("print_skl").addEventListener("click", printSKL);
-	document.querySelector("title").textContent = thispage_title+" - "+firstname+" - "+jurusan;
+	document.querySelector("title").textContent = thispage_title+" - "+firstname+" - "+groups;
 </script>
