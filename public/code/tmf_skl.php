@@ -556,7 +556,7 @@ if(isset($_REQUEST['id']) and $_REQUEST['id']!=null){
 			// echo "</div>".K_NEWLINE;
 			echo "<div style='align-self:start'>";
 			
-			if(@file_get_contents(K_PATH_CACHE.'photo/'.$m['user_name'])){
+			if(@file_get_contents(K_PATH_CACHE.'photo/'.$m['user_name'].'.jpg')){
 				$userphoto = $m['user_name'];
 			}else{
 				$userphoto = 'default';
@@ -864,7 +864,7 @@ if($tampilkan_foto_user){
 	$stylefoto='style="visibility:hidden;display:none"';
 }
 
-if(@file_get_contents(K_PATH_CACHE.'photo/'.$_SESSION['session_user_name'])){
+if(@file_get_contents(K_PATH_CACHE.'photo/'.$_SESSION['session_user_name'].'.jpg')){
 	$userphoto = $_SESSION['session_user_name'];
 }else{
 	$userphoto = 'default';
