@@ -1,8 +1,8 @@
 # TCExam Mobile Friendly (TMF) Project with AJAX Support
 
-CBT Forking dari TMF (TCExam Mobile Friendly) dengan modifikasi pada loading soal dan kirim jawaban melalui AJAX di sisi peserta ujian.
+CBT Forking dari TMF (TCExam Mobile Friendly) dengan modifikasi pada loading soal dan kirim jawaban melalui AJAX dari sisi peserta ujian.
 
-Login Screen
+Halaman Login
 
 <img src="https://1.bp.blogspot.com/-3a273pl2fYY/YGwaHMtlOEI/AAAAAAAATfc/ziojUbNS4XI8YvIjFkuPQLZoU8uRJbNrACLcBGAsYHQ/s1862/Screenshot_2021-04-06-15-18-21-007_com.android.chrome.png" width="200px"/>
 
