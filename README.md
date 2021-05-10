@@ -58,7 +58,7 @@ Asumsikan user database pada XAMPP adalah root dan TANPA password.
 
 ## Kebutuhan Sistem
 1. Web server (Apache/nginx/OLS, dan lainnya)
-2. PHP 5.6 s.d 7.4 
+2. PHP 5.6 s.d 8.0.x
 3. Database MySQL/MariaDB/Postgre/Oracle
 
 ## Contact
