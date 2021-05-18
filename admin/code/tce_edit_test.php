@@ -866,10 +866,16 @@ if ($formstatus) {
 $millennium = substr(date('Y'), 0, 1);
 
 echo '<div class="container">'.K_NEWLINE;
-
 echo '<div class="tceformbox">'.K_NEWLINE;
 echo '<form action="'.$_SERVER['SCRIPT_NAME'].'" method="post" enctype="multipart/form-data" id="form_testeditor">'.K_NEWLINE;
 
+echo '<div id="banksoalwarning" class="row d-block bg-yellow-lt mb-15" style="display:none!important">'.K_NEWLINE;
+
+// if (isset($test_max_score_new) and ($test_max_score_new == 0)) {
+	
+// }
+
+echo '</div>'.K_NEWLINE;
 echo '<div class="row">'.K_NEWLINE;
 echo '<span class="label">'.K_NEWLINE;
 echo '<label for="test_id">'.$l['w_test'].'</label>'.K_NEWLINE;
@@ -1124,7 +1130,7 @@ if (isset($test_id) and ($test_id > 0)) {
     echo '<div class="row"><br /></div>'.K_NEWLINE;
 
     echo '<fieldset>'.K_NEWLINE;
-    echo '<legend>'.$l['w_questions'].'</legend>'.K_NEWLINE;
+    echo '<legend id="banksoal">'.$l['w_questions'].'</legend>'.K_NEWLINE;
 
     echo '<div class="row">'.K_NEWLINE;
     echo '<span class="label">&nbsp;</span>'.K_NEWLINE;
@@ -1354,9 +1360,23 @@ if (isset($test_id) and ($test_id > 0)) {
 
     echo '</fieldset>'.K_NEWLINE;
 
-    echo '<div class="row"><br /></div>'.K_NEWLINE;
+
+	
 
     if (isset($test_max_score_new) and ($test_max_score_new > 0)) {
+		
+	// generate test data / offline page
+    echo '<div class="row">'.K_NEWLINE;
+	echo '<span class="label">'.K_NEWLINE;
+	echo '<label for="test_num">Generate test user data</label>'.K_NEWLINE;
+	echo '</span>'.K_NEWLINE;
+	echo '<span class="formw d-block" style="margin:0">'.K_NEWLINE;
+	echo '<div class="formw d-block" style="margin:0">Bagian ini merupakan jalan pintas dari halaman <a href="tmf_generate.php?test_id='.$test_id.'" target="blank">Generate Test User Data</a> yang memiliki fungsi yang sama yaitu menciptakan data tes dari sisi admin, sehingga mempercepat proses loading soal.</div>'.K_NEWLINE;
+	echo '<a id="generate_test_link" title="Generate test data" class="xmlbutton w-100p ta-center" style="background:#e91e63;box-sizing:border-box;display: block;padding: 0.75em;color: #fff;margin: 0.75em 0;cursor: pointer;" onclick="" style="flex:0 0 7em"><i class="fas fa-history"></i> '.$l['w_generate'].'</a><span class="d-block"><div id="generated" style="text-align:left;padding-left:7px"><span id="total_user" style="display:block"></span><span style="display:block" id="generated_user"></span><span style="display:block" id="done"></span>
+</div></span>';
+	echo '</span>&nbsp;'.K_NEWLINE;
+	echo '</div>'.K_NEWLINE;
+	
         echo '<div class="row">'.K_NEWLINE;
         echo '<span class="label">'.K_NEWLINE;
         echo '<label for="test_num">'.$l['w_pdf_offline_test'].'</label>'.K_NEWLINE;
@@ -1366,7 +1386,22 @@ if (isset($test_id) and ($test_id > 0)) {
         echo '<a href="tce_pdf_testgen.php?test_id='.$test_id.'&amp;num='.$test_num.'" title="'.$l['h_pdf_offline_test'].'" class="xmlbutton" onclick="pdfWindow=window.open(\'tce_pdf_testgen.php?test_id='.$test_id.'&amp;num=\' + document.getElementById(\'form_testeditor\').test_num.value + \'\',\'pdfWindow\',\'dependent,menubar=yes,resizable=yes,scrollbars=yes,status=yes,toolbar=yes\'); return false;" style="flex:0 0 7em"><i class="fas fa-history"></i> '.$l['w_generate'].'</a>';
         echo '</span>&nbsp;'.K_NEWLINE;
         echo '</div>'.K_NEWLINE;
+		
+		echo '<div class="row">'.K_NEWLINE;
+	echo '<span class="label">'.K_NEWLINE;
+	echo '<label for="test_num">Hasil tes</label>'.K_NEWLINE;
+	echo '</span>'.K_NEWLINE;
+	echo '<span class="formw d-block" style="margin:0">'.K_NEWLINE;
+	echo '<a target="blank" id="buka_hasil_tes" href="tce_show_result_allusers.php?test_id='.$test_id.'&opentestresult=1" title="Buka hasil tes / ujian" class="xmlbutton w-100p ta-center" style="background:#009688;box-sizing:border-box" onclick="" style="flex:0 0 7em"><i class="fas fa-edit"></i> Buka Hasil Tes / Ujian</a>';
+	echo '</span>&nbsp;'.K_NEWLINE;
+	echo '</div>'.K_NEWLINE;
     }
+	else{
+		echo '<script>'.K_NEWLINE;
+		echo '$("#banksoalwarning").html("Lengkapi ujian ini dengan bank soal. Silakan <a class=\'ft-bold\' href=\'#banksoal\'>klik disini</a> untuk menambahkan bank soal ke dalam ujian.")'.K_NEWLINE;
+		echo '$("#banksoalwarning").show();'.K_NEWLINE;
+		echo '</script>'.K_NEWLINE;
+	}
 }
 echo F_getCSRFTokenField().K_NEWLINE;
 echo '</form>'.K_NEWLINE;
@@ -1390,9 +1425,57 @@ echo '}'.K_NEWLINE;
 echo 'JF_check_random_boxes();'.K_NEWLINE;
 echo '//]]>'.K_NEWLINE;
 echo '</script>'.K_NEWLINE;
-
+?>
+<script>
+function checkTotalUser(){
+$.ajax({
+		'url': 'tmf_generate_test.php?check_total_user&test_id=<?php echo $test_id; ?>',
+		'type': 'GET',
+		'success': function(result){$("div#generated").css({"padding":"7px 14px","color":"#fff","background":"#4caf50","borderRadius":"5px","marginBottom":"25px"});$("div#generated span#total_user").html("Sistem sedang melakukan generate halaman ujian untuk : "+result+" peserta.")}
+});
+}
+function F_genDur(){	
+var gen_tstart = $("span#gen_start").text();
+var gen_tend = $("input#timer").val();
+var genDur = gen_tend - gen_tstart;
+return genDur
+}
+function generateTest(){	
+$.ajax({
+		'url': 'tmf_generate_test.php?test_id=<?php echo $test_id; ?>',
+		'type': 'GET',
+		'beforeSend': function(){$("div#generated").css({"padding":"7px 14px","color":"#fff","background":"yellow","borderRadius":"5px","marginBottom":"25px"});$("div#generated span#done").html("<b><span class='d-iblock pwrap bg-fuchsia mt-10 bd-white boxshd'>&infin; LOADING . . . </span></b>")},
+		'success': function(result){$("div#generated").css({"padding":"7px 14px","color":"#fff","background":"#4caf50","borderRadius":"5px","marginBottom":"25px"});$("div#generated span#done").html("<b><span class='d-iblock mt-10 ft-white'>&check; SELESAI<br/>"+result+"</span></b>");$("p#gen_end_p").show();$("span#gen_end").text($("input#timer").val());$("span#total_user").hide()}
+});
+}
+function delGenTest(){	
+$.ajax({
+		'url': 'tmf_generate_test.php?del_generated_test&test_id=<?php echo $test_id; ?>',
+		'type': 'GET',
+		'beforeSend': function(){$("a#del_gen_test").text("Mohon Tunggu")},
+		'success': function(result){alert("Selesai menghapus data test");location.reload();},
+});
+}
+function checkGeneratedTest(){	
+$.ajax({
+		'url': 'tmf_generate_test.php?check_generated_test&test_id=<?php echo $test_id; ?>',
+		'type': 'GET',
+		'success': function(result){$("div#generated").css({"padding":"7px 14px","color":"#fff","background":"#4caf50","borderRadius":"5px","marginBottom":"25px"});$("div#generated span#generated_user").html("sudah tergenerate sebanyak : "+result+" peserta.")}
+});
+}
+$("a#generate_test_link").click(function(){
+$("p#gen_start_p").show();
+$("span#gen_start").text($("input#timer").val());
+	checkTotalUser();
+	generateTest();
+})
+$("a#del_gen_test").click(function(){
+if(confirm("Continue?")){
+	delGenTest();
+}})
+</script>
+<?php
 require_once('../code/tce_page_footer.php');
-
 //============================================================+
 // END OF FILE
 //============================================================+

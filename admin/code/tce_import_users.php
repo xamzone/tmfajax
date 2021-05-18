@@ -111,14 +111,18 @@ switch ($menu_mode) {
 <fieldset class="noborder">
 <legend title="<?php echo $l['h_file_type']; ?>"><?php echo 'Tipe file'; ?></legend>
 
+<div class="mb-5">
 <input type="radio" name="file_type" id="file_type_xml" value="1" checked="checked" title="<?php echo $l['h_file_type_xml']; ?>" />
 <label for="file_type_xml">XML</label>
-<br />
+</div>
+<div class="mb-5">
 <input type="radio" name="file_type" id="file_type_tsv" value="2" title="<?php echo $l['h_file_type_tsv']; ?>" />
 <label for="file_type_tsv">TSV</label>
-<br />
+</div>
+<div class="mb-5 mt-10">
 <input type="radio" name="file_type" id="file_type_xlsx" value="3" title="<?php echo 'XLSX'; ?>" />
-<label for="file_type_xlsx">XLSX</label>
+<label for="file_type_xlsx">XLSX</label> <a href="../../template/tcexam_users_template_awal.xlsx" class="bg-green p-5 brad-5 ft-white"><i class="fas fa-file-excel"></i> Download Template User</a>
+</div>
 </fieldset>
 </div>
 </div>

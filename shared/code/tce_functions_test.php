@@ -153,7 +153,7 @@ function F_getUserTests()
                                 // directly execute test
                                 $str .= 'tce_test_execute.php';
                             }
-                            $str .= '?testid='.$m['test_id'].'&'.$testpw.'\')" title="'.$l['h_execute'].'" class="buttongreen fuchsia"><span class="icon-chevron-circle-right"></span> '.$l['w_execute'].'</a>';
+                            $str .= '?starttest=1&testid='.$m['test_id'].'&'.$testpw.'\')" title="'.$l['h_execute'].'" class="buttongreen fuchsia"><span class="icon-chevron-circle-right"></span> '.$l['w_execute'].'</a>';
 							break;
 						}
                         default: { // 4 or greater = test can be repeated
@@ -189,6 +189,7 @@ function F_getUserTests()
                 if (($test_status >= 4 and F_getBoolean($m['test_results_to_users'])) and $test_status!=9) {
                     $usrtestdata = F_getUserTestStat($m['test_id'], $user_id, $testuser_id);
                     $passmsg = '';
+					$bg='';
                     if (isset($usrtestdata['user_score']) and isset($usrtestdata['test_score_threshold']) and ($usrtestdata['test_score_threshold'] > 0)) {
                         if ($usrtestdata['user_score'] >= $usrtestdata['test_score_threshold']) {
                             // $bg = ' style="display:inline-block;background-color:var(--col-9t);color:var(--col-11)"';
@@ -1733,6 +1734,251 @@ function F_updateQuestionLog($test_id, $testlog_id, $answpos = array(), $answer_
         $sqlu .= ' testlog_user_ip=\''.getNormalizedIP($_SERVER['REMOTE_ADDR']).'\'';
         $sqlu .= ' WHERE testlog_id='.$testlog_id.'';
 		// echo $sqlu;
+        if (!$ru = F_db_query($sqlu, $db)) {
+            F_display_db_error();
+            return false;
+        }
+    }
+    return true;
+}
+
+// Function to update question log when answer key changed
+function F_updateQuestionLogRegrade($test_id, $testlog_id, $answpos = array(), $answer_text = '', $reaction_time = 0)
+{
+//print_r($answpos);
+//echo $test_id."<br/>".$testlog_id."<br/>".$answpos."<br/>".$answer_tex."<br/>".$reaction_time."<br/>".$ragu;
+//	die();
+
+    require_once('../config/tce_config.php');
+    global $db, $l;
+    $question_id = 0; // question ID
+    $question_type = 3; // question type
+    $question_difficulty = 1; // question difficulty
+    $oldtext = ''; // old text answer
+    $answer_changed = true; // true when answer change
+    $answer_score = 0; // answer total score
+    $num_answers = 0; // counts alternative answers
+    $test_id = intval($test_id);
+    $testlog_id = intval($testlog_id);
+    $unanswered = true;
+    $answer_id = F_getAnswerIdFromPosition($testlog_id, $answpos);
+    // get test data
+    $testdata = F_getTestData($test_id);
+    // get question information
+    $sql = 'SELECT *
+		FROM '.K_TABLE_TESTS_LOGS.', '.K_TABLE_QUESTIONS.'
+		WHERE testlog_question_id=question_id
+			AND testlog_id='.$testlog_id.'
+		LIMIT 1';
+    if ($r = F_db_query($sql, $db)) {
+        if ($m = F_db_fetch_array($r)) {
+            // get previous answer text
+            $oldtext = $m['testlog_answer_text'];
+            $question_id = $m['question_id'];
+            $question_type = $m['question_type'];
+            $question_difficulty = $m['question_difficulty'];
+	    // $ragu_dbval = $m['ragu'];
+
+	   // if($ragu=='fromdb'){
+	//	$ragu=$m['ragu'];
+	  //  }
+
+	    /* if($ragu_dbval != $ragu){
+		$ragu_change = true;
+	    }else{
+		$ragu_change = false;
+	    } */
+        }
+    } else {
+        F_display_db_error();
+        return false;
+    }
+    // calculate question score
+    $question_right_score = $testdata['test_score_right'] * $question_difficulty;
+    $question_wrong_score = $testdata['test_score_wrong'] * $question_difficulty;
+    $question_unanswered_score = $testdata['test_score_unanswered'] * $question_difficulty;
+//	echo $question_right_score.'-'.$question_wrong_score.'-'.$question_unanswered_score.'<br/>';
+	//die();
+    if ($question_type != 3) {
+        $sql = 'SELECT *
+			FROM '.K_TABLE_LOG_ANSWER.', '.K_TABLE_ANSWERS.'
+			WHERE logansw_answer_id=answer_id
+				AND logansw_testlog_id='.$testlog_id.'
+			ORDER BY logansw_order';
+        if ($r = F_db_query($sql, $db)) {
+            while (($m = F_db_fetch_array($r))) {
+                $num_answers++;
+                // update each answer
+                $sqlu = 'UPDATE '.K_TABLE_LOG_ANSWER.' SET';
+                switch ($question_type) {
+                    case 1: {
+                        // MCSA - Multiple Choice Single Answer
+                        if (empty($answer_id)) {
+                            // unanswered
+                            $answer_score = $question_unanswered_score;
+                            if ($m['logansw_selected'] != -1) {
+                                $answer_changed = true;
+                            }
+                            $sqlu .= ' logansw_selected=-1 ';
+
+                        } elseif (!empty($answer_id[$m['logansw_answer_id']])) {
+                            $unanswered = false;
+                            // selected
+                            if (F_getBoolean($m['answer_isright'])) {
+                                $answer_score = $question_right_score;
+//				echo $m['answer_explanation'];
+                            } else {
+                                $answer_score = $question_wrong_score;
+//				echo $m['answer_explanation'];
+                            }
+                            if ($m['logansw_selected'] != 1) {
+                                $answer_changed = true;
+                            }
+                            $sqlu .= ' logansw_selected=1 ';
+
+                        } else {
+                            $unanswered = false;
+                            // unselected
+                            if ($m['logansw_selected'] == 1) {
+                                $answer_changed = true;
+                            }
+                            $sqlu .= ' logansw_selected=0 ';
+
+                        }
+                        break;
+                    }
+                    case 2: {
+                        // MCMA - Multiple Choice Multiple Answer
+                        if (isset($answer_id[$m['logansw_answer_id']])) {
+                            // radiobutton or selected checkbox
+                            $answer_id[$m['logansw_answer_id']] = intval($answer_id[$m['logansw_answer_id']]);
+                            if ($answer_id[$m['logansw_answer_id']] == -1) {
+                                // unanswered
+                                $answer_score += $question_unanswered_score;
+                            } elseif (F_getBoolean($m['answer_isright']) and ($answer_id[$m['logansw_answer_id']] == 1)) {
+                                // right (selected)
+                                $unanswered = false;
+                                $answer_score += $question_right_score;
+                            } elseif (!F_getBoolean($m['answer_isright']) and ($answer_id[$m['logansw_answer_id']] == 0)) {
+                                // right (unselected)
+                                $unanswered = false;
+                                $answer_score += $question_right_score;
+                            } else {
+                                // wrong
+                                $unanswered = false;
+                                $answer_score += $question_wrong_score;
+                            }
+                            if ($m['logansw_selected'] != $answer_id[$m['logansw_answer_id']]) {
+                                $answer_changed = true;
+                            }
+                            $sqlu .= ' logansw_selected='.$answer_id[$m['logansw_answer_id']].'';
+                        } else {
+                            // unselected checkbox
+                            $unanswered = false;
+                            if (F_getBoolean($m['answer_isright'])) {
+                                $answer_score += $question_wrong_score;
+                            } else {
+                                $answer_score += $question_right_score;
+                            }
+                            if ($m['logansw_selected'] != 0) {
+                                $answer_changed = true;
+                            }
+                            $sqlu .= ' logansw_selected=0';
+                        }
+                        break;
+                    }
+                    case 4: {
+                        // ORDER
+                        if (!empty($answer_id[$m['logansw_answer_id']])) {
+                            // selected
+                            $unanswered = false;
+                            $answer_id[$m['logansw_answer_id']] = intval($answer_id[$m['logansw_answer_id']]);
+                            if ($answer_id[$m['logansw_answer_id']] == $m['answer_position']) {
+                                $answer_score += $question_right_score;
+                            } else {
+                                $answer_score += $question_wrong_score;
+                            }
+                            if ($answer_id[$m['logansw_answer_id']] != $m['logansw_position']) {
+                                $answer_changed = true;
+                            }
+                            $sqlu .= ' logansw_position='.$answer_id[$m['logansw_answer_id']].', logansw_selected=1';
+                        } else {
+                            // unanswered
+                            $answer_score += $question_unanswered_score;
+                            if ($m['logansw_position'] > 0) {
+                                $answer_changed = true;
+                            }
+                            $sqlu .= ' logansw_selected=-1, logansw_position=0';
+                        }
+                        break;
+                    }
+                } // end of switch
+                $sqlu .= ' WHERE logansw_testlog_id='.$testlog_id.' AND logansw_answer_id='.$m['logansw_answer_id'].'';
+                if (!$ru = F_db_query($sqlu, $db)) {
+                    F_display_db_error();
+                    return false;
+                }
+            }
+            if ($question_type > 1) {
+                // normalize score
+                if (F_getBoolean($testdata['test_mcma_partial_score'])) {
+                    // use partial scoring for MCMA and ORDER questions
+                    $answer_score = round(($answer_score / $num_answers), 3);
+                } else {
+                    // all-or-nothing points
+                    if ($answer_score >= ($question_right_score * $num_answers)) {
+                        // right
+                        $answer_score = $question_right_score;
+                    } elseif ($answer_score == ($question_unanswered_score * $num_answers)) {
+                        // unanswered
+                        $answer_score = $question_unanswered_score;
+                    } else {
+                        // wrong
+                        $answer_score = $question_wrong_score;
+                    }
+                }
+            }
+        } else {
+            F_display_db_error();
+            return false;
+        }
+    }
+    // update log if answer is changed
+    if ($answer_changed or ($oldtext != $answer_text)) {
+        if (strlen($answer_text) > 0) {
+            $unanswered = false;
+            $answer_score = 'NULL';
+            // check exact answers score
+            $sql = 'SELECT *
+				FROM '.K_TABLE_ANSWERS.'
+				WHERE answer_question_id='.$question_id.'
+					AND answer_enabled=\'1\'
+					AND answer_isright=\'1\'';
+            if ($r = F_db_query($sql, $db)) {
+                while ($m = F_db_fetch_array($r)) {
+                    if ((K_SHORT_ANSWERS_BINARY and (strcmp(trim($answer_text), $m['answer_description']) == 0))
+                        or (!K_SHORT_ANSWERS_BINARY and (strcasecmp(trim($answer_text), $m['answer_description']) == 0))) {
+                        $answer_score += $question_right_score;
+                        break;
+                    }
+                }
+            } else {
+                F_display_db_error();
+                return false;
+            }
+        }
+        if ($unanswered) {
+            $change_time = '';
+        } else {
+            $change_time = date(K_TIMESTAMP_FORMAT);
+        }
+        $sqlu = 'UPDATE '.K_TABLE_TESTS_LOGS.' SET';
+        $sqlu .= ' testlog_answer_text='.htmlentities(F_empty_to_null($answer_text)).',';
+        $sqlu .= ' testlog_score='.$answer_score.',';
+        $sqlu .= ' testlog_change_time='.F_empty_to_null($change_time).',';
+        $sqlu .= ' testlog_reaction_time='.intval($reaction_time).',';
+        $sqlu .= ' testlog_user_ip=\''.getNormalizedIP($_SERVER['REMOTE_ADDR']).'\'';
+        $sqlu .= ' WHERE testlog_id='.$testlog_id.'';
         if (!$ru = F_db_query($sqlu, $db)) {
             F_display_db_error();
             return false;

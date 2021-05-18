@@ -3,7 +3,7 @@
 // File name   : tmf_skl.php
 // File path   : public/code/tmf_skl.php
 // Begin       : 2021-04-27
-// Last Update : 2021-04-29
+// Last Update : 2021-05-04
 //
 // Description : display SKL
 //
@@ -27,10 +27,10 @@ if($currentMonth >=7){$tahun_pelajaran=date('Y').'/'.(date('Y')+1);}else{$tahun_
 
 //tanggal mulai dibukanya SKL
 //format pengisian : yyyy-mm-dd jj-mm-dd, contoh: agar halaman SKL bisa dibuka pada tanggal 31 Desember 2021 Pukul 15:00:00, maka isikan: 2021-12-31 15:00:00
-$data_date_skl= '2021-04-27 22:14:00'; 
+$data_date_skl= '2021-05-03 15:00:00'; 
 
 // apabila SKL telah selesai di setting dan siap dipublikasikan, silakan ganti false menjadi true
-$siap_publikasi = false;
+$siap_publikasi = true;
 
 $jenis_kurikulum = 'Kurikulum 2013 Revisi';
 
@@ -62,13 +62,13 @@ $docname = 'SURAT KETERANGAN LULUS';
 $docnumber = 'Nomor: 030/Sk.02/XZSCH/V/2021';
 
 // ucapan
-$text_syukur_lulus = 'Alhamdulillah';
-$text_syukur_lulusbs = 'Alhamdulillah';
-$text_syukur_gagal = 'Astaghfirullah';
+$text_syukur_lulus = 'Selamat';
+$text_syukur_lulusbs = 'Selamat';
+$text_syukur_gagal = 'Maaf';
 
 // text tampilan
-$text_siap = 'Apabila Anda sudah siap untuk melihat pengumuman kelulusan, berdoalah dan tekan tombol BISMILLAH di bawah ini.';
-$text_tombol_siap = 'BISMILLAH';
+$text_siap = 'Apabila Anda sudah siap untuk melihat pengumuman kelulusan, berdoalah dan tekan tombol SIAP di bawah ini.';
+$text_tombol_siap = 'SIAP';
 $text_tunggu = 'harap menunggu';
 
 // text keputusan
@@ -164,12 +164,10 @@ $nama_mapel = array(
 									  'c. Mulok 3',
 	'Muatan Peminatan Kejuruan#Simkomdig',
 							  'Fisika',
-							  'Biologi',
+							  'IPA',
 							  'Kimia',
 							  'Dasar Program Keahlian',
 							  'Kompetensi Keahlian',
-	'Mapel 16',
-	'Mapel 17',
 	'Mapel 18',
 	'Mapel 19',
 	'Mapel 20',
@@ -180,7 +178,9 @@ $nama_mapel = array(
 	'Mapel 25',
 	'Mapel 26',
 	'Mapel 27',
-	'Mapel 28'
+	'Mapel 28',
+	'Mapel 29',
+	'Mapel 30'
 );
 
 // ukuran gambar / logo pada kop SKL
@@ -946,7 +946,7 @@ require_once('../code/tce_page_footer.php');
 		},3000);
 	}
 	function printSKL(){
-		document.getElementById("skl").setAttribute("style","line-height: 1.1;background: rgb(255, 255, 255);width: 669px;height: auto;margin: 0px auto;");
+		document.getElementById("skl").setAttribute("style","line-height: <?php echo $ukuran_spasi_baris; ?>;background: rgb(255, 255, 255);width: 669px;height: auto;margin: 0px auto;");
 		window.print();
 	}
 	document.getElementById("unduh_skl").addEventListener("click", unduhPDF);

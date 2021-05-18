@@ -261,7 +261,7 @@ function F_show_select_user($order_field, $orderdir, $firstrow, $rowsperpage, $g
             echo '<a href="tce_xml_users.php?format=JSON" class="xmlbutton" title="JSON">Export ke JSON</a> ';
             echo '<a href="tce_tsv_users.php" class="xmlbutton" title="'.$l['h_tsv_export'].'">Export ke TSV</a>';
             echo '<a href="tmf_xlsx_users.php" class="xmlbutton" title="Excel">Export ke XLSX</a>';
-            echo '<a href="'.K_PATH_URL_CACHE.'tcexam_users_template_awal.xlsx" class="xmlbutton" title="Excel">Template XLSX</a>';
+            echo '<a href="../../template/tcexam_users_template_awal.xlsx" class="xmlbutton bg-green" title="Excel">Template XLSX</a>';
             echo '</div>'.K_NEWLINE;
 
             echo '<div class="pagehelp">'.$l['hp_select_users'].'</div>'.K_NEWLINE;
