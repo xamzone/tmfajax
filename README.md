@@ -33,28 +33,8 @@ Daftar Ujian
 - Export dan Import user melalui format file Excel
 - Terdapat fitur pengumuman Surat Keterangan Lulus Online, namun dengan teknik yang masih sederhana.
 
-## CARA INSTALASI PADA KOMPUTER LOKAL (LOCALHOST - XAMPP)
-Asumsikan user database pada XAMPP adalah root dan TANPA password.
-1. Unduh repository TMFAJAX yang berada di github ini sebagai zip, link langsung unduh ada di https://github.com/xamzone/tmfajax/archive/refs/heads/main.zip  
-2. Extract dan letakkan folder hasil extract (tmfajax-main) ke htdocs pada XAMPP
-3. Buka web browser, ketikkan http://localhost/tmfajax-main/install/install.php
-4. Sesuai asumsi di atas, pastikan Db User adalah root
-5. Sesuai asumsi di atas, pastikan Db Password dibiarkan kosong
-6. Pada bagian DB Name, ketikkan nama database yang akan dipakai oleh TMFAJAX, apabila database belum dibuat maka otomatis akan dibuat oleh installer apabila bagian Create New Database DICENTANG.
-7. Apabila kita melakukan instalasi baru, Drop Existing Database biarkan dalam kondisi tercentang. Apabila database sudah ada sebelumnya dan sudah ada data penting, sebaiknya JANGAN DICENTANG
-8. Opsi Create New Database? bisa dicentang apabila kita ingin installer otomatis membuatkan database.   
-9. Klik tombol INSTALL
-10. Tunggu proses install
-11. Apabila terdapat FATAL ERROR: Maximum execution time of 30 seconds exceeced in bla bla bla ...., silakan setting php.ini pada XAMPP, cari bagian max_execution_time=30, ganti 30 menjadi 120 atau yang lebih tinggi. Simpan file php.ini. Hentikan Apache melalui tombol Stop, kemudian tekan lagi tombol Start pada Apache. 
-12. Apabila terdapat 3 (tiga) WARNING, biarkan saja
-13. Klik link click here di bawah untuk memulai login ke sistem
-14. Gunakan akun default dengan username: admin password: 1234
-15. Setelah berhasil login, klik MENU UTAMA, dan klik link Admin untuk mulai mengelola CBT TMFAJAX
-16. Apabila terdapat Notice: unserialize(): Error at offset bla bla bla, Notice: Undefined variable: tmx in bla bla bla, Notice: date_default_timezone_set(): bla bla bla... cara perbaikannya adalah :
-17. Unduh file tmf_general_settings.json di link ini https://drive.google.com/file/d/1K7i1EoLXWFOMkodDsspNbBR9LkdCKbBf/view?usp=sharing
-18. Letakkan / timpakan ke dalam folder shared/config/
-19. Masuk ke Admin, masuk ke General Setting, lalu klik tombol UPDATE berwarna abu-abu gelap
-20. Anda diperbolehkan untuk mengubah nilai yang ada di General Setting sesuai kebutuhan masing-masing, termasuk Site Author, Deskripsi aplikasi dan lain-lain.
+## CARA INSTALASI
+Panduan instalasi dan tutorial lainnya silakan bisa dipelajari di https://tkj.yayasan-gondang.com/2021/05/panduan-penggunaan-aplikasi-cbt-tcexam.html
 
 ## Kebutuhan Sistem
 1. Web server (Apache/nginx/OLS, dan lainnya)
