@@ -20,12 +20,15 @@ Daftar Ujian
 - Uraian panjang dengan kemampuan tambahan upload jawaban dari gambar / foto
 
 ## Fitur improvement dari TCExam
+- Input Soal lebih mudah, melalui Template MS Excel
+- Disediakan layanan online utk input soal melalui Template MS Word.
+- Fitur Mode Darurat (Lembar Halaman Offline), yang memungkinkan proses ujian tanpa kuota utama dan tanpa server.
 - Editing soal menggunakan antar muka HTML Editor, support konversi otomatis equation dari MS Word
-- Generate Test Data untuk loading soal lebih cepat
+- Generate Test Data agar loading soal lebih cepat dengan user lebih banyak dalam satu waktu
 - Mengijinkan editing soal/jawaban/setting ujian meskipun Test sedang berjalan
 - Laporan rekap kehadiran Test
-- Upload gambar utk jenis soal Uraian
-- Export hasil Test format EXCEL
+- Peserta ujian dapat meng-upload jawaban dalam bentuk gambar pada jenis soal Uraian
+- Export hasil Test ke format EXCEL
 - Halaman General Setting untuk mengatur beberapa bagian CBT dengan lebih mudah
 - Opsi penjodohan bisa berupa angka maupun Teks, labelnya bisa berupa angka, teks, gambar atau media lain seperti video
 - Jumlah pengulangan ujian dapat diset sesuai keinginan, tidak lagi unlimited, namun opsi unlimited masih tersedia.
