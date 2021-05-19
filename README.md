@@ -37,7 +37,7 @@ Daftar Ujian
 - Terdapat fitur pengumuman Surat Keterangan Lulus Online, namun dengan teknik yang masih sederhana.
 
 ## CARA INSTALASI
-Panduan instalasi dan tutorial lainnya silakan bisa dipelajari di https://tkj.yayasan-gondang.com/2021/05/panduan-penggunaan-aplikasi-cbt-tcexam.html
+Panduan instalasi dan tutorial lainnya silakan bisa dipelajari di https://bit.ly/3f0Oq5D
 
 ## Kebutuhan Sistem
 1. Web server (Apache/nginx/OLS, dan lainnya)
