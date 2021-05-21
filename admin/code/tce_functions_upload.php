@@ -84,6 +84,22 @@ function F_upload_file($fieldname, $uploaddir)
     return false;
 }
 
+function F_upload_mediafile($fieldname, $uploaddir)
+{
+    global $l;
+    require_once('../config/tce_config.php');
+    // sanitize file name
+    $filename = $_FILES[$fieldname]['name'];
+    // $filename = preg_replace('/[^a-zA-Z0-9_\.\-]/', '', $filename);
+    $filepath = $uploaddir.$filename;
+    if (F_is_allowed_upload($filename) and move_uploaded_file($_FILES[$fieldname]['tmp_name'], $filepath)) {
+        F_print_error('MESSAGE', htmlspecialchars($filename).': '.$l['m_upload_yes']);
+        return $filename;
+    }
+    F_print_error('ERROR', htmlspecialchars($filename).': '.$l['m_upload_not'].'');
+    return false;
+}
+
 function F_upload_file_custom($fieldname, $uploaddir, $extension)
 {
     global $l;

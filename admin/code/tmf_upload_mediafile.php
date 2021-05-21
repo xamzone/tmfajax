@@ -35,7 +35,7 @@ if (!empty($_FILES)) {
     if (!F_isAuthorizedDir($usr_dir, $root_dir, $authdirs)) {
         $dir = $usr_dir;
     }
-    $file = F_upload_file('file', $usr_dir);
+    $file = F_upload_mediafile('file', $usr_dir);
     if (!empty($file)) {
         $file = $usr_dir.$file;
     }
