@@ -50,7 +50,7 @@ Panduan instalasi dan tutorial lainnya silakan bisa dipelajari di https://bit.ly
 3. Email: mamansulaeman86@gmail.com
 
 ## Community / Telegram Group
-1. [TCExam Mobile Friendly (Indonesian Language)](https://t.me/tcexam_mobile)
+1. [TCExam Mobile Friendly (Indonesian Language)](https://t.me/tmfcbtakm)
 
 # TCExam - README
 
