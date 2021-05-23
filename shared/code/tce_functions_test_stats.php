@@ -867,8 +867,17 @@ function F_printTestResultStat($data, $nextorderdir, $order_field, $filter, $pub
 				$grpname_a .= $value.'_';
 			}
 			$grpname_a = rtrim($grpname_a,'_');
+			
+			$grpid = F_get_user_groups($tu['user_id']);
+			$grpid_a = '';
+			foreach($grpid as $grpid_v){
+				$grpid_a .= $grpid_v;
+			}
+			// echo $grpid_a;
+			
+			
 			if(file_exists('../../admin/code/tmf_show_offline_sheet.php')){
-				$ret .= '<td align="center"><a href="tmf_show_offline_sheet.php?testuser_id='.$tu['id'].'&amp;test_id='.$tu['test']['test_id'].'&amp;user_id='.$tu['user_id'].'&amp;username='.$tu['user_name'].'&amp;testname='.$tu['test']['test_name'].'&amp;groupname='.$grpname_a.'" title="Download offline sheet"><i class="fas fa-download"></i></a></td>'.K_NEWLINE;
+				$ret .= '<td align="center"><a href="tmf_show_offline_sheet.php?testuser_id='.$tu['id'].'&amp;test_id='.$tu['test']['test_id'].'&amp;user_id='.$tu['user_id'].'&amp;username='.$tu['user_name'].'&amp;firstname='.$tu['user_firstname'].'&amp;testname='.$tu['test']['test_name'].'&amp;groupname='.$grpname_a.'&amp;groupid='.$grpid_a.'" title="Download offline sheet"><i class="fas fa-download"></i></a></td>'.K_NEWLINE;
 			}else{
 				$ret .= '<td align="center"><a onclick="alert(\'File untuk keperluan ini harus request secara pribadi ke Maman Sulaeman\')" href="#" title="Download offline sheet"><i class="fas fa-download"></i></a></td>';
 			}
