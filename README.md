@@ -8,7 +8,7 @@ Halaman Login
 
 <img src="https://1.bp.blogspot.com/-3a273pl2fYY/YGwaHMtlOEI/AAAAAAAATfc/ziojUbNS4XI8YvIjFkuPQLZoU8uRJbNrACLcBGAsYHQ/s1862/Screenshot_2021-04-06-15-18-21-007_com.android.chrome.png" width="200px"/>
 
-Daftar Ujian / tes
+Daftar Ujian
 
 <img src="https://1.bp.blogspot.com/-xS6uPb0zYQI/YGwbjk6RaKI/AAAAAAAATfo/oNzqY_NPMjUlr3uAvdc0xQPbiv9dTRxcACLcBGAsYHQ/s1857/Screenshot_2021-04-06-15-26-38-765_com.android.chrome.png" width="200px"/>
 
@@ -37,7 +37,7 @@ Daftar Ujian / tes
 - Terdapat fitur pengumuman Surat Keterangan Lulus Online, namun dengan teknik yang masih sederhana.
 - Lebih gesit dan ringan, sudah dipakai pada shared hosting mampu 300an user serentak.
 
-## CARA INSTALASI
+## Panduan
 Panduan instalasi dan tutorial lainnya silakan bisa dipelajari di https://bit.ly/3f0Oq5D
 
 ## Kebutuhan Sistem
@@ -46,6 +46,7 @@ Panduan instalasi dan tutorial lainnya silakan bisa dipelajari di https://bit.ly
 3. Database MySQL/MariaDB/Postgre/Oracle
 
 ## Contact
+Apabila berminat ingin bergabung dalam tim pengembangan, silakan japri Author melalui saluran di bawah ini
 1. Blog: [mamans86.blogspot.com](https://mamans86.blogspot.com)
 2. Telegram: [@mamans86](https://t.me/mamans86)
 3. Email: mamansulaeman86@gmail.com
