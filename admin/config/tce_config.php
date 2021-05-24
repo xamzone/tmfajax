@@ -207,12 +207,12 @@ $genset = unserialize(file_get_contents('../../shared/config/tmf_general_setting
 /**
  * Default site author.
  */
-define('K_SITE_AUTHOR', $genset['siteAuthor']);
+define('K_SITE_AUTHOR', urldecode($genset['siteAuthor']));
 
 /**
  * Default html reply-to meta tag.
  */
-define('K_SITE_REPLY', $genset['siteReplyTo']); //
+define('K_SITE_REPLY', urldecode($genset['siteReplyTo'])); //
 
 //============================================================+
 // END OF FILE

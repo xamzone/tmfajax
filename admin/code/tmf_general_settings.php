@@ -134,25 +134,25 @@ if (!isset($_POST['enable_langsel']) or (empty($_POST['enable_langsel']))) {
 
 if(isset($_POST['update'])){
 	$arr = array();
-	$arr['siteName'] = strip_tags($_POST['siteName']);
-	$arr['siteDesc'] = strip_tags($_POST['siteDesc']);
-	$arr['siteAuthor'] = strip_tags($_POST['siteAuthor']);
-	$arr['siteReplyTo'] = strip_tags($_POST['siteReplyTo']);
-	$arr['siteKeyword'] = strip_tags($_POST['siteKeyword']);
+	$arr['siteName'] = urlencode(stripcslashes(strip_tags($_POST['siteName'])));
+	$arr['siteDesc'] = urlencode(stripcslashes(strip_tags($_POST['siteDesc'])));
+	$arr['siteAuthor'] = urlencode(stripcslashes(strip_tags($_POST['siteAuthor'])));
+	$arr['siteReplyTo'] = urlencode(stripcslashes(strip_tags($_POST['siteReplyTo'])));
+	$arr['siteKeyword'] = urlencode(stripcslashes(strip_tags($_POST['siteKeyword'])));
 	$arr['defLang'] = strip_tags($_POST['defLang']);
-	$arr['logoutURL'] = strip_tags($_POST['logoutURL']);
-	$arr['jsWarn'] = $_POST['jsWarn'];
-	$arr['clientDisMsg'] = $_POST['clientDisMsg'];
+	$arr['logoutURL'] = urlencode(strip_tags($_POST['logoutURL']));
+	$arr['jsWarn'] = urlencode(stripcslashes($_POST['jsWarn']));
+	$arr['clientDisMsg'] = urlencode(stripcslashes($_POST['clientDisMsg']));
 	$arr['timezone'] = strip_tags($_POST['timezone']);
 	$arr['clientUA'] = strip_tags($_POST['clientUA']);
 	$arr['clientVer'] = strip_tags($_POST['clientVer']);
-	$arr['appName'] = strip_tags($_POST['appName']);
-	$arr['appShortName'] = strip_tags($_POST['appShortName']);
-	$arr['institutionName'] = strip_tags($_POST['institutionName']);
+	$arr['appName'] = stripcslashes(strip_tags($_POST['appName']));
+	$arr['appShortName'] = stripcslashes(strip_tags($_POST['appShortName']));
+	$arr['institutionName'] = stripcslashes(strip_tags($_POST['institutionName']));
 	$arr['endtest_page'] = strip_tags($_POST['endtest_page']);
-	$arr['addrLine1'] = strip_tags($_POST['addrLine1']);
-	$arr['addrLine2'] = strip_tags($_POST['addrLine2']);
-	$arr['addrLine3'] = strip_tags($_POST['addrLine3']);
+	$arr['addrLine1'] = stripcslashes(strip_tags($_POST['addrLine1']));
+	$arr['addrLine2'] = stripcslashes(strip_tags($_POST['addrLine2']));
+	$arr['addrLine3'] = stripcslashes(strip_tags($_POST['addrLine3']));
 	// $arr['institutionLogo'] = strip_tags($_POST['institutionLogo']);
 	$arr['answer_all_questions'] = $answer_all_questions;
 	$arr['show_terminate_when_all_answered'] = $show_terminate_when_all_answered;
@@ -179,7 +179,9 @@ if(isset($_POST['update'])){
 	$arr['loginBgSize'] = strip_tags($_POST['loginBgSize']);
 	$arr['loginBgBlend'] = strip_tags($_POST['loginBgBlend']);
 
-	$fp = fopen(K_PATH_MAIN.'shared/config/tmf_general_settings.json', 'w');
+	$gsfile = K_PATH_MAIN.'shared/config/tmf_general_settings.json';
+	chmod($gsfile, 0777);
+	$fp = fopen($gsfile, 'w');
 	fwrite($fp, serialize($arr));
 	// fwrite($fp, json_encode($qblock_arr));
 	fclose($fp);
@@ -187,8 +189,8 @@ if(isset($_POST['update'])){
 	$manifest_arr = array(
 		"background_color"=>"white",
 		"description"=>strip_tags($_POST['appName']),
-		"name"=>strip_tags($_POST['appName']." - ".$_POST['institutionName']),
-		"short_name"=>strip_tags($_POST['appShortName']." ".$_POST['institutionName']),
+		"name"=>stripcslashes(strip_tags($_POST['appName']." - ".$_POST['institutionName'])),
+		"short_name"=>stripcslashes(strip_tags($_POST['appShortName']." ".$_POST['institutionName'])),
 		"display"=>"standalone",
 		"icons" => [
 			array(
@@ -233,6 +235,7 @@ if(isset($_POST['update'])){
 	$fpm = fopen(K_PATH_MAIN.'a2hs/site.webmanifest', 'w');
 	fwrite($fpm, stripcslashes(json_encode($manifest_arr)));
 	fclose($fpm);
+	chmod($gsfile, 0444);
 }
 
 if(isset($_POST['update-greeting'])){
@@ -241,10 +244,14 @@ if(isset($_POST['update-greeting'])){
 	$arr['greetLine1'] = strip_tags($_POST['greetLine1']);
 	$arr['greetLine2'] = strip_tags($_POST['greetLine2']);
 	
-	$fp = fopen(K_PATH_MAIN.'public/config/tmf_greetings.json', 'w');
+	$grfile = K_PATH_MAIN.'public/config/tmf_greetings.json';
+	chmod($grfile, 0777);
+	
+	$fp = fopen($grfile, 'w');
 	fwrite($fp, serialize($arr));
 	// fwrite($fp, json_encode($qblock_arr));
 	fclose($fp);
+	chmod($grfile, 0444);
 }
 
 if(isset($_POST['update-addinfologin'])){
@@ -252,10 +259,14 @@ if(isset($_POST['update-addinfologin'])){
 	$arr['ail_beforefield'] = strip_tags($_POST['ail_beforefield']);
 	$arr['ail_afterfield'] = strip_tags($_POST['ail_afterfield']);
 	
-	$fp = fopen(K_PATH_MAIN.'public/config/tmf_additional_info_login.json', 'w');
+	$ailfile = K_PATH_MAIN.'public/config/tmf_additional_info_login.json';
+	chmod($ailfile, 0777);
+	
+	$fp = fopen($ailfile, 'w');
 	fwrite($fp, serialize($arr));
 	// fwrite($fp, json_encode($qblock_arr));
 	fclose($fp);
+	chmod($ailfile, 0444);
 }
 
 if(isset($_POST['update-timerwarning'])){
@@ -273,10 +284,15 @@ if(isset($_POST['update-timerwarning'])){
 	$arr['lastsec_bg'] = strip_tags($_POST['lastsec_bg']);
 	$arr['lastsec_col'] = strip_tags($_POST['lastsec_col']);
 	
-	$fp = fopen(K_PATH_MAIN.'public/config/tmf_timer_warning.json', 'w');
+	$twfile = K_PATH_MAIN.'public/config/tmf_timer_warning.json';
+	chmod($twfile, 0777);
+	
+	$fp = fopen($twfile, 'w');
 	fwrite($fp, serialize($arr));
 	// fwrite($fp, json_encode($qblock_arr));
 	fclose($fp);
+	
+	chmod($twfile, 0444);
 }
 
 $json = unserialize(file_get_contents(K_PATH_MAIN.'shared/config/tmf_general_settings.json'));
@@ -293,18 +309,18 @@ echo '<fieldset>';
 echo '<legend>Site Settings</legend>';
 echo getFormRowTextInput('appName', 'Application Description', 'Application Description', '', $json['appName'], '', 255, false, false, false);
 echo getFormRowTextInput('appShortName', 'Application Short Description', 'Application Short Description', '', $json['appShortName'], '', 255, false, false, false);
-echo getFormRowTextInput('siteName', 'Site Name', 'Site Name', '', $json['siteName'], '', 255, false, false, false);
-echo getFormRowTextInput('siteDesc', 'Site Description', 'Site Description', '', $json['siteDesc'], '', 255, false, false, false);
-echo getFormRowTextInput('siteAuthor', 'Site Author', 'Site Author', '', $json['siteAuthor'], '', 255, false, false, false);
-echo getFormRowTextInput('siteReplyTo', 'Site Reply-to', 'Site Reply-to', '', $json['siteReplyTo'], '', 255, false, false, false);
-echo getFormRowTextInput('siteKeyword', 'Site Keyword', 'Site Keyword', '', $json['siteKeyword'], '', 255, false, false, false);
+echo getFormRowTextInput('siteName', 'Site Name', 'Site Name', '', urldecode(stripcslashes($json['siteName'])), '', 255, false, false, false);
+echo getFormRowTextInput('siteDesc', 'Site Description', 'Site Description', '', urldecode(stripcslashes($json['siteDesc'])), '', 255, false, false, false);
+echo getFormRowTextInput('siteAuthor', 'Site Author', 'Site Author', '', urldecode(stripcslashes($json['siteAuthor'])), '', 255, false, false, false);
+echo getFormRowTextInput('siteReplyTo', 'Site Reply-to', 'Site Reply-to', '', urldecode(stripcslashes($json['siteReplyTo'])), '', 255, false, false, false);
+echo getFormRowTextInput('siteKeyword', 'Site Keyword', 'Site Keyword', '', urldecode(stripcslashes($json['siteKeyword'])), '', 255, false, false, false);
 echo getFormRowTextInput('timezone', 'Timezone Setting', 'Timezone Setting', 'Set your own timezone here.<br/>Possible values are listed on:<br/><a href="http://php.net/manual/en/timezones.php">http://php.net/manual/en/timezones.php</a>', $json['timezone'], '', 255, false, false, false);
 echo getFormRowTextInput('defLang', 'Default Language', 'Default Language', '2-letters code for default language.<br/><i>example:</i> ar, az, bg, br, cn, de, el, en, es, fa, fr, he, hi, hu, id, it, jp, mr, ms, nl, pl, ro, ru, tr, ur, vn', $json['defLang'], '', 255, false, false, false);
 echo getFormRowCheckBox('enable_langsel', 'Enable Language Selector', 'If enable, show language selector on top right of the page<br/><i>default value: enable</i>', 'If enable, show language selector on top right of the page<br/><i>default value: enable</i>', 1, $json['enable_langsel'], false, '');
 echo getFormRowCheckBox('pubPageHelp', 'Public Page Help', 'If enable, display page help on the bottom of the page. default value: disable', 'If enable, display page help on the bottom of the page.<br/><i>default value: disable</i>', 1, $json['pubPageHelp'], false, '');
 echo getFormRowCheckBox('forgotPass', 'Show Forgot Password Link', 'If enable, show link to reset user password<br/><i>default value: enable</i>', 'If enable, show link to reset user password<br/><i>default value: enable</i>', 1, $json['forgotPass'], false, '');
 echo getFormRowCheckBox('userReg', 'Enable Self Registration', 'If enable, show self registration link<br/><i>default value: enable</i>', 'If enable, show self registration link<br/><i>default value: enable</i>', 1, $json['userReg'], false, '');
-echo getFormRowTextInput('logoutURL', 'Logout URL', 'Logout URL', 'URL to be redirected at logout.<br/>Can be relative or absolute URL.<br/>example:<br/><a href="#">logout.html</a>, <a href="#">../../logout.html</a>, <a href="https://xamzonelinux.blogspot.com" target="blank">https://xamzonelinux.blogspot.com</a><br/>(leave empty for default).', $json['logoutURL'], '', 255, false, false, false);
+echo getFormRowTextInput('logoutURL', 'Logout URL', 'Logout URL', 'URL to be redirected at logout.<br/>Can be relative or absolute URL.<br/>example:<br/><a href="#">logout.html</a>, <a href="#">../../logout.html</a>, <a href="https://xamzonelinux.blogspot.com" target="blank">https://xamzonelinux.blogspot.com</a><br/>(leave empty for default).', urldecode($json['logoutURL']), '', 255, false, false, false);
 
 echo '<div class="row">'.K_NEWLINE;
 echo '<span class="label">'.K_NEWLINE;
@@ -336,15 +352,15 @@ echo '</select>'.K_NEWLINE;
 echo '<span class="labeldesc">System Default font is less consistent across device, because each user may change default font. For consistent look you can choose non-system default provided here.<br/><br/>If you paste the text from Microsoft Word, it may contain non-websafe font like Symbol or Wingdings. This font may unreadable correctly if the test taker access the test from non-Microsoft platform, like Android. To solve this problem, please provide font Symbol or Wingdings, and put on <b>fonts</b> directory. The Symbol font must be renamed to: <b><u>symbol.ttf</u></b>, and the Wingdings font must be renamed to: <b><u>wingdings.ttf</u></b>.<br/><br/>Sorry, we are not provide this font because of licensing term.</span></span>'.K_NEWLINE;
 echo '</div>'.K_NEWLINE;
 // $field_name, $name, $description = '', $value = '', $disabled = false, $prefix = ''
-echo getFormRowTextBox('jsWarn', 'Javascript Warning if disabled (you can use HTML tag)', 'Javascript Warning', stripcslashes($json['jsWarn']), false, '');
+echo getFormRowTextBox('jsWarn', 'Javascript Warning if disabled (you can use HTML tag)', 'Javascript Warning', urldecode(stripcslashes($json['jsWarn'])), false, '');
 echo getFormRowTextInput('clientUA', 'Client User Agent', 'Client User Agent', 'Leave empty to accept all client user agent', $json['clientUA'], '', 255, false, false, false);
 echo getFormRowTextInput('clientVer', 'Client Min. Ver', 'Client Min. Ver', 'Minimum version of client browser.<br/>eg: if you intended your client access the site from Chrome ver. 61 or higher, please type 60 in this form', $json['clientVer'], '', 255, false, false, false);
-echo getFormRowTextBox('clientDisMsg', 'Message if client blocked (you can use HTML tag)', 'Message if client blocked (you can use HTML tag)', stripcslashes($json['clientDisMsg']), false, '');
+echo getFormRowTextBox('clientDisMsg', 'Message if client blocked (you can use HTML tag)', 'Message if client blocked (you can use HTML tag)', urldecode(stripcslashes($json['clientDisMsg'])), false, '');
 echo '</fieldset>';
 
 echo '<fieldset>';
 echo '<legend class="bg-indigo">Institution Data</legend>';
-echo getFormRowTextInput('institutionName', 'Institution Name', 'Institution Name', '', $json['institutionName'], '', 255, false, false, false);
+echo getFormRowTextInput('institutionName', 'Institution Name', 'Institution Name', '', stripcslashes($json['institutionName']), '', 255, false, false, false);
 echo getFormRowTextInput('addrLine1', 'Address Line 1', 'Address Line 1', '', $json['addrLine1'], '', 255, false, false, false);
 echo getFormRowTextInput('addrLine2', 'Address Line 2', 'Address Line 2', '', $json['addrLine2'], '', 255, false, false, false);
 echo getFormRowTextInput('addrLine3', 'Address Line 3', 'Address Line 3', '', $json['addrLine3'], '', 255, false, false, false);

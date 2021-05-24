@@ -49,12 +49,12 @@ define('K_LANGUAGE', $genset['defLang']);
  */
 define('K_LANGUAGE_SELECTOR', $genset['enable_langsel']);
 
-define('K_APP_DESC',$genset['appName']);
-define('K_INSTITUTION_NAME',$genset['institutionName']);
+define('K_APP_DESC',urldecode($genset['appName']));
+define('K_INSTITUTION_NAME',urldecode($genset['institutionName']));
 define('K_INSTITUTION_LOGO',$genset['logoImg']);
-define('K_ADDRESS_LINE1',$genset['addrLine1']);
-define('K_ADDRESS_LINE2',$genset['addrLine2']);
-define('K_ADDRESS_LINE3',$genset['addrLine3']);
+define('K_ADDRESS_LINE1',urldecode($genset['addrLine1']));
+define('K_ADDRESS_LINE2',urldecode($genset['addrLine2']));
+define('K_ADDRESS_LINE3',urldecode($genset['addrLine3']));
 
 /**
 * If true, force user to mark all question before terminate test
@@ -231,7 +231,7 @@ define('K_PASSWORD_RESET', $genset['forgotPass']);
 /**
  * URL to be redirected at logout (leave empty for default).
  */
-define('K_LOGOUT_URL', $genset['logoutURL']);
+define('K_LOGOUT_URL', urldecode($genset['logoutURL']));
 
 
 // Error settings

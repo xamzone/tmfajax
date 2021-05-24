@@ -44,27 +44,27 @@ require_once('../../shared/config/tce_config.php');
  */
 $genset = unserialize(file_get_contents('../../shared/config/tmf_general_settings.json'));
 
-define('K_SITE_TITLE', $genset['siteName']);
+define('K_SITE_TITLE', urldecode($genset['siteName']));
 
 /**
  * Default site description.
  */
-define('K_SITE_DESCRIPTION', $genset['siteDesc']);
+define('K_SITE_DESCRIPTION', urldecode($genset['siteDesc']));
 
 /**
  * Default site author.
  */
-define('K_SITE_AUTHOR', $genset['siteAuthor']);
+define('K_SITE_AUTHOR', urldecode($genset['siteAuthor']));
 
 /**
  * Default html reply-to meta tag.
  */
-define('K_SITE_REPLY', $genset['siteReplyTo']); //
+define('K_SITE_REPLY', urldecode($genset['siteReplyTo'])); //
 
 /**
  * Default keywords.
  */
-define('K_SITE_KEYWORDS', $genset['siteKeyword']);
+define('K_SITE_KEYWORDS', urldecode($genset['siteKeyword']));
 
 /**
  * Path to default html icon.
@@ -74,7 +74,7 @@ define('K_SITE_ICON', K_PATH_HOST.K_PATH_TCEXAM.'a2hs/favicon.ico');
 /**
  * Path to JS Plugin Script.
  */
-define('K_SITE_PLUGIN_SCRIPT', K_PATH_SHARED_JSCRIPTS.'plugins.ajax-json-cache-api-loadall.min.js?07042021');
+define('K_SITE_PLUGIN_SCRIPT', K_PATH_SHARED_JSCRIPTS.'plugins.ajax-json-cache-api-loadall.js?07042021');
 // define('K_SITE_PLUGIN_SCRIPT', K_PATH_SHARED_JSCRIPTS.'plugins.ajax-json-cache-api-loadall.jsmin.min.js');
 
 /**
@@ -149,7 +149,7 @@ define('K_ENABLE_DELAY', $genset['enable_delay']);
 /**
 * Message warning if Javascript disabled
 */
-define('K_JSWARN', $genset['jsWarn']);
+define('K_JSWARN', urldecode($genset['jsWarn']));
 
 /**
 * Default Font for public area
@@ -169,7 +169,7 @@ define('K_CLIENTVER', $genset['clientVer']);
 /**
 * client blocked message
 */
-define('K_CLIENTBLCKMSG', $genset['clientDisMsg']);
+define('K_CLIENTBLCKMSG', urldecode($genset['clientDisMsg']));
 
 /**
  * Max number of rows to display in tables.
