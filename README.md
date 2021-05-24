@@ -1,4 +1,4 @@
-# TCExam Mobile Friendly (TMF) Project with AJAX Support
+# TMF ( TCExam Mobile Friendly ) CBT For AKM
 
 Aplikasi Ujian (CBT) yang cepat, ringan dan gesit, cocok untuk berbagai mata pelajaran maupun segala jenjang pendidikan atau kebutuhan. Mampu menampung banyak peserta ujian dalam satu waktu bersamaan meskipun dijalankan pada shared hosting. 
 Tipe soal cukup beragam, bisa dikondisikan untuk melatih peserta didik mempersiapkan AKM atau untuk event lainnya.
