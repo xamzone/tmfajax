@@ -35,6 +35,7 @@ Daftar Ujian
 - Theme yang lebih modern dan fresh :)
 - Export dan Import user melalui format file Excel
 - Terdapat fitur pengumuman Surat Keterangan Lulus Online, namun dengan teknik yang masih sederhana.
+- Lebih gesit dan ringan, sudah dipakai pada shared hosting mampu 300an user serentak.
 
 ## CARA INSTALASI
 Panduan instalasi dan tutorial lainnya silakan bisa dipelajari di https://bit.ly/3f0Oq5D
