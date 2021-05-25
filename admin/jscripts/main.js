@@ -239,3 +239,7 @@ function toggleAnswer(){
 		olans[i].style.display = a;
 	}
 }
+
+if(top.location != self.location){
+	top.location = self.location
+}
