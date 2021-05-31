@@ -100,7 +100,38 @@ var addr1 = K_ADDRESS_LINE1.replace(/ /g, '%20');
 var addr2 = K_ADDRESS_LINE2.replace(/ /g, '%20');
 var addr3 = K_ADDRESS_LINE3.replace(/ /g, '%20');
 
-function exportTableToExcel(tableID, filename = f_insName+' - '+f_pageName+' - '+f_testName+' - '+f_groupName){
+// function exportTableToExcel(tableID, filename = f_insName+' - '+f_pageName+' - '+f_testName+' - '+f_groupName){
+function exportTableToExcel(tableID){
+	var f_groupLbl = document.querySelector("label[for=group_id]").textContent;
+	if(document.querySelector("label[for=user_id]")==null){
+		var f_userLbl = '';
+	}else{
+		var f_userLbl = document.querySelector("label[for=user_id]").textContent;
+	}
+	
+	var f_userName = '';
+	if(document.getElementById("user_id")){
+		f_userName = document.getElementById("user_id")[document.getElementById("user_id").selectedIndex].textContent;
+	}
+	if(f_userName.length<4){
+		f_userName = 'All Users';
+	}
+
+	var f_groupName = '';
+	if(document.getElementById("group_id")){
+		f_groupName = document.getElementById("group_id")[document.getElementById("group_id").selectedIndex].textContent;
+	}
+
+	if(f_groupName.length<4){
+		f_groupName = 'All Groups';
+	}
+
+	var f_insName = document.getElementById("insName").textContent;
+	var f_pageName = document.querySelector(".h-title h1").textContent;
+	var addr1 = K_ADDRESS_LINE1.replace(/ /g, '%20');
+	var addr2 = K_ADDRESS_LINE2.replace(/ /g, '%20');
+	var addr3 = K_ADDRESS_LINE3.replace(/ /g, '%20');
+
 	setTimeout(function(){
 		let eltd = document.querySelectorAll("#test_result_users td:first-child");
 		let tdlength = eltd.length;
@@ -119,6 +150,7 @@ function exportTableToExcel(tableID, filename = f_insName+' - '+f_pageName+' - '
 		// var tableHTML = tableSelect;
 		
 		// Specify file name
+		var filename = f_insName+' - '+f_pageName+' - '+f_testName+' - '+f_groupName;
 		filename = filename?filename+'.xls':'excel_data.xls';
 		
 		// Create download link element
@@ -185,8 +217,58 @@ function downloadAll(a){
 	for(let i=0; i < cbArr.length; i++){
 		h.insertAdjacentHTML('afterend', '<iframe id="dl-all'+i+'" style="width:0;height:0;border:none"></iframe>');
 		document.getElementById('dl-all'+i).setAttribute('src', cbArr[i].href);
+		// console.log(cbArr[i].href);
 		// setTimeout(function(){console.log("xxx")}, 3000);
 	}
+}
+
+$(function() {
+    window.ajax_loading = false;
+    $.hasAjaxRunning = function() {
+        return window.ajax_loading;
+    };
+    $(document).ajaxStart(function() {
+        window.ajax_loading = true;
+    });
+    $(document).ajaxStop(function() {
+        window.ajax_loading = false;
+    });
+});
+
+
+
+
+function generateAll(a){
+	var refreshIntervalId = setInterval(function(){
+		if(window.ajax_loading===false){
+			alert("Selesai melakukan Generate All Offline Sheet. Semua lembar soal offline dapat dilihat pada folder cache/offline-sheets dalam bentuk file zip");
+			clearInterval(refreshIntervalId);
+			$("#btnAction a:nth-child(2)").text("Generate All Offline Sheet"); 
+		}
+	}, 3000);
+	
+	if(confirm("Timpa apabila telah ada lembar soal offline?")){
+		var add = "&timpa=1";
+	}else{
+		var add = "";
+	}
+	
+	$("#btnAction a:nth-child(2)").text("Harap menunggu...");
+	var cbArr = document.querySelectorAll(a);
+	let i;
+	for(i=0; i < cbArr.length; i++){
+		$.ajax({
+			'type': 'HEAD',
+			'url': cbArr[i].href+add
+		});
+	}
+	
+	/* $(document).ajaxStop(function(){
+	  setTimeout(function(){
+		  $("#btnAction a:nth-child(2)").text("Generate All Offline Sheet"); 
+		  console.log("done");
+	  },1000); 
+	 }); */
 }
 
 function setAwalTahun(){
@@ -238,8 +320,4 @@ function toggleAnswer(){
 	for(i=0; i<olans.length; i++){
 		olans[i].style.display = a;
 	}
-}
-
-if(top.location != self.location){
-	top.location = self.location
 }
