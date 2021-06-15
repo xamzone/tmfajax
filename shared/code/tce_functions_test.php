@@ -50,6 +50,29 @@ function F_getUserTests()
     require_once('../../shared/code/tce_functions_test_stats.php');
     global $db, $l;
     $user_id = intval($_SESSION['session_user_id']);
+	
+	$grpname = array();
+	// foreach(F_get_user_groups($tu['user_id']) as $key => $value){
+		// $ret .= $value;
+		$sqlg = 'SELECT DISTINCT *
+			FROM '.K_TABLE_GROUPS.', '.K_TABLE_USERGROUP.'
+			WHERE usrgrp_group_id=group_id
+				AND usrgrp_user_id='.$user_id;
+		if ($rg = F_db_query($sqlg, $db)) {
+			while ($mg = F_db_fetch_array($rg)) {
+				$grpname[] = $mg['group_name'];
+				//$ret .= '<span class="bg-indigo brad-3 txt-white p-5 d-iblock m-5">'.$mg['group_name'].'</span>&nbsp;';
+			}
+		} else {
+			F_display_db_error();
+		}
+	// }
+	$grpname_a = '';
+	foreach($grpname as $value){
+		$grpname_a .= $value.'_';
+	}
+	$grpname_a = rtrim($grpname_a,'_');
+	
     $str = ''; // temp string
     // get current date-time
     $current_time = date(K_TIMESTAMP_FORMAT);
@@ -215,7 +238,28 @@ function F_getUserTests()
                     $str .= ' style="display:none">&nbsp;';
                 }
                 $str .= '</li>'.K_NEWLINE;
-                
+				
+				//offline sheet download
+				$testname = str_replace("'", " ", $m['test_name']);
+				$firstname = str_replace("'", " ", urldecode($_SESSION['session_user_firstname']));
+				$groupname = str_replace("'", " ", $grpname_a);
+				
+				$fileprefix = 'Soal_';
+				$filename = K_PATH_CACHE.'offline-sheets/'.stripcslashes($testname).'/'.stripcslashes($groupname).'/'.$fileprefix.stripcslashes($testname).'_'.stripcslashes($groupname).'_'.$_SESSION['session_user_name'].'_'.stripcslashes($firstname).'.zip';
+				// echo $filename;
+				
+				$href = K_PATH_URL_CACHE.'offline-sheets/'.stripcslashes($testname).'/'.stripcslashes($groupname).'/'.$fileprefix.stripcslashes($testname).'_'.stripcslashes($groupname).'_'.$_SESSION['session_user_name'].'_'.stripcslashes($firstname).'.zip';
+				
+				
+				//testuser_id='.$testuser_id.'&test_id='.$m['test_id'].'&user_id='.$user_id.'&username='.$_SESSION['session_user_id'].'&firstname='.$_SESSION['session_user_firstname'].'&testname='.$m['test_name'].'&groupname='.$grpname_a;
+				//echo K_PATH_CACHE.'offline-sheets/Soal_'.$testname.'_'.$groupname.'_'.$_SESSION['session_user_name'].'_'.urldecode($firstname).'.html';
+				
+				
+				
+				if(file_exists($filename)){
+					$str .= '<li style="padding:0 1em"><span>&nbsp;</span><span class="d-flex xmlbutton" style="background:unset;padding:0;border-radius:0;border:none;justify-content: flex-end"><div class="d-flex" style="justify-content: flex-end;"><a download="'.$fileprefix.stripcslashes($testname).'_'.stripcslashes($groupname).'_'.$_SESSION['session_user_name'].'_'.stripcslashes($firstname).'.zip'.'" href="'.$href.'" class="xmlbutton txt-small"><span class="icon-file-empty"></span> Unduh soal offline</span></div></a></li>';
+				}
+				
                 $str .= '</ul>'.K_NEWLINE;
             }
         }
