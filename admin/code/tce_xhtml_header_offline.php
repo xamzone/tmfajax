@@ -184,6 +184,41 @@ if(f_sc_name('tmf_show_offline_sheet.php')){
 ?>
 
 <script>
+	// console.log($("input#test_begin_time"));
+	// var cekLoginTime;
+	function myTimerx() {
+		var tbeginx = new Date(localStorage.getItem("testBeginTime"));	
+		var todayx = new Date();
+
+		var tsTodayx = todayx.getTime();
+		var tsBeginTx = tbeginx.getTime();
+		if(tsTodayx>=tsBeginTx){
+			$("#password").removeAttr("readonly");
+			$("#password").removeAttr("style");
+			$("#infoPass").hide();
+		}
+		console.log("xxx");
+	}
+	
+	// setInterval(myTimerx, 1000);
+	setTimeout(myTimerx, 1000);
+	setTimeout(myTimerx, 2000);
+	setTimeout(myTimerx, 3000);
+	setTimeout(myTimerx, 4000);
+	setTimeout(myTimerx, 5000);
+	/* 
+	var tbeginx = new Date(localStorage.getItem("testBeginTime"));	
+	var todayx = new Date();	
+
+	var tsTodayx = todayx.getTime();
+	var tsBeginTx = tbeginx.getTime();
+
+	
+	if(tsTodayx>=tsBeginTx){
+		$("#password").removeAttr("readonly");
+		$("#password").removeAttr("style");
+	} */
+	
 $(document).ready(function(){
 
 	if(localStorage.getItem("testFinished")==$("#idTUID").text()){
@@ -334,6 +369,8 @@ $(document).ready(function(){
 
 	$("span#masuk").click(function(){
 		
+		
+		
 		var bcrypt = dcodeIO.bcrypt;
 		
 		localStorage.setItem("curNo",1);
@@ -346,6 +383,9 @@ $(document).ready(function(){
 			//console.log(res);
 			if(res===true){
 				if(tsToday >= tsBeginT){
+					// alert(cekLoginTime);
+					// window.clearInterval(cekLoginTime);
+					// cekLoginTime = -1;
 					window.scrollTo(0,0);
 					$("div#loginBlock").addClass("hidden");
 					localStorage.setItem("logged_in_TUID", tuid);
@@ -469,7 +509,11 @@ $(document).ready(function(){
 		}
 		if(conf){
 			var asd = new Blob([btoa(tuid+"\r\n"+p)], {type: "text/plain;charset=utf-8"});
-			saveAs(asd, tuid+".txt");
+			var nmUjian = $("span#namaUjian").text().replace(/'/g, '').replace(/(?:\r\n|\r|\n)/g, '');
+			var nmPeserta = $("span#nmPes").text().replace(/'/g, '').replace(/(?:\r\n|\r|\n)/g, '');
+			var kelPeserta = $("span#kelPes").text().replace(/'/g, '').replace(/(?:\r\n|\r|\n)/g, '');
+
+			saveAs(asd, "jwbn_"+nmUjian+"_"+nmPeserta+"_"+kelPeserta+"_"+tuid+".txt");
 			alert("Jawaban Anda akan disalin / diunduh");
 			
 			$("textarea#dataJawaban").select();
@@ -990,6 +1034,11 @@ if(f_sc_name('tmf_show_offline_sheet.php')){
 	div.body{width:100% !important}
 
 	#demo {display:flex;justify-contents:center;align-items:center}
+	
+	textarea#dataJawaban {
+		user-select: all;
+		-webkit-user-select: all;
+	}
 
 /*	.kondon {padding:2px 5px;text-align:center;line-height:1;background:#d84315;color:#ffffff;border-radius:3px;font-size:1.1em}
 	.kondon:nth-child(2),.kondon:nth-child(3),.kondon:nth-child(4){margin-left:3px}*/

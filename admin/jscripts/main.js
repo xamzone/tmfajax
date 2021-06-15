@@ -100,7 +100,6 @@ var addr1 = K_ADDRESS_LINE1.replace(/ /g, '%20');
 var addr2 = K_ADDRESS_LINE2.replace(/ /g, '%20');
 var addr3 = K_ADDRESS_LINE3.replace(/ /g, '%20');
 
-// function exportTableToExcel(tableID, filename = f_insName+' - '+f_pageName+' - '+f_testName+' - '+f_groupName){
 function exportTableToExcel(tableID){
 	var f_groupLbl = document.querySelector("label[for=group_id]").textContent;
 	if(document.querySelector("label[for=user_id]")==null){
@@ -179,6 +178,8 @@ function exportTableToExcel(tableID){
 	// setTimeout(function(){window.location.reload()},500)
 }
 
+
+
 function toggleIsRight(a,b,c){
 	
 $.ajax({
@@ -211,14 +212,18 @@ function checkAll(a){
 }
 
 function downloadAll(a){
+	if(confirm("Timpa apabila telah ada lembar soal offline di cache/offline-sheets?")){
+		var add = "&timpa=1";
+	}else{
+		var add = "";
+	}
+	
 	var h = document.getElementById("footer");
 	
 	var cbArr = document.querySelectorAll(a);
 	for(let i=0; i < cbArr.length; i++){
 		h.insertAdjacentHTML('afterend', '<iframe id="dl-all'+i+'" style="width:0;height:0;border:none"></iframe>');
-		document.getElementById('dl-all'+i).setAttribute('src', cbArr[i].href);
-		// console.log(cbArr[i].href);
-		// setTimeout(function(){console.log("xxx")}, 3000);
+		document.getElementById('dl-all'+i).setAttribute('src', cbArr[i].href+add+"&ext=html");
 	}
 }
 
@@ -236,32 +241,82 @@ $(function() {
 });
 
 
+/* var str = "Abc: Lorem ipsum sit amet";
+str = str.substring(str.indexOf(":") + 1);
 
+$('#data_jawabantxt').bind('paste', function(e) {
+    var data = e.originalEvent.clipboardData.getData('Text');
+	var result = data.split(':').map(e => e.split(','));
+	
+	// console.log(result);
+	result.forEach(function(x,y,z){
+		if(y%2==1){
+			delete result[y];	
+		}
+		if(y%2==0){
+			delete result[y][1];	
+		}
+	});
+	// var toTxtArea = result.toString().replace(',,',',').substring(1);
+	var toTxtArea = result.toString();
+	$('#data_jawabantxt').val(toTxtArea);
+	e.preventDefault();
+	
+}); */
+  
 
-function generateAll(a){
+function generateAll(a,b,c){
+	// alert($("#"+c).html());
 	var refreshIntervalId = setInterval(function(){
+		var ftype = "archive";
+		if(b=="html"){
+			ftype = "code";
+		}
+		var btnLbl = "<i class='fas fa-file-"+ftype+"'></i> Generate All Offline Sheets ("+b+")"; 
 		if(window.ajax_loading===false){
-			alert("Selesai melakukan Generate All Offline Sheet. Semua lembar soal offline dapat dilihat pada folder cache/offline-sheets dalam bentuk file zip");
-			clearInterval(refreshIntervalId);
-			$("#btnAction a:nth-child(2)").text("Generate All Offline Sheet"); 
+			if(!lanjut){
+				alert("Selesai melakukan Generate All Offline Sheet. Semua lembar soal offline dapat dilihat pada folder cache/offline-sheets dalam bentuk file "+b);
+				clearInterval(refreshIntervalId);
+				$("#"+c).html(btnLbl); 
+			}
 		}
 	}, 3000);
 	
-	if(confirm("Timpa apabila telah ada lembar soal offline?")){
+	if(confirm("Timpa apabila telah ada lembar soal offline di cache/offline-sheets?")){
 		var add = "&timpa=1";
 	}else{
 		var add = "";
 	}
 	
-	$("#btnAction a:nth-child(2)").text("Harap menunggu...");
-	var cbArr = document.querySelectorAll(a);
-	let i;
-	for(i=0; i < cbArr.length; i++){
-		$.ajax({
-			'type': 'HEAD',
-			'url': cbArr[i].href+add
-		});
+	if(b=="zip"){
+		if(confirm("Proses ini juga akan menghapus file HTML yang ada di cache/offline-sheets. Lanjut?")){
+			$("#"+c).text("Harap menunggu...");
+			var cbArr = document.querySelectorAll(a);
+			let i;
+			for(i=0; i < cbArr.length; i++){
+				$.ajax({
+					'type': 'HEAD',
+					'url': cbArr[i].href+add+'&ext='+b
+				});
+			}
+		}else{
+			var lanjut = true;
+		}	
 	}
+	
+	if(b=="html"){
+		$("#"+c).text("Harap menunggu...");
+		var cbArr = document.querySelectorAll(a);
+		let i;
+		for(i=0; i < cbArr.length; i++){
+			$.ajax({
+				'type': 'HEAD',
+				'url': cbArr[i].href+add+'&ext='+b
+			});
+		}
+	}
+	
+	
 	
 	/* $(document).ajaxStop(function(){
 	  setTimeout(function(){

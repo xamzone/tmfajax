@@ -785,6 +785,7 @@ function F_printTestResultStat($data, $nextorderdir, $order_field, $filter, $pub
 		$ret .= '<th title="Offline sheet">Offline Sheet</th>'.K_NEWLINE;
 	}
     $ret .= '</tr>'.K_NEWLINE;
+	// $restest_arr = array();
     foreach ($data['testuser'] as $tu) {
 		/* foreach(F_get_user_groups($tu['user_id']) as $guid){
 			
@@ -874,10 +875,13 @@ function F_printTestResultStat($data, $nextorderdir, $order_field, $filter, $pub
 				$grpid_a .= $grpid_v;
 			}
 			// echo $grpid_a;
-			
+			//
 			
 			if(file_exists('../../admin/code/tmf_show_offline_sheet.php')){
-				$ret .= '<td align="center"><a href="tmf_show_offline_sheet.php?testuser_id='.$tu['id'].'&amp;test_id='.$tu['test']['test_id'].'&amp;user_id='.$tu['user_id'].'&amp;username='.$tu['user_name'].'&amp;firstname='.$tu['user_firstname'].'&amp;testname='.$tu['test']['test_name'].'&amp;groupname='.$grpname_a.'&amp;groupid='.$grpid_a.'" title="Download offline sheet"><i class="fas fa-download"></i></a></td>'.K_NEWLINE;
+				// $restest_arr[] = array('test_id' => $tu['id'], 'testuser_id' => $tu['test']['test_id'], 'user_id' => $tu['user_id'], 'username' => $tu['user_name'], 'firstname' => $tu['user_firstname'], 'testname' => $tu['test']['test_name'], 'groupname' => $grpname_a, 'groupid' => $grpid_a);
+				// $restest_arr[] = array($tu['id'], $tu['test']['test_id'], $tu['user_id'], $tu['user_name'], $tu['user_firstname'], $tu['test']['test_name'], $grpname_a, $grpid_a);
+				
+				$ret .= '<td align="center"><a href="tmf_show_offline_sheet.php?testuser_id='.$tu['id'].'&amp;test_id='.$tu['test']['test_id'].'&amp;user_id='.$tu['user_id'].'&amp;username='.$tu['user_name'].'&amp;firstname='.$tu['user_firstname'].'&amp;testname='.$tu['test']['test_name'].'&amp;groupname='.$grpname_a.'&amp;groupid='.$grpid_a.'&amp;ext=html" title="Download offline sheet"><i class="fas fa-download"></i></a></td>'.K_NEWLINE;
 			}else{
 				$ret .= '<td align="center"><a onclick="alert(\'File untuk keperluan ini harus request secara pribadi ke Maman Sulaeman\')" href="#" title="Download offline sheet"><i class="fas fa-download"></i></a></td>';
 			}
@@ -935,6 +939,12 @@ function F_printTestResultStat($data, $nextorderdir, $order_field, $filter, $pub
         }
     }
     $ret .= '</table>'.K_NEWLINE;
+	// echo '<pre>';
+	// echo serialize($restest_arr);
+	// echo '<a href="tmf_show_offline_sheet.php?'.http_build_query($restest_arr).'"><i class="fas fa-download"></i></a>';
+	
+	// echo http_build_query($restest_arr);
+	// echo '<pre>';
     return $ret;
 }
 

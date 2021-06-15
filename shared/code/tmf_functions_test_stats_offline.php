@@ -1410,16 +1410,11 @@ function F_printUserOfflineSheet($testuser_id)
 	
 	foreach($retx -> find('source') as $item){
 		$pos = strpos($item->src,'../../');
-		if($pos===0){
-			
-			$item->src = str_replace('../../','',urldecode($item->src));
-			
+		if($pos===0){			
+			$item->src = str_replace('../../','',urldecode($item->src));			
 			$mime_type = mime_content_type(K_PATH_MAIN.$item->src);
-
 			$source_new = base64_encode(file_get_contents(K_PATH_MAIN.$item->src));
-			
 			$source_news = file_get_contents(K_PATH_MAIN.$item->src);
-
 			$item->src = 'data:'.$mime_type.';base64,'.$source_new;
 		}
 	}

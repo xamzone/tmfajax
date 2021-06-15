@@ -19,7 +19,7 @@ td{
 }
 </style>
 <?php
-
+// print_r($_REQUEST);
 require_once('../config/tce_config.php');
 
 $pagelevel = K_AUTH_ADMIN_RESULTS;
@@ -57,7 +57,12 @@ if (isset($_REQUEST['test_id']) and ($_REQUEST['test_id'] > 0)) {
 } else {
     $test_id = 0;
 }
-
+if (isset($_REQUEST['user_id'])) {
+    $user_id = intval($_REQUEST['user_id']);
+    $filter .= '&amp;user_id='.$user_id;
+} else {
+    $user_id = 0;
+}
 if (isset($_REQUEST['group_id']) and !empty($_REQUEST['group_id'])) {
     $group_id = intval($_REQUEST['group_id']);
     $filter .= '&amp;group_id='.$group_id.'';
@@ -133,8 +138,8 @@ echo '</div>'.K_NEWLINE;
 
 echo getFormNoscriptSelect('selectcategory');
 
-/* echo getFormRowTextInput('startdate', $l['w_time_begin'], $l['w_time_begin'].' '.$l['w_datetime_format'], '', $startdate, '', 19, false, true, false);
-echo getFormRowTextInput('enddate', $l['w_time_end'], $l['w_time_end'].' '.$l['w_datetime_format'], '', $enddate, '', 19, false, true, false); */
+echo getFormRowTextInput('startdate', $l['w_time_begin'], $l['w_time_begin'].' '.$l['w_datetime_format'], '', $startdate, '', 19, false, true, false);
+echo getFormRowTextInput('enddate', $l['w_time_end'], $l['w_time_end'].' '.$l['w_datetime_format'], '', $enddate, '', 19, false, true, false);
 
 echo '<div class="row">'.K_NEWLINE;
 echo '<span class="label">'.K_NEWLINE;
@@ -168,6 +173,52 @@ if ($r = F_db_query($sql, $db)) {
 echo '</select>'.K_NEWLINE;
 echo '</span>'.K_NEWLINE;
 echo '</div>'.K_NEWLINE;
+
+
+echo '<div class="row">'.K_NEWLINE;
+echo '<span class="label">'.K_NEWLINE;
+echo '<label for="user_id">'.$l['w_user'].'</label>'.K_NEWLINE;
+echo '</span>'.K_NEWLINE;
+echo '<span class="formw">'.K_NEWLINE;
+//echo '<select name="user_id" id="user_id" size="0" onchange="document.getElementById(\'form_resultallusers\').submit()">'.K_NEWLINE;
+echo '<select name="user_id" id="user_id" size="0">'.K_NEWLINE;
+$sql = 'SELECT user_id, user_lastname, user_firstname, user_name FROM '.K_TABLE_USERS.'';
+if ($test_id > 0) {
+    $sql .= ', '.K_TABLE_TEST_USER.' WHERE testuser_user_id=user_id AND testuser_test_id='.$test_id.'';
+} elseif ($group_id > 0) {
+    $sql .= ', '.K_TABLE_USERGROUP.' WHERE usrgrp_user_id=user_id AND usrgrp_group_id='.$group_id.' AND user_id>1';
+} else {
+    $sql .= ' WHERE user_id>1';
+}
+$sql .= ' GROUP BY user_id, user_lastname, user_firstname, user_name ORDER BY user_lastname, user_firstname, user_name';
+if ($r = F_db_query($sql, $db)) {
+    $countitem = 1;
+    echo '<option value="0"';
+    if ($user_id == 0) {
+        echo ' selected="selected"';
+    }
+    echo '>&nbsp;-&nbsp;</option>'.K_NEWLINE;
+    while ($m = F_db_fetch_array($r)) {
+        echo '<option value="'.$m['user_id'].'"';
+        if ($m['user_id'] == $user_id) {
+            echo ' selected="selected"';
+        }
+        echo '>'.$countitem.'. '.htmlspecialchars($m['user_lastname'].' '.$m['user_firstname'].' - '.$m['user_name'].'', ENT_NOQUOTES, $l['a_meta_charset']).'</option>'.K_NEWLINE;
+        $countitem++;
+    }
+} else {
+    echo '</select></span></div>'.K_NEWLINE;
+    F_display_db_error();
+}
+echo '</select>'.K_NEWLINE;
+
+// link for user selection popup
+$jsaction = 'selectWindow=window.open(\'tce_select_users_popup.php?cid=user_id\', \'selectWindow\', \'dependent, height=600, width=800, menubar=no, resizable=yes, scrollbars=yes, status=no, toolbar=no\'); return false;';
+echo '<a href="#" onclick="'.$jsaction.'" class="xmlbutton" title="'.$l['w_select'].'">...</a>';
+
+echo '</span>'.K_NEWLINE;
+echo '</div>'.K_NEWLINE;
+
 
 echo getFormNoscriptSelect('selectgroup');
 
@@ -215,15 +266,29 @@ if($test_id>0){
 				while($mgl = F_db_fetch_array($rgl)){
 //					echo "&nbsp;&nbsp;&nbsp;Group ID = ".$mgl[0]."<br/>";
 					if($group_id>0){
-						$group_ids = $group_id;
+						// $group_ids = $group_id;
+						// echo $group_id.'___'.$mgl[0];
+						if($group_id==$mgl[0]){
+							// echo $mgl[0];
+							$group_ids = $mgl[0];
+						}
 					}else{
 						$group_ids = $mgl[0];
 					}
+					// echo $group_ids.'<br/>';
+					
+					if(isset($group_ids)){
+						// echo $user_id.'<br/>';
 					$sqlul = 'SELECT usrgrp_user_id FROM '.K_TABLE_USERGROUP.' WHERE usrgrp_group_id='.$group_ids;
+					if($user_id>0){
+						$sqlul .= ' AND usrgrp_user_id='.$user_id;
+					}
 					if($rul = F_db_query($sqlul, $db)){
 						while($mul = F_db_fetch_array($rul)){
+							// echo $startdate;
 //							echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;User ID = ".$mul[0]."<br/>";
-							$sqltu = 'SELECT COUNT(testuser_id),testuser_creation_time FROM '.K_TABLE_TEST_USER.' WHERE testuser_user_id='.$mul[0].' AND testuser_test_id='.$mtl[0].' AND testuser_creation_time != \'0001-01-01 00:00:00\' LIMIT 1';
+							// $sqltu = 'SELECT COUNT(testuser_id),testuser_creation_time FROM '.K_TABLE_TEST_USER.' WHERE testuser_user_id='.$mul[0].' AND testuser_test_id='.$mtl[0].' AND testuser_creation_time != \'0001-01-01 00:00:00\' LIMIT 1';
+							$sqltu = 'SELECT COUNT(testuser_id),testuser_creation_time FROM '.K_TABLE_TEST_USER.' WHERE testuser_user_id='.$mul[0].' AND testuser_test_id='.$mtl[0].' AND testuser_creation_time >= \''.$startdate.'\' AND testuser_creation_time <= \''.$enddate.'\' LIMIT 1';
 							if($rtu = F_db_query($sqltu, $db)){
 								if($mtu = F_db_fetch_array($rtu)){
 									$testdata = F_getUserData($mul[0]);
@@ -256,6 +321,10 @@ if($test_id>0){
 							}
 						}
 					}
+					}
+					
+					
+					
 				}
 			}
 			// echo count(array_unique($dt_s_ujian));
@@ -265,11 +334,27 @@ if($test_id>0){
 			$jml_pes=count(array_unique($dt_s_ujian))+count(array_unique($dt_b_ujian));
 			$jml_b_ujian=count(array_unique($dt_b_ujian));
 			$jml_s_ujian=count(array_unique($dt_s_ujian));
-			$perc_b_ujian=round($jml_b_ujian/$jml_pes*100,2);
-			$perc_s_ujian=round($jml_s_ujian/$jml_pes*100,2);
+			$perc_b_ujian=@round($jml_b_ujian/$jml_pes*100,2);
+			$perc_s_ujian=@round($jml_s_ujian/$jml_pes*100,2);
+			if(is_nan($perc_b_ujian)){
+				$perc_b_ujian='-';
+			}else{
+				$perc_b_ujian=$perc_b_ujian.'%';
+			}
+			if(is_nan($perc_s_ujian)){
+				$perc_s_ujian='-';
+			}else{
+				$perc_s_ujian=$perc_s_ujian.'%';
+			}
+			if($jml_pes===0){
+				$jml_pes='-';
+				$jml_s_ujian='-';
+				$jml_b_ujian='-';
+			}
+
 			echo "<td>".$jml_pes."</td>";
-			echo "<td>".$jml_s_ujian."</td><td>".$perc_s_ujian."%</td>";
-			echo "<td>".$jml_b_ujian."</td><td>".$perc_b_ujian."%";
+			echo "<td>".$jml_s_ujian."</td><td>".$perc_s_ujian."</td>";
+			echo "<td>".$jml_b_ujian."</td><td>".$perc_b_ujian;
 			
 			echo "</td></tr><tr><td colspan=2 style='background:#f1f1f1;border-bottom-width:medium;vertical-align:top'>Peserta tidak hadir</td><td colspan=4 style='border-bottom-width:medium'><ol style='border-bottom-width:medium;text-align:left;padding:0.5em 2em;margin:0;line-height: 2.5;'>";
 			if(count(array_unique($dt_b_ujian))>0){

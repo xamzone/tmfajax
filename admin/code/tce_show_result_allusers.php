@@ -69,10 +69,10 @@ if (isset($_REQUEST['test_id']) and ($_REQUEST['test_id'] > 0)) {
     }
     $filter .= '&amp;test_id='.$test_id.'';
     $test_group_ids = F_getTestGroups($test_id);
-	$hiddenclass='';
+	// $hiddenclass='';
 } else {
     $test_id = 0;
-	$hiddenclass = 'style="display:none!important"';
+	// $hiddenclass = 'style="display:none!important"';
 }
 if (isset($_REQUEST['user_id'])) {
     $user_id = intval($_REQUEST['user_id']);
@@ -512,7 +512,8 @@ echo '</div>'.K_NEWLINE;
 
 echo '</div>';
 
-echo '<div class="row d-block" '.$hiddenclass.'>';
+// echo '<div class="row d-block" '.$hiddenclass.'>';
+echo '<div class="row d-block">';
 
 ?>
 
@@ -523,7 +524,7 @@ echo '<div class="row d-block" '.$hiddenclass.'>';
 <div id="area-koreksi-offline" style="display:none">
 <div class="row">
 <span class="label" style="width:10%"><label id="data_jawabanlbl" for="data_jawabantxt">Data Jawaban</label></span>
-<span class="formw d-block" style="width:90%"><textarea id="data_jawabantxt"></textarea><span class="ta-right">Pisahkan Data Jawaban satu dengan lainnya menggunakan tanda koma</span></span>
+<span class="formw d-block" style="width:90%"><textarea (paste)="util.removeNewlines($event, control)" id="data_jawabantxt"></textarea><span class="ta-right">Pisahkan Data Jawaban satu dengan lainnya menggunakan tanda koma</span></span>
 </div>
 
 
@@ -536,11 +537,11 @@ echo '<div class="row d-block" '.$hiddenclass.'>';
 <div class="row" style="background:#fff9c4"><span class="label" style="width:10%"></span><span class="formw d-block" style="width:90%">* Tipe file yang diunggah harus berekstensi <b>.txt</b><br/>* Apabila tidak ada <b>Data Jawaban</b> atau File yang diunggah melalui form di atas, maka sistem akan melakukan koreksi jawaban melalui file yang telah diunggah ke folder <u>cache/offline-answers.</u></span></div>
 <div class="row d-flex jc-center">
 <?php
-if(isset($_REQUEST['test_id']) and $_REQUEST['test_id']>0){
+// if(isset($_REQUEST['test_id']) and $_REQUEST['test_id']>0){
 	F_submit_button_confirm('offline-eval', 'Mulai Koreksi', 'Mulai Koreksi', 'style="background:#4caf50" onclick="event.preventDefault();evalstart()"');
-}else{
-	F_submit_button_confirm('offline-eval', 'Mulai Koreksi', 'Mulai Koreksi', 'style="background:#607d8b" onclick="event.preventDefault();window.scrollTo(0,0);alert(\'Pilih dahulu nama test/ujian\')"');
-}
+// }else{
+	// F_submit_button_confirm('offline-eval', 'Mulai Koreksi', 'Mulai Koreksi', 'style="background:#607d8b" onclick="event.preventDefault();window.scrollTo(0,0);alert(\'Pilih dahulu nama test/ujian\')"');
+// }
 ?>
 </div>
 </div>
@@ -552,15 +553,28 @@ if(isset($_REQUEST['test_id']) and $_REQUEST['test_id']>0){
 
 echo '</div>';
 
+if ($itemcount > 0) {
+	echo '<div class="row d-flex jc-center">';
+	echo '<div class="row jc-center" id="btnAction">'.K_NEWLINE;
+	if(file_exists('tmf_show_offline_sheet.php')){
+			echo '<a href="" onclick="event.preventDefault();downloadAll(\'#form_resultallusers td:last-child a\')" class="xmlbutton" title="Download and Generate offline sheet"><i class="fas fa-download"></i> Download and Generate All Offline Sheets (html)</a> ';
+			echo '<a id="gaoshtml" href="" onclick="event.preventDefault();generateAll(\'#form_resultallusers td:last-child a\',\'html\',this.id)" class="xmlbutton bg-teal" title="Generate offline sheet"><i class="fas fa-file-code"></i> Generate All Offline Sheets (html)</a>';
+			echo '<a id="gaoszip" href="" onclick="event.preventDefault();generateAll(\'#form_resultallusers td:last-child a\',\'zip\',this.id)" class="xmlbutton bg-purple" title="Generate offline sheet"><i class="fas fa-file-archive"></i> Generate All Offline Sheets (zip)</a>';
+		}else{
+			echo '<a href="#" onclick="alert(\'File untuk keperluan ini harus request secara pribadi ke Maman Sulaeman\')" class="xmlbutton" title="Download and Generate offline sheet"><i class="fas fa-download"></i> Download and Generate All Offline Sheets (html)</a> ';
+			echo '<a href="#" onclick="alert(\'File untuk keperluan ini harus request secara pribadi ke Maman Sulaeman\')" class="xmlbutton bg-teal" title="Generate offline sheet"><i class="fas fa-file-code"></i> Generate All Offline Sheets (html)</a> ';
+			echo '<a href="#" onclick="alert(\'File untuk keperluan ini harus request secara pribadi ke Maman Sulaeman\')" class="xmlbutton bg-purple" title="Generate offline sheet"><i class="fas fa-file-archive"></i> Generate All Offline Sheets (zip)</a> ';
+		}
+	echo '</div>';	
+	echo '</div>';	
+}
+
+		
 echo '<div class="row d-flex jc-center">';
 if ($itemcount > 0) {
         echo '<div class="row jc-center" id="btnAction">'.K_NEWLINE;
         // show buttons by case
-		if(file_exists('tmf_show_offline_sheet.php')){
-			echo '<a href="#" onclick="downloadAll(\'#form_resultallusers td:last-child a\')" class="xmlbutton" title="Download offline sheet">Download All Offline Sheets</a> ';
-		}else{
-			echo '<a href="#" onclick="alert(\'File untuk keperluan ini harus request secara pribadi ke Maman Sulaeman\')" class="xmlbutton" title="Download offline sheet">Download All Offline Sheets</a> ';
-		}
+		
         echo '<a href="#" onclick="exportTableToExcel(\'test_result_users\');" class="xmlbutton" title="Export data ke Excel">Excel</a> ';
         echo '<a href="tce_xml_results.php?menu_mode=startlongprocess'.$filter.'" class="xmlbutton" title="'.$l['h_xml_export'].'">XML</a> ';
         echo '<a href="tce_xml_results.php?format=JSON&amp;menu_mode=startlongprocess'.$filter.'" class="xmlbutton" title="JSON">JSON</a> ';
@@ -591,16 +605,36 @@ require_once('../code/tce_page_footer.php');
 ?>
 <script>
 function evalstart(){
+	
+		
 	<?php if(file_exists('tmf_import_offline_users_answer.php')){ ?>
 	var data_jawaban = document.getElementById("data_jawabantxt").value;
-	$.ajax({
-		'url': 'tmf_import_offline_users_answer.php?data_jawaban='+data_jawaban+'&test_id=<?php echo $_REQUEST['test_id']; ?>',
-		'type': 'GET',
-		'beforeSend': function(){
-				$("input#offline-eval").val("MOHON TUNGGU . . .")},
-		'success': function(result){alert(result);$("input#offline-eval").val("MULAI KOREKSI")},
-		
-	})
+	
+	var djarr = data_jawaban.split(',');
+	
+	
+	
+	djarr.forEach(function(x){
+		$.ajax({
+			'url': 'tmf_import_offline_users_answer.php?data_jawaban='+x+'&test_id=<?php echo $test_id; ?>',
+			'type': 'POST',
+			'beforeSend': function(){
+					$("input#offline-eval").val("MOHON TUNGGU . . .")},
+			'success': function(result){$("input#offline-eval").val("MULAI KOREKSI")},
+			
+		})
+	})   
+	
+	var refreshIntervalId = setInterval(function(){
+		if(window.ajax_loading===false){
+			// if(!lanjut){
+				alert("Selesai");
+				clearInterval(refreshIntervalId);
+				// $("#"+c).html(btnLbl); 
+			// }
+		}
+	}, 1000);
+
 	<?php }else{ ?>
 	alert("File untuk keperluan ini harus request secara pribadi ke Maman Sulaeman");
 	<?php } ?>
