@@ -5,11 +5,44 @@ $pagelevel = K_AUTH_ADMIN_USERS;
 require_once('../../shared/code/tce_authorization.php');
 require_once('../../shared/config/tce_user_registration.php');
 
+
+/* if(isset($_GET['imglogo'])){
+	foreach(glob(K_PATH_CACHE.'logo/*') as $filename){
+		echo '<option value="'.basename($filename).'" ';
+		if(basename($filename)===$json['logoImg']){
+			echo ' selected="selected"';
+		}
+		echo '>'.basename($filename).'</option>'.K_NEWLINE;
+		// echo basename($filename);
+	}
+	die();	
+} */
+
 $thispage_title = "General Settings";
 $thispage_title_icon = "<i class='fas fa-cogs'></i> ";
 
 require_once('tce_page_header.php');
 require_once('../../shared/code/tce_functions_form.php');
+
+/**
+<script>
+
+	function getImgLogo(){
+		$.ajax({
+				'url': 'tmf_general_settings.php?imglogo',
+				'type': 'GET',
+				'beforeSend': function(result){
+					$('#logoImg').html('<option>Loading... Please wait!</option>');
+				},
+				'success': function(result){
+					$('#logoImg').html(result);
+				}		
+		});
+	}	
+
+
+</script>
+**/
 
 // var_dump($_POST);
 if (!isset($_POST['answer_all_questions']) or (empty($_POST['answer_all_questions']))) {
@@ -130,6 +163,12 @@ if (!isset($_POST['enable_langsel']) or (empty($_POST['enable_langsel']))) {
     $enable_langsel = false;
 } else {
     $enable_langsel = F_getBoolean($_REQUEST['enable_langsel']);
+}
+
+if (!isset($_POST['enable_ccs']) or (empty($_POST['enable_ccs']))) {
+    $enable_ccs = false;
+} else {
+    $enable_ccs = F_getBoolean($_REQUEST['enable_ccs']);
 }
 
 if(isset($_POST['update'])){
@@ -295,10 +334,54 @@ if(isset($_POST['update-timerwarning'])){
 	chmod($twfile, 0444);
 }
 
+if(isset($_POST['update-colorscheme'])){
+	$arr = array();
+	$arr['enable_ccs'] = $enable_ccs;
+	$arr['--link'] = strip_tags($_POST['--link']);
+	$arr['--header'] = strip_tags($_POST['--header']);
+	$arr['--col-1'] = strip_tags($_POST['--col-1']);
+	$arr['--col-1t'] = strip_tags($_POST['--col-1t']);
+	$arr['--col-2'] = strip_tags($_POST['--col-2']);
+	$arr['--col-2t'] = strip_tags($_POST['--col-2t']);
+	$arr['--col-3'] = strip_tags($_POST['--col-3']);
+	$arr['--col-3t'] = strip_tags($_POST['--col-3t']);
+	$arr['--col-4'] = strip_tags($_POST['--col-4']);
+	$arr['--col-4t'] = strip_tags($_POST['--col-4t']);
+	$arr['--col-5'] = strip_tags($_POST['--col-5']);
+	$arr['--col-5l'] = strip_tags($_POST['--col-5l']);
+	$arr['--col-5a'] = strip_tags($_POST['--col-5a']);
+	$arr['--col-6'] = strip_tags($_POST['--col-6']);
+	$arr['--col-7'] = strip_tags($_POST['--col-7']);
+	$arr['--col-7t'] = strip_tags($_POST['--col-7t']);
+	$arr['--col-8'] = strip_tags($_POST['--col-8']);
+	$arr['--col-9'] = strip_tags($_POST['--col-9']);
+	$arr['--col-9t'] = strip_tags($_POST['--col-9t']);
+	$arr['--col-10'] = strip_tags($_POST['--col-10']);
+	$arr['--col-10t'] = strip_tags($_POST['--col-10t']);
+	$arr['--col-11'] = strip_tags($_POST['--col-11']);
+	$arr['--col-12'] = strip_tags($_POST['--col-12']);
+	$arr['--col-13'] = strip_tags($_POST['--col-13']);
+	$arr['--col-14'] = strip_tags($_POST['--col-14']);
+	$arr['--col-15'] = strip_tags($_POST['--col-15']);
+	$arr['--col-15t'] = strip_tags($_POST['--col-15t']);
+	$arr['--bor-1'] = strip_tags($_POST['--bor-1']);
+	$arr['--bor-col1'] = strip_tags($_POST['--bor-col1']);
+	
+	$csfile = K_PATH_MAIN.'public/config/colorscheme.json';
+	chmod($csfile, 0777);
+	
+	$fp = fopen($csfile, 'w');
+	fwrite($fp, serialize($arr));
+	// fwrite($fp, json_encode($qblock_arr));
+	fclose($fp);
+
+	chmod($csfile, 0444);
+}
 $json = unserialize(file_get_contents(K_PATH_MAIN.'shared/config/tmf_general_settings.json'));
 $jsonGreetings = unserialize(file_get_contents(K_PATH_MAIN.'public/config/tmf_greetings.json'));
 $lbam = unserialize(file_get_contents(K_PATH_MAIN.'public/config/tmf_additional_info_login.json'));
 $tm = unserialize(file_get_contents(K_PATH_MAIN.'public/config/tmf_timer_warning.json'));
+$cscheme = unserialize(file_get_contents(K_PATH_MAIN.'public/config/colorscheme.json'));
 //var_dump(is_array($json));
 
 echo '<div class="container">'.K_NEWLINE;
@@ -372,13 +455,13 @@ echo '<label for="logoImg">Logo Image</label>'.K_NEWLINE;
 echo '</span>'.K_NEWLINE;
 echo '<span class="formw">'.K_NEWLINE;
 echo '<select name="logoImg" id="logoImg" size="0">'.K_NEWLINE;
-
 foreach(glob(K_PATH_CACHE.'logo/*') as $filename){
 	echo '<option value="'.basename($filename).'" ';
 	if(basename($filename)===$json['logoImg']){
 		echo ' selected="selected"';
 	}
 	echo '>'.basename($filename).'</option>'.K_NEWLINE;
+	// echo basename($filename);
 }
 echo '</select>'.K_NEWLINE;
 echo '<span class="labeldesc">upload your institution logo image from <a href="tce_filemanager.php?d='.urlencode(K_PATH_CACHE).'logo%2F&v=1" target="blank">File Manager</a></span></span>'.K_NEWLINE;
@@ -534,9 +617,58 @@ echo '</div>';
 echo F_getCSRFTokenField().K_NEWLINE;
 echo '</form>';
 
+
+echo '<form action="'.$_SERVER['SCRIPT_NAME'].'" method="POST">';
+echo '<fieldset>';
+echo '<legend class="ft-black" style="background:red;background:-webkit-linear-gradient(left, #f8bbd0, #fff59d, #b2ebf2);background:-o-linear-gradient(right, #f8bbd0, #fff59d, #b2ebf2);background:-moz-linear-gradient(right, #f8bbd0, #fff59d, #b2ebf2);background:linear-gradient(to right, #f8bbd0, #fff59d, #b2ebf2)">Custom Color Scheme for Public</legend>';
+echo getFormRowCheckBox('enable_ccs', 'Enable', 'Enable', '<i>default value: disable</i>', 1, $cscheme['enable_ccs'], false, '');	
+echo getFormRowTextInput('--header', 'Header Color', 'Header Color', '', $cscheme['--header'], '', 255, false, false, 'color');
+echo getFormRowTextInput('--link', 'Link Color', 'Link Color', '', $cscheme['--link'], '', 255, false, false, 'color');
+echo getFormRowTextInput('--col-1', 'Color 1', 'Color 1', 'Primary Color', $cscheme['--col-1'], '', 255, false, false, 'color');
+echo getFormRowTextInput('--col-2', 'Color 2', 'Color 2', '', $cscheme['--col-2'], '', 255, false, false, 'color');
+echo getFormRowTextInput('--col-3', 'Color 3', 'Color 3', '', $cscheme['--col-3'], '', 255, false, false, 'color');
+echo getFormRowTextInput('--col-4', 'Color 4', 'Color 4', '', $cscheme['--col-4'], '', 255, false, false, 'color');
+echo getFormRowTextInput('--col-5', 'Color 5', 'Color 5', '', $cscheme['--col-5'], '', 255, false, false, 'color');
+echo getFormRowTextInput('--col-5l', 'Color 5l', 'Color 5l', '', $cscheme['--col-5l'], '', 255, false, false, 'color');
+echo getFormRowTextInput('--col-5a', 'Color 5a', 'Color 5a', '', $cscheme['--col-5a'], '', 255, false, false, 'color');
+echo getFormRowTextInput('--col-6', 'Color 6', 'Color 6', '', $cscheme['--col-6'], '', 255, false, false, 'color');
+echo getFormRowTextInput('--col-7', 'Color 7', 'Color 7', '', $cscheme['--col-7'], '', 255, false, false, 'color');
+echo getFormRowTextInput('--col-8', 'Color 8', 'Color 8', '', $cscheme['--col-8'], '', 255, false, false, 'color');
+echo getFormRowTextInput('--col-9', 'Color 9', 'Color 9', '', $cscheme['--col-9'], '', 255, false, false, 'color');
+echo getFormRowTextInput('--col-10', 'Color 10', 'Color 10', '', $cscheme['--col-10'], '', 255, false, false, 'color');
+echo getFormRowTextInput('--col-11', 'Color 11', 'Color 11', '', $cscheme['--col-11'], '', 255, false, false, 'color');
+echo getFormRowTextInput('--col-12', 'Color 12', 'Color 12', '', $cscheme['--col-12'], '', 255, false, false, 'color');
+echo getFormRowTextInput('--col-13', 'Color 13', 'Color 13', '', $cscheme['--col-13'], '', 255, false, false, 'color');
+echo getFormRowTextInput('--col-14', 'Color 14', 'Color 14', '', $cscheme['--col-14'], '', 255, false, false, 'color');
+echo getFormRowTextInput('--col-15', 'Color 15', 'Color 15', '', $cscheme['--col-15'], '', 255, false, false, 'color');
+echo getFormRowTextInput('--bor-1', 'Border Color', 'Border Color', '', $cscheme['--bor-1'], '', 255, false, false, 'color');
+echo '<input type="hidden" id="--col-1t" name="--col-1t" value="'.$cscheme['--col-1'].'33"/>';
+echo '<input type="hidden" id="--col-2t" name="--col-2t" value="'.$cscheme['--col-2'].'33"/>';
+echo '<input type="hidden" id="--col-3t" name="--col-3t" value="'.$cscheme['--col-3'].'33"/>';
+echo '<input type="hidden" id="--col-4t" name="--col-4t" value="'.$cscheme['--col-4'].'33"/>';
+echo '<input type="hidden" id="--col-7t" name="--col-7t" value="'.$cscheme['--col-7'].'33"/>';
+echo '<input type="hidden" id="--col-9t" name="--col-9t" value="'.$cscheme['--col-9'].'33"/>';
+echo '<input type="hidden" id="--col-9t" name="--col-9t" value="'.$cscheme['--col-9'].'33"/>';
+echo '<input type="hidden" id="--col-10t" name="--col-10t" value="'.$cscheme['--col-10'].'33"/>';
+echo '<input type="hidden" id="--col-15t" name="--col-15t" value="'.$cscheme['--col-15'].'33"/>';
+echo '<input type="hidden" id="--bor-col1" name="--bor-col1" value="'.$cscheme['--bor-1'].'"/>';
+
+echo '</fieldset>';
+echo '<div class="row jc-center">';
+F_submit_button('update-colorscheme', $l['w_update'].'" class="ft-black mb-10" style="width:100%;background:red;background:-webkit-linear-gradient(left, #f8bbd0, #fff59d, #b2ebf2);background:-o-linear-gradient(right, #f8bbd0, #fff59d, #b2ebf2);background:-moz-linear-gradient(right, #f8bbd0, #fff59d, #b2ebf2);background:linear-gradient(to right, #f8bbd0, #fff59d, #b2ebf2)', $l['h_update']);
+echo '</div>';
+echo F_getCSRFTokenField().K_NEWLINE;
+echo '</form>';
+
+
 echo '</div>';
 echo '</div>';
 
 
 require_once('../code/tce_page_footer.php');
+
+// echo ''.K_NEWLINE;
+
+// echo '</script>'.K_NEWLINE;
+
 ?>

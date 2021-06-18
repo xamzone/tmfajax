@@ -279,11 +279,19 @@ function getFormRowTextInput($field_name, $name, $description = '', $tip = '', $
     $str .= '</span>'.K_NEWLINE;
     $str .= '<span class="formw">'.K_NEWLINE;
     $str .= '<input type="';
-    if ($password) {
-        $str .= 'password';
-    } else {
-        $str .= 'text';
-    }
+    
+	if(is_string($password)){
+		$str .= $password;
+	}else{
+		if(is_bool($password)){
+			if($password==false){
+				$str .= 'text';
+			}else{
+				$str .= 'password';
+			}
+		}
+	}
+    
     $str .= '"';
     if ($date or $datetime) {
         $str .= ' style="direction:ltr;';
@@ -292,6 +300,11 @@ function getFormRowTextInput($field_name, $name, $description = '', $tip = '', $
         }
         $str .= '"';
     }
+	
+	if ($password=='color') {
+        $str .= ' style="height:50px"';
+    }
+	
     $str .= ' name="'.$field_name.'" id="'.$field_name.'" value="'.htmlspecialchars($value, ENT_COMPAT, $l['a_meta_charset']).'" size="20" maxlength="'.$maxlen.'" title="'.$description.'" />';
     $str .= $button;
     if (strlen($tip) > 0) {

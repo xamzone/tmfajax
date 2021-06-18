@@ -90,7 +90,7 @@ define('K_SITE_STYLE', K_PATH_STYLE_SHEETS.'default.min.css?07042021');
 /**
  * Full path to CSS stylesheet for RTL languages.
  */
-define('K_SITE_STYLE_RTL', K_PATH_STYLE_SHEETS.'default_rtl.min.css?07042021');
+define('K_SITE_STYLE_RTL', K_PATH_STYLE_SHEETS.'default_rtl.min.css?18062021130300');
 
 /**
 * Specify background image url, position, size, and blend mode on login screen

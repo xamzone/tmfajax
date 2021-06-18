@@ -66,7 +66,8 @@ if (!isset($thispage_style) or empty($thispage_style)) {
     } else {
         $thispage_style = K_SITE_STYLE;
     }
-}
+}  
+
 global $login_error;
 if (isset($login_error) and $login_error) {
     // F_print_error('WARNING', $l['m_login_wrong']);
@@ -134,6 +135,23 @@ echo '<!-- '.'T'.'C'.'E'.'x'.'a'.'m'.'19'.'73'.'01'.'04'.' -->'.K_NEWLINE;
   ?>
   <link rel="stylesheet" href="<?php echo $thispage_style; ?>">
   <?php
+  $cscheme = unserialize(file_get_contents('../config/colorscheme.json'));
+	if($cscheme['enable_ccs']){
+		echo '<style>'.K_NEWLINE;
+		array_shift($cscheme);
+		echo ':root{'.K_NEWLINE;
+		foreach($cscheme as $key => $value){
+			// echo $key.':'.$value.';'.K_NEWLINE;
+			if($key=='--bor-1'){
+				echo $key.':'.$value='1px solid '.$value.';'.K_NEWLINE;
+			}else{
+				echo $key.':'.$value.' !important;'.K_NEWLINE;
+			}
+		}
+		echo '}'.K_NEWLINE;
+		echo '</style>'.K_NEWLINE;
+	}
+
   if( K_DEFFONT!=='System Default' ){
 	  echo '<link rel="stylesheet" href="../../fonts/'.K_DEFFONT.'/'.K_DEFFONT.'.css">';
   }

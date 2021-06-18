@@ -419,7 +419,7 @@ if($siap_publikasi){
 }
 .print_skl {/**width: 734px;**/ margin:0 auto; margin-bottom: 10px}
 
-.subcont {padding:10px 30px 20px 30px; background: #fff; border-radius:0 0 5px 5px; border:1px solid #d7dade!important}
+.subcont {padding:10px 30px 20px 30px; background: #fff; border-radius:0 0 5px 5px; border:1px solid var(--bor-col1)!important}
 div#qrcode {position:absolute}
 div#qrcode img {width:137px}
 .spvalue {color:#fff; border-radius: 5px; padding:5px 13px; display:inline-block}

@@ -47,6 +47,8 @@ h2,h3 {page-break-after: avoid;}
 */
 /* TMF Style by mamans86 | https://mamans86.blogspot.com | mamansulaeman86@gmail.com | https://t.me/mamans86 */
 :root{
+	--header:#3b5998; /*primary dark 1*/
+	--link:#3b5998; /*primary dark 1*/
 	--col-1:#3b5998; /*primary dark 1*/
 	--col-1t:rgba(59,89,152,0.2);
 	--col-2:#3b5998; /*primary dark 2*/
@@ -73,6 +75,7 @@ h2,h3 {page-break-after: avoid;}
 	--col-15t:rgba(0,0,0,0.25); /* 25% transparent of black*/
 	--bg-t1:rgba(0,0,0,0.02);
 	--bor-1:1px solid #D7DADE;
+	--bor-col1:#D7DADE;
 	--shd-1:0 1px 2px rgba(0, 0, 0, 0.2);
 	--shd-in1:inset 2px 2px 0px 0px rgba(0,0,0,0.1);
 }
@@ -84,7 +87,7 @@ body{display:flex;flex-direction:column;background-color:var(--col-5a)}
   
 img{width:auto;max-width:100%;height:auto;max-height:100%}
 #form_filemanager div fieldset div img[alt]{width:unset !important;max-width:unset !important;height:200px !important;max-height:unset !important}
-div.header{background:var(--col-1)}
+div.header{background:var(--header)}
 div.right{height:0}
 input:focus{outline:none;background:#fafafa}button:focus{outline:none}
 input[type=checkbox]#show_graph,label[for=show_graph]{display:inline-block;width:auto}
@@ -175,7 +178,7 @@ border-bottom: var(--bor-1);
 
 div#containerWrapper > .container > .warning{position:unset !important;box-shadow:unset !important}
 
-a{text-decoration:none;color:var(--col-1)}
+a{text-decoration:none;color:var(--link)}
 label{text-transform:capitalize}
 #login,label,input,button{display:block;width:100%;border:none}
 select,input[type=text],input[type=password],input[type=checkbox]{padding:0.65em 0.65em; border:var(--bor-1);box-sizing: border-box;border-radius:3px;outline:none}
@@ -216,7 +219,7 @@ div.minibutton span.langselector{background:var(--col-7);display:block;padding: 
 .langselector span.selected{border-radius:3px;background:var(--col-1);font-weight:bold;color:var(--col-7) !important;margin: 0.25em;padding: 0.3em 0.5em;border: 1px solid var(--col-1);font-family: monospace;}
 #activeLang{position:absolute;bottom: -5px;right: -10px;background:var(--col-8);border-radius:50px;font-size: 10px;display:inline-block;color:#343a40;width: 20px;height: 20px;line-height: 2;text-align:center;font-weight:bold}
 div.minibutton span.copyright {display:block;padding:1.1em 1em 0 1em;font-size:0.80em}
-div.minibutton span.copyright a {display:inline-block;color:var(--col-1);font-weight:500}
+div.minibutton span.copyright a {display:inline-block;color:var(--link);font-weight:500}
 div.minibutton a span {color:var(--col-7) !important;background:var(--col-1);padding:0.3em 0.5em;font-size:0.75em}
 .userbar{background:#212121;padding:0.5em 1em;color:var(--col-7);text-align:right}
 .userbar span{color:var(--col-7)}
@@ -510,7 +513,7 @@ label[for=xuser_name],label[for=xuser_password]{position:absolute;top:7px;left:1
 .bd-none{border:none !important}
 .box-bd{border-width:1px;border-style:solid;padding:0.5em 1em}.box-bd-2{border-width:1px;border-style:solid;padding:0.25em 0.5em}
 .brad{border-radius:3px}.brad5{border-radius:5px}.brad-top5{border-radius:5px 5px 0 0}.brad50{border-radius:50px}.brad100{border-radius:100px}
-.bd-gray1{border-color:#aaa!important}.bd-gray4{border-color:#ddd !important}.bd-gray5{border-color:#E0E0E0!important}.bd-gray6{border-color:#D7DADE!important}
+.bd-gray1{border-color:#aaa!important}.bd-gray4{border-color:#ddd !important}.bd-gray5{border-color:#E0E0E0!important}.bd-gray6{border-color:var(--bor-col1)}
 .bg-white{background:var(--col-7) !important}
 .lh2{line-height:2}
 .labeldesc {
