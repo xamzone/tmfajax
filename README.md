@@ -25,7 +25,7 @@ Daftar Ujian
 ## Fitur improvement dari TCExam
 - Input Soal lebih mudah, melalui Template MS Excel
 - Disediakan layanan online utk input soal melalui Template MS Word.
-- Fitur Mode Darurat (Lembar Halaman Offline), yang memungkinkan proses ujian tanpa kuota utama dan tanpa server.
+- Fitur Mode Darurat (Lembar Halaman Offline), yang memungkinkan proses ujian tanpa kuota, tanpa sinyal dan tanpa server.
 - Editing soal menggunakan antar muka HTML Editor, support konversi otomatis equation dari MS Word
 - Generate Test Data agar loading soal lebih cepat dengan user lebih banyak dalam satu waktu
 - Mengijinkan editing soal/jawaban/setting ujian meskipun Test sedang berjalan
