@@ -55,9 +55,9 @@ $filter = 'user_id='.$user_id;
 if (isset($_REQUEST['test_id']) and ($_REQUEST['test_id'] > 0)) {
     $test_id = intval($_REQUEST['test_id']);
     // check user's authorization
-    if (!F_isAuthorizedUser(K_TABLE_TESTS, 'test_id', $test_id, 'test_user_id')) {
-        F_print_error('ERROR', $l['m_authorization_denied'], true);
-    }
+    //if (!F_isAuthorizedUser(K_TABLE_TESTS, 'test_id', $test_id, 'test_user_id')) {
+      //  F_print_error('ERROR', $l['m_authorization_denied'], true);
+    //}
     $filter .= '&amp;test_id='.$test_id.'';
     $test_group_ids = F_getTestGroups($test_id);
 } else {
