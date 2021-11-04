@@ -464,7 +464,7 @@ if (isset($_REQUEST['sel'])) {
         echo '</span>'.K_NEWLINE;
         echo '<br /><strong style="margin:5px">'.$l['m_with_selected'].'</strong><br />'.K_NEWLINE;
 		F_submit_button_confirm('regrade', 'Regrade', 'Regrade', 'style="display:none"');
-		F_submit_button_confirm('regradebtn', 'Regrade', 'Regrade', 'onclick="event.preventDefault();var cbArr = document.querySelectorAll(\'#form_resultallusers td input[type=checkbox]:checked\');if(cbArr.length==0){alert(\'Harap pilih hasil ujian peserta terlebih dahulu!\')}else{document.getElementById(\'regrade\').click()}" style="background:#009688"');
+		F_submit_button_confirm('regradebtn', 'Regrade', 'Regrade', 'onclick="event.preventDefault();var cbArr = document.querySelectorAll(\'#form_resultallusers td input[type=checkbox]:checked\');if(document.getElementById(\'test_id\').selectedIndex == 0){alert(\'Pilih nama test/ujian terlebih dahulu\')}else{if(cbArr.length==0){alert(\'Harap pilih hasil ujian peserta terlebih dahulu!\')}else{document.getElementById(\'regrade\').click()}}" style="background:#009688"');
         F_submit_button_confirm('delete', $l['w_delete'], $l['h_delete'], 'onclick="return confirm(\''.$l['m_delete_confirm'].'\')"');
         
         F_submit_button('lock', $l['w_lock'], $l['w_lock']);

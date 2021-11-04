@@ -1397,15 +1397,26 @@ function F_printUserOfflineSheet($testuser_id)
     $retx = str_get_html($ret);
 
 	foreach($retx -> find('img') as $item){
-		$pos = strpos($item->src,'../../');
-		if($pos===0){
-			$item->src = str_replace('../../','',urldecode($item->src));
+		// $pos = strpos($item->src,'../../');
+		// if($pos===0){
+			// $item->src = str_replace('../../','',urldecode($item->src));
+			// $mime_type = mime_content_type(K_PATH_MAIN.$item->src);
+			// $img_new = base64_encode(file_get_contents(K_PATH_MAIN.$item->src));
+
+			// $item->src = 'data:'.$mime_type.';base64,'.$img_new;
+		// }else{
+			// $pos = strpos($item->src,';base64,');
+			// if($pos===1){
+		$jebluk = explode('cache/upload',$item->src);
+		if(@$jebluk[1]){
+			$item->src = 'cache/upload'.urldecode($jebluk[1]);
 			$mime_type = mime_content_type(K_PATH_MAIN.$item->src);
 			$img_new = base64_encode(file_get_contents(K_PATH_MAIN.$item->src));
 
 			$item->src = 'data:'.$mime_type.';base64,'.$img_new;
-
 		}
+			// }	
+		// }
 	}
 	
 	foreach($retx -> find('source') as $item){

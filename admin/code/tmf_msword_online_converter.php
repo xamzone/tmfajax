@@ -54,16 +54,8 @@ echo '<fieldset style="text-align:left;background:#fff;padding:1em 2em">'.K_NEWL
 <li>Download Format MS Word <a href="https://drive.google.com/file/d/1YB7m56snLBaDKy0dBEJ5JULBt9vKABRe/view">disini</a></li>
 <li>Setelah didownload ubah sesuai dengan keinginan, perhatikan beberapa contoh soal. Ada tipe soal MCSA, MCMA, Isian singkat, Uraian Panjang, maupun Ordering</li>
 <li>Setelah selesai, simpan soal</li>
-<li>Buka Halaman Web Konverter <a href="https://pemdas.yayasan-gondang.com/word-to-tcexam-xml/admin/code/tmf_word_import.php" target="blank">disini</a></li>
-<li>Login menggunakan akun yang dimiliki. Untuk request akun silakan hubungi Mr.Man <br/>WhatsApp: <a href="https://wa.me/628561575817">https://wa.me/628561575817</a><br/>Telegram: <a href="https://t.me/mamans86">@mamans86</a></li>
-<li>Buka kembali soal yang telah Anda susun di Microsoft Word, tekan CTRL+A untuk menseleksi semua soal.</li>
-<li>Tekan CTRL+C untuk menyalin/mengcopy semua soal.</li>
-<li>Paste semua soal yang ada pada MS Word ke form yang disediakan</li>
-<li>Silakan Review soal yang telah masuk ke editor. Apabila ada yang belum sesuai silakan lakukan perubahan seperlunya.</li>
-<li>Klik tombol PROCEED untuk mulai memproses soal ke dalam sistem</li>
-<li>Daftar soal yang telah masuk akan ditampilkan, dan Anda bisa mereview ulang. Apabila butuh mengulangi proses pengubahan silakan klik tombol Retry di bawah.</li>
-<li>Apabila sudah merasa bahwa soal yang telah masuk sudah sesuai, silakan klik tombol Convert and Download XML Format</li>
-<li>Anda dapat menggunakan file XML ini untuk diimportkan ke TCExam Anda masing-masing.</li>
+<li>Buka Halaman Web Konverter <a href="https://pemdas.yayasan-gondang.com/simple-word2tcexml" target="blank">disini</a></li>
+<li>Baca petunjuk dan pelajari cara penggunaan konverter di halaman tersebut.</li>
 </ol>
 <h3>Untuk mengimport file XML ke TCExam caranya adalah :</h3>
 <ol>

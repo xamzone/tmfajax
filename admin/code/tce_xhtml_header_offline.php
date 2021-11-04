@@ -80,9 +80,6 @@ if(isset($_COOKIE['test_id'])){
 	setcookie("test_id", "", time()-3600, "/");
 }
 
-//echo '<'.'?'.'xml version="1.0" encoding="'.$l['a_meta_charset'].'" '.'?'.'>'.K_NEWLINE;
-//echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">'.K_NEWLINE;
-//echo '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="'.$l['a_meta_language'].'" lang="'.$l['a_meta_language'].'" dir="'.$l['a_meta_dir'].'">'.K_NEWLINE;
 echo '<!DOCTYPE html>'.K_NEWLINE;
 echo '<html lang="en">'.K_NEWLINE;
 echo '<head>'.K_NEWLINE;
@@ -90,15 +87,7 @@ echo '<meta charset="UTF-8">'.K_NEWLINE;
 echo '<meta http-equiv="Content-Type" content="text/html; charset='.$l['a_meta_charset'].'" />'.K_NEWLINE;
 echo '<meta name="viewport" content="width=device-width, initial-scale=1">'.K_NEWLINE;
 echo '<title>'.strtoupper(htmlspecialchars($thispage_title, ENT_NOQUOTES, $l['a_meta_charset'])).'</title>'.K_NEWLINE;
-//echo '<title>'.$thispage_title.'</title>'.K_NEWLINE;
-//echo '<meta http-equiv="Content-Type" content="text/html; charset='.$l['a_meta_charset'].'" />'.K_NEWLINE;
-//echo '<meta name="language" content="'.$l['a_meta_language'].'" />'.K_NEWLINE;
-//echo '<meta name="tcexam_level" content="'.$pagelevel.'" />'.K_NEWLINE;
-//echo '<meta name="description" content="'.htmlspecialchars($thispage_description, ENT_COMPAT, $l['a_meta_charset']).' ['.base64_decode(K_KEY_SECURITY).']" />'.K_NEWLINE;
-//echo '<meta name="description" content="'.htmlspecialchars($thispage_description, ENT_COMPAT, $l['a_meta_charset']).'" />'.K_NEWLINE;
-//echo '<meta name="author" content="nick"/>'.K_NEWLINE;
-//echo '<meta name="reply-to" content="'.htmlspecialchars($thispage_reply, ENT_COMPAT, $l['a_meta_charset']).'" />'.K_NEWLINE;
-//echo '<meta name="keywords" content="'.htmlspecialchars($thispage_keywords, ENT_COMPAT, $l['a_meta_charset']).'" />'.K_NEWLINE;
+
 if(f_sc_name('tmf_show_offline_sheet.php')){
 	echo '<style>';
 
@@ -120,15 +109,8 @@ echo '<link rel="stylesheet" href="'.K_PATH_HOST.K_PATH_TCEXAM.'admin/styles/sel
 }
 $ua=$_SERVER['HTTP_USER_AGENT'];
 if(strpos($ua, 'Chrome') !== false ){
-	//$jqmathcss='<link rel="stylesheet" href="../../public/styles/jqmath.css" type="text/css" />';
-	//$jqmathjs='<script type="text/javascript" src="../../shared/jscripts/jqmath.js"></script>';
-	////////////$jqmathcss='<link rel="stylesheet" href="../../public/styles/jqmath-0.4.3.css" type="text/css" />';
-	////////////$jqmathjs='<script type="text/javascript" src="../../shared/jscripts/jqmath-etc-0.4.5.min.js"></script>';
 	$jqmathcss='';
 	$jqmathjs='';
-	//$jqmathcss='';
-        //$jqmathjs='<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_CHTML"></script>';
-
 }else{
 	$jqmathcss='';
 	$jqmathjs='';
@@ -141,8 +123,7 @@ if(!f_sc_name("tmf_show_offline_sheet.php")){
 if (isset($enable_calendar) and $enable_calendar) {
     echo '<style type="text/css">@import url('.K_PATH_SHARED_JSCRIPTS.'jscalendar/calendar-blue.css);</style>'.K_NEWLINE;
     echo '<script type="text/javascript" src="'.K_PATH_SHARED_JSCRIPTS.'jscalendar/calendar.js"></script>'.K_NEWLINE;
-    //if (file_exists(''.K_PATH_SHARED_JSCRIPTS.'jscalendar/lang/calendar-'.$l['a_meta_language'].'.js')) {
-    //if (safe_file_exists(''.K_PATH_SHARED_JSCRIPTS.'jscalendar/lang/calendar-'.$l['a_meta_language'].'.js')) {		
+		
     if (F_file_exists(''.K_PATH_SHARED_JSCRIPTS.'jscalendar/lang/calendar-'.$l['a_meta_language'].'.js')) {	
         echo '<script type="text/javascript" src="'.K_PATH_SHARED_JSCRIPTS.'jscalendar/lang/calendar-'.$l['a_meta_language'].'.js"></script>'.K_NEWLINE;
     } else {
@@ -184,8 +165,52 @@ if(f_sc_name('tmf_show_offline_sheet.php')){
 ?>
 
 <script>
-	// console.log($("input#test_begin_time"));
-	// var cekLoginTime;
+var blockedCount = 2;
+var resetPass = "tmf5758";
+
+function resetAction(){
+	var resetInput = prompt("Masukkan password reset");
+	if(resetInput==resetPass){
+		localStorage.clear();
+		location.reload();
+	}else{
+		alert("PASSWORD RESET TIDAK VALID! Coba ulang kembali.");
+	}
+}
+
+function display_c(){
+	var refresh=500; // Refresh rate in milli seconds
+	mytime=setTimeout('display_msg()',refresh)
+}
+
+function display_msg(){
+	if(localStorage.getItem("logged_in")=="1"){
+		if ( (document.hasFocus() && localStorage.getItem("lagiunduh")==null) || (document.hasFocus() && localStorage.getItem("testFinished")==null) ) {
+			var terkunci = parseInt(localStorage.getItem("terkunci"));
+			if(terkunci!=blockedCount){
+				terkunci = terkunci+1;
+				localStorage.setItem("terkunci",terkunci);
+				document.getElementById("blocked").style.display = "flex";
+				if(terkunci>2){
+					document.getElementById("blocked").innerHTML = "<div>Halaman Terkunci<br><span class='ft-sm'>Tunggu hingga "+blockedCount+" hitungan</span><br>"+terkunci+"</div>";
+				}else{
+					document.getElementById("blocked").innerHTML = "<div>Halaman Terkunci<br><span class='ft-sm'>Tunggu hingga "+blockedCount+" hitungan</span><br>"+terkunci+"<br/><span class='ft-sm'>Apabila hitungan tidak berjalan normal, kemungkinan Anda membuka lebih dari satu halaman soal.</span><br/><span onclick='window.close()' class='bd-green ft-hijau p-5 brad-100 c-pointer ft-sm'>Tutup Soal</span></div>";
+				}
+				
+			}else{
+				document.getElementById("blocked").style.display = "none";
+			}
+		}else{
+			localStorage.setItem("terkunci",0);
+			document.getElementById("blocked").style.display = "flex";
+			document.getElementById("blocked").innerHTML = "Halaman Terkunci";
+		}
+		display_c();
+	}
+}
+
+window.onload=display_c;
+
 	function myTimerx() {
 		var tbeginx = new Date(localStorage.getItem("testBeginTime"));	
 		var todayx = new Date();
@@ -197,30 +222,34 @@ if(f_sc_name('tmf_show_offline_sheet.php')){
 			$("#password").removeAttr("style");
 			$("#infoPass").hide();
 		}
-		console.log("xxx");
 	}
 	
-	// setInterval(myTimerx, 1000);
 	setTimeout(myTimerx, 1000);
 	setTimeout(myTimerx, 2000);
 	setTimeout(myTimerx, 3000);
 	setTimeout(myTimerx, 4000);
 	setTimeout(myTimerx, 5000);
-	/* 
-	var tbeginx = new Date(localStorage.getItem("testBeginTime"));	
-	var todayx = new Date();	
-
-	var tsTodayx = todayx.getTime();
-	var tsBeginTx = tbeginx.getTime();
-
-	
-	if(tsTodayx>=tsBeginTx){
-		$("#password").removeAttr("readonly");
-		$("#password").removeAttr("style");
-	} */
 	
 $(document).ready(function(){
 
+if(localStorage.getItem("curNo")==null && localStorage.getItem("unduh")){
+	localStorage.clear();
+}
+	
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+if(urlParams.has('reset')){
+	if(urlParams.get('reset')==resetPass){
+		localStorage.clear();
+		window.location.href = location.protocol + '//' + location.host + location.pathname;
+	}
+}
+
+	var blockedDiv = document.createElement("div");
+	blockedDiv.id = "blocked";
+	blockedDiv.style.cssText = "text-align:center;color:#ffffff;justify-content:center;align-items:center;font-size: xx-large;display:none;position:fixed;width:100%;height:100%;z-index:100;background:#000";
+	document.body.appendChild(blockedDiv);
+	
 	if(localStorage.getItem("testFinished")==$("#idTUID").text()){
 		$("#clearLS").hide();
 	}
@@ -235,9 +264,9 @@ $(document).ready(function(){
 	var today = new Date();
 	var tendTime = new Date(tend);
 	
+	let tEndTimeInfo = "1";
 	
-
-	function myTimer() {
+	function myTimer(){
 		// console.log("aaa");
 		var tend = $("input#test_end_time").val();
 		var today = new Date();
@@ -250,6 +279,11 @@ $(document).ready(function(){
 			testEndTime = new Date(today.getTime() + testDurationMS);
 			if(localStorage.getItem("logged_in")==null){
 				localStorage.setItem("testEndTime", testEndTime);
+				
+				if(tEndTimeInfo.length<2){
+					tEndTimeInfo = chDateF(testEndTime);
+					$("#endDateInfo").html(tEndTimeInfo);
+				}				
 			}
 		}else{
 			localStorage.setItem("testEndTime", tend);
@@ -260,24 +294,11 @@ $(document).ready(function(){
 		setInterval(myTimer, 1000);
 	}
 
-	
-	
-	// localStorage.setItem("testEndTime", tend);
 	localStorage.setItem("testDurTime", tdur);
 
 	var tBeginT = new Date(localStorage.getItem("testBeginTime"));
 	var tEndT = new Date(localStorage.getItem("testEndTime"));
 	var tDurT = new Date(localStorage.getItem("testDurTime"));
-	
-	<?php
-	/* $max_test_duration = strtotime($test_end_time) - strtotime($test_begin_time);
-	$test_duration_today_to_end = strtotime($test_end_time) - time();
-	$test_duration_seconds = $test_duration_time*60;
-
-	if($test_duration_today_to_end > $test_duration_seconds){
-		$test_end_time = date('Y-m-d H:i:s', time()+$test_duration_seconds);
-	} */
-	?>
 
 	var tsToday = today.getTime();
 	var tsBeginT = tBeginT.getTime();
@@ -313,7 +334,7 @@ $(document).ready(function(){
 			tbtDetik = '0'+tbtDetik;
 		}
 
-		var tbtFull = tbtDate+" "+tbtMonth+" "+tbtYear+"<span class=\"bg-white ft-black p-2 ml-5 brad-100\">"+tbtJam+":"+tbtMenit+":"+tbtDetik+"</span>";
+		var tbtFull = tbtDate+" "+tbtMonth+" "+tbtYear+"<span id=\"endTimeInfo\" class=\"bg-white ft-black p-2 ml-5 brad-100\">"+tbtJam+":"+tbtMenit+":"+tbtDetik+"</span>";
 		return tbtFull;
 	}
 
@@ -326,7 +347,7 @@ $(document).ready(function(){
 	localStorage.setItem("namaUjian", $("span#namaUjian").text());
 	var namaUjian = localStorage.getItem("namaUjian");
 
-	var infoUjian = "<div class=\"p-10 m-10 bg-white brad-5 boxshd-lt\"><div style=\"display:flex;justify-content:center;align-items:center\" class=\"mb-5\"><span class=\"d-block txt-right w-100\">Ujian</span><span class=\"bg-biru ml-5 d-block w-p100 p-5 ft-white ft-bold bdl-5-blue2 brad-5\">"+namaUjian+"</span></div><div style=\"display:flex;justify-content:center;align-items:center;margin-bottom:5px\"><span class=\"d-block txt-right w-100\">Waktu Mulai</span><span class=\"bg-hijau ml-5 d-block w-p100 p-5 ft-bold ft-white bdl-5-green brad-5\">"+chDateF(tBeginT)+"</span></div><div style=\"display:flex;justify-content:center;align-items:center;margin-bottom:5px\"><span class=\"d-block txt-right w-100\">Waktu berakhir</span><span class=\"d-block ml-5 w-p100 p-5 bg-merah ft-bold ft-white bdl-5-red2 brad-5\">"+chDateF(tEndT)+"</span></div></div>"
+	var infoUjian = "<div class=\"p-10 m-10 bg-white brad-5 boxshd-lt\"><div style=\"display:flex;justify-content:center;align-items:center\" class=\"mb-5\"><span class=\"d-block txt-right w-100\">Ujian</span><span class=\"bg-biru ml-5 d-block w-p100 p-5 ft-white ft-bold bdl-5-blue2 brad-5\">"+namaUjian+"</span></div><div style=\"display:flex;justify-content:center;align-items:center;margin-bottom:5px\"><span class=\"d-block txt-right w-100\">Waktu Mulai</span><span class=\"bg-hijau ml-5 d-block w-p100 p-5 ft-bold ft-white bdl-5-green brad-5\">"+chDateF(tBeginT)+"</span></div><div style=\"display:flex;justify-content:center;align-items:center;margin-bottom:5px\"><span class=\"d-block txt-right w-100\">Waktu berakhir</span><span id=\"endDateInfo\" class=\"d-block ml-5 w-p100 p-5 bg-merah ft-bold ft-white bdl-5-red2 brad-5\">"+chDateF(tEndT)+"</span></div></div>"
 	
 	$("div#loginBlock").prepend(infoUjian);
 	
@@ -374,32 +395,69 @@ $(document).ready(function(){
 		var bcrypt = dcodeIO.bcrypt;
 		
 		localStorage.setItem("curNo",1);
+		
 		var pagas = $("input#pagas").val();
 		var pass = $("input#password").val();
 		
 		pagas = pagas.replace(/^\$2y(.+)$/i, '$2a$1');		
+		
+		var token = $("input#token").val();
+		var inputtoken = $("input#inputtoken").val();
+		
+		if(token.length>0){
+			token = token.replace(/^\$2y(.+)$/i, '$2a$1');
+		}
 	
 		bcrypt.compare(pass, pagas, function(err, res){
 			//console.log(res);
 			if(res===true){
-				if(tsToday >= tsBeginT){
-					// alert(cekLoginTime);
-					// window.clearInterval(cekLoginTime);
-					// cekLoginTime = -1;
-					window.scrollTo(0,0);
-					$("div#loginBlock").addClass("hidden");
-					localStorage.setItem("logged_in_TUID", tuid);
-					localStorage.setItem("logged_in","1");
-					$("div#timerDiv").removeClass("hidden");
-					$("div#boxJawaban").removeClass("hidden");
+				if(token.length>0){
+					bcrypt.compare(inputtoken, token, function(errToken, resToken){
+						if(resToken===true){
+							if(tsToday >= tsBeginT){
+								localStorage.setItem("terkunci",blockedCount);
+								// alert(cekLoginTime);
+								// window.clearInterval(cekLoginTime);
+								// cekLoginTime = -1;
+								window.scrollTo(0,0);
+								$("div#loginBlock").addClass("hidden");
+								localStorage.setItem("logged_in_TUID", tuid);
+								localStorage.setItem("logged_in","1");
+								$("div#timerDiv").removeClass("hidden");
+								$("div#boxJawaban").removeClass("hidden");
+							}else{
+								$("div#loginBlock").html("<div class=\"pwrap\"><div>Ujian belum dimulai, silakan tunggu dan tekan tombol Reload di bawah apabila jadwal ujian telah dimulai</div><div><span class=\"pwrap bg-hijau ft-white ft-bold d-block txt-center\" onclick=\"location.reload()\">RELOAD</span></div></div>");
+								location.reload();
+							}
+							window.scrollTo(0,0);
+							localStorage.setItem("logged_in","1");
+							localStorage.setItem("logged_in_TUID", tuid);
+							location.reload();
+						}else{
+							alert("TOKEN TIDAK VALID!");
+						}
+					})
 				}else{
-					$("div#loginBlock").html("<div class=\"pwrap\"><div>Ujian belum dimulai, silakan tunggu dan tekan tombol Reload di bawah apabila jadwal ujian telah dimulai</div><div><span class=\"pwrap bg-hijau ft-white ft-bold d-block txt-center\" onclick=\"location.reload()\">RELOAD</span></div></div>");
+					if(tsToday >= tsBeginT){
+						localStorage.setItem("terkunci",blockedCount);
+						// alert(cekLoginTime);
+						// window.clearInterval(cekLoginTime);
+						// cekLoginTime = -1;
+						window.scrollTo(0,0);
+						$("div#loginBlock").addClass("hidden");
+						localStorage.setItem("logged_in_TUID", tuid);
+						localStorage.setItem("logged_in","1");
+						$("div#timerDiv").removeClass("hidden");
+						$("div#boxJawaban").removeClass("hidden");
+					}else{
+						$("div#loginBlock").html("<div class=\"pwrap\"><div>Ujian belum dimulai, silakan tunggu dan tekan tombol Reload di bawah apabila jadwal ujian telah dimulai</div><div><span class=\"pwrap bg-hijau ft-white ft-bold d-block txt-center\" onclick=\"location.reload()\">RELOAD</span></div></div>");
+						location.reload();
+					}
+					window.scrollTo(0,0);
+					localStorage.setItem("logged_in","1");
+					localStorage.setItem("logged_in_TUID", tuid);
 					location.reload();
 				}
-				window.scrollTo(0,0);
-				localStorage.setItem("logged_in","1");
-				localStorage.setItem("logged_in_TUID", tuid);
-				location.reload();
 			}else{
 				alert("Password yang Anda masukkan TIDAK VALID");
 			}
@@ -460,13 +518,7 @@ $(document).ready(function(){
 		}
 	}
 
-
-//	for(i=1; i < jmlSoal; i++){
-//	}
-
-
 	$("ol.answer li").click(function(){
-//		alert(jmlSoal);
 		localStorage.setItem("is_mengerjakan","1");
 		var liClass = $(this).attr("class");
 		if(liClass!=="answered"){
@@ -475,63 +527,63 @@ $(document).ready(function(){
 			switch(iOpsi){case 1: var iOpsi = 'A';break;case 2: var iOpsi = 'B';break;case 3: var iOpsi = 'C';break;case 4: var iOpsi = 'D';break;case 5: var iOpsi = 'E';break;case 6: var iOpsi = 'F';break;case 7: var iOpsi = 'G';break;case 8: var iOpsi = 'H';break;case 9: var iOpsi = 'I';break;case 10: var iOpsi = 'J';break;case 11: var iOpsi = 'K';break;case 12: var iOpsi = 'L';break;case 13: var iOpsi = 'M';break;case 14: var iOpsi = 'N';break;case 15: var iOpsi = 'O';break;case 16: var iOpsi = 'P';break;case 17: var iOpsi = 'Q';break;case 18: var iOpsi = 'R';break;case 19: var iOpsi = 'S';break;case 20: var iOpsi = 'T';break;}
 			var parentIndex = $(this).parents("li").index();
 			var iNomor = parentIndex + 1;
-//			alert(iNomor)
-//			var con = confirm("Anda memilih opsi "+iOpsi+" untuk nomor "+iNomor+"\n\nApakah Anda yakin?");
-//			if(con){
 				localStorage.setItem("NO_"+iNomor, iNomor+"."+iOpsi);
 				localStorage.setItem(iNomor, opsi+1);
 				$(this).addClass("answered");
 				$(this).siblings().removeClass("answered");
-//			}
 			$("span#"+iNomor).addClass("ansOLS");
 		}
 	})
 
 
 	$("span#simpanJawaban").click(function(){
+		var nmUjian = $("span#namaUjian").text().replace(/'/g, '').replace(/(?:\r\n|\r|\n)/g, '');
+		var nmPeserta = $("span#nmPes").text().replace(/'/g, '').replace(/(?:\r\n|\r|\n)/g, '');
+		var kelPeserta = $("span#kelPes").text().replace(/'/g, '').replace(/(?:\r\n|\r|\n)/g, '');
+				
 		var jmlSoalTerjawab = $("li.answered").length;
 		var sisaSoal = jmlBtrSoal - jmlSoalTerjawab;
 		if(((jmlSoalTerjawab == jmlBtrSoal) || localStorage.getItem("testFinished")===loggedInTUID) && localStorage.getItem("is_mengerjakan")==="1"){
-		p = '';
-		for(i=1; i < jmlSoal; i++){
-			p += localStorage.getItem("NO_"+i)+"\r\n";
-			if(p===null){p = '';}
-		}
-		$("textarea#dataJawaban").val(btoa(tuid+"\n"+p));
+			p = '';
+			for(i=1; i < jmlSoal; i++){
+				p += localStorage.getItem("NO_"+i)+"\r\n";
+				if(p===null){p = '';}
+			}
+			$("textarea#dataJawaban").val("<"+nmPeserta+" | "+nmUjian+" | "+kelPeserta+">"+btoa(tuid+"\n"+p));
 
-		var lsTestFinished = localStorage.getItem("testFinished");
-		var lsTestUserID = localStorage.getItem("testUserID");
+			var lsTestFinished = localStorage.getItem("testFinished");
+			var lsTestUserID = localStorage.getItem("testUserID");
 
-		if(lsTestFinished===null){
-			var conf = confirm("Anda masih diperkenankan untuk memeriksa kembali Jawaban Anda. \n\nApabila sudah yakin tekan Oke. Apabila ingin mengubah jawaban tekan Batal");
+			if(lsTestFinished===null){
+				var conf = confirm("Anda masih diperkenankan untuk memeriksa kembali Jawaban Anda. \n\nApabila sudah yakin tekan Oke. Apabila ingin mengubah jawaban tekan Batal");
+			}else{
+				var conf = true;
+			}
+			if(conf){
+				localStorage.setItem("lagiunduh","1");
+				var asd = new Blob(["<"+nmPeserta+" | "+nmUjian+" | "+kelPeserta+">"+btoa(tuid+"\r\n"+p)], {type: "text/plain;charset=utf-8"});
+
+				saveAs(asd, "jwbn_"+nmPeserta+"_"+nmUjian+"_"+kelPeserta+".txt");
+				alert("Jawaban Anda akan disalin / diunduh");
+				
+				$("textarea#dataJawaban").select();
+				document.execCommand('copy');
+				$("textarea#dataJawaban").blur();
+				
+
+				$("#infoDataJawaban").show();
+
+				$("span#keluarTes").show();
+				localStorage.setItem("unduh","1");
+				localStorage.removeItem("lagiunduh");
+			}
 		}else{
-			var conf = true;
+			if(localStorage.getItem("is_mengerjakan")===null){
+				alert("Anda tidak mengerjakan Ujian. Tidak ada jawaban yang disalin");
+			}else{
+				alert("Ada "+sisaSoal+" soal yang belum terjawab. Silakan periksa kembali jawaban Anda.");
+			}
 		}
-		if(conf){
-			var asd = new Blob([btoa(tuid+"\r\n"+p)], {type: "text/plain;charset=utf-8"});
-			var nmUjian = $("span#namaUjian").text().replace(/'/g, '').replace(/(?:\r\n|\r|\n)/g, '');
-			var nmPeserta = $("span#nmPes").text().replace(/'/g, '').replace(/(?:\r\n|\r|\n)/g, '');
-			var kelPeserta = $("span#kelPes").text().replace(/'/g, '').replace(/(?:\r\n|\r|\n)/g, '');
-
-			saveAs(asd, "jwbn_"+nmUjian+"_"+nmPeserta+"_"+kelPeserta+"_"+tuid+".txt");
-			alert("Jawaban Anda akan disalin / diunduh");
-			
-			$("textarea#dataJawaban").select();
-			document.execCommand('copy');
-			$("textarea#dataJawaban").blur();
-			
-
-			$("#infoDataJawaban").show();
-
-			$("span#keluarTes").show();
-		}
-	}else{
-		if(localStorage.getItem("is_mengerjakan")===null){
-			alert("Anda tidak mengerjakan Ujian. Tidak ada jawaban yang disalin");
-		}else{
-			alert("Ada "+sisaSoal+" soal yang belum terjawab. Silakan periksa kembali jawaban Anda.");
-		}
-	}
 	})
 
 	if(tuid!=lsTestUserID){
@@ -541,9 +593,6 @@ $(document).ready(function(){
 var countDownDate = new Date(tsEndT);
 
 var x = setInterval(function() {
-	
-	// console.log("aaa");
-	
 
   var now = new Date().getTime();
   var distance = countDownDate - now;
@@ -572,15 +621,10 @@ var x = setInterval(function() {
   if(hours.length<2){hours = '0'+hours;}
   if(minutes.length<2){minutes = '0'+minutes;}
   if(seconds.length<2){seconds = '0'+seconds;}
-  //if(days.length<2){days = '0'+days;}
 
 
   $("#demo").html("<span class='kondon hari' "+hidedays+">"+ days + " hr&nbsp;</span><span "+hidehours+">" + hours + "</span>:<span class='kondon menit' "+hidemin+">"
   + minutes + "</span>:<span class='kondon detik'>" + seconds + "</span>");
-
-  // if(localStorage.getItem('logged_in_TUID')==localStorage.getItem('testFinished')){
-		// clearInterval(x);
-	// }
   
   if(localStorage.getItem('testUserID')==localStorage.getItem('testFinished')){
 	  distance = -1;
@@ -588,12 +632,12 @@ var x = setInterval(function() {
 	}
 	
   // If the count down is finished, write some text
-  if (distance < 0) {
+  if (distance < 0){
     clearInterval(x);
     $(".pageTitleDesc").append("<span class='d-block bg-merah ft-white p-10'>Waktu mengerjakan Ujian telah selesai</span>");
-    //alert("Ujian selesai");
     localStorage.setItem("testFinished",loggedInTUID);
     $("div.tceformbox").addClass("hidden");
+	$(".pageTitleDesc").append("<span id='btnReset' onclick='resetAction()' class='d-block bg-ungu ft-white p-10'>RESET</span>");
   }
 }, 1000);
 
@@ -608,10 +652,7 @@ $("#bListSoal").click(function(){
 $("div#listSoal span").click(function(){
 	$(this).addClass("bd-biru");
 	$(this).siblings().removeClass("bd-biru");
-//	$.not(this).toggleClass("bd-gray1");
-//	if($(this).hasClass("bd-gray1")){
-//		alert("xxx");
-//	}
+
 	var curNo = localStorage.getItem("curNo");
 	var targetNo = $(this).attr("id");
 	if(curNo!==targetNo){
@@ -672,15 +713,11 @@ $('.sel-edit-test,select#display_mode,select#omrdir').selectize({
 
 
 	$("div#logout").click(function(){
-		//$("a").attr("href","tce_logout.php").trigger("click");
 		window.open("tce_logout.php");
-		//alert("logout");
 	});
 
 	var wdWidth = $(window).width();
 	var mnWidth = $("div#scrollayer-mod").width();
-	//var divBodyWd = wdWidth - mnWidth - 30;
-//	var divBodyWd = wdWidth - mnWidth - 17;
 	var divBodyWd = wdWidth - mnWidth;
 
 	$("li ul.fa-ul li a").click(function(){
@@ -688,23 +725,16 @@ $('.sel-edit-test,select#display_mode,select#omrdir').selectize({
 	});
 
 	if(window.matchMedia('(max-width:600px)').matches){
-		/**$("div").not("#scrollayer-mod").click(function(){
-			$("div#menuHide").trigger("click");
-		})**/
 		$("#menuHide").css("position","absolute");
 		$("#menuHide").css("left","-100px");
-		//$("span#menuHide").hide();
 		$("span#menuShow").show();
-//		$("div#scrollayer-mod").animate({left: "-300px"});
 		$("div.body").css("width","100%");
 
 		$("#menuHide").click(function(){
-			//$("div#scrollayer-mod").hide();
 			$("div#scrollayer-mod").css("whiteSpace","nowrap");
-			//$("div#scrollayer-mod").animate({width: 'toggle'});
-			//$("div#scrollayer-mod").hide();
+
 			$("div#scrollayer-mod").css("left","-300px");
-			//$("div.body").css({width: '100%'});
+
 			$("div.body").css("width","100%");
 			$(this).css("left","-100px");
 			$("span#menuShow").show();
@@ -712,15 +742,10 @@ $('.sel-edit-test,select#display_mode,select#omrdir').selectize({
 
 		$("#menuShow").click(function(){
 			$("#menuHide").css("left","267px");
-			//$("div#scrollayer-mod").css("display","block");
 			$("div#scrollayer-mod").css("whiteSpace","nowrap");
-			//$("div#scrollayer-mod").animate({width: 'toggle'});
-			//$("div#scrollayer-mod").show();
 			$("div#scrollayer-mod").css("left", "0px");
-			//$("div.body").css({width: '79%'});
 			$("div.body").css("width","100%");
 			$(this).hide();
-			//$("span#menuHide").show();
 		});
 
 	}
@@ -732,16 +757,12 @@ $('.sel-edit-test,select#display_mode,select#omrdir').selectize({
 			var mnWidth = $("div#scrollayer-mod").width();
 			var divBodyWd = wdWidth - mnWidth;
 			$("div.body").css({width: divBodyWd+'px'});
-			//console.log(divBodyHg);
 		})
 
 		$("div.body").css("width",divBodyWd+"px");
 
 		$("#menuHide").click(function(){
-			//$("div#scrollayer-mod").hide();
 			$("div#scrollayer-mod").css("whiteSpace","nowrap");
-			//$("div#scrollayer-mod").animate({width: 'toggle'});
-			//$("div.body").css({width: '100%'});
 			$("div.body").css("width","100%");
 			$("div#scrollayer-mod").css("left","-300px");
 			$(this).hide();
@@ -751,14 +772,9 @@ $('.sel-edit-test,select#display_mode,select#omrdir').selectize({
 		$("#menuShow").click(function(){
 			var wdWidth = $(window).width();
 			var mnWidth = $("div#scrollayer-mod").width();
-			//var divBodyWd = wdWidth - mnWidth - 30;
-//			var divBodyWd = wdWidth - mnWidth - 17;
 			var divBodyWd = wdWidth - mnWidth;
-
-			//$("div#scrollayer-mod").show();
 			$("div#scrollayer-mod").css("whiteSpace","nowrap");
-			//$("div#scrollayer-mod").animate({width: 'toggle'});
-			//$("div.body").css({width: '79%'});
+
 			$("div.body").css('width', divBodyWd+'px');
 			$("div#scrollayer-mod").css("left","0px");
 			$(this).hide();
@@ -766,50 +782,25 @@ $('.sel-edit-test,select#display_mode,select#omrdir').selectize({
 		});
 	}
 
-	/**
-	alert(wdWidth);
-	alert(mnWidth);
-	alert(divBodyWd);
-	**/
-
 	var divBodyHg = $("div.body").css("height");
 	if(parseInt(divBodyHg) < 500){
 		var divBodyHg = "700px";
 	}
 	$("div#scrollayer-mod").css("height",divBodyHg);
-
-	//alert(divBodyHg);
 	
 	$(window).on("resize", function(){
-		/**var wdWidth = $(window).width();
-		var mnWidth = $("div#scrollayer-mod").width();
-		var divBodyWd = wdWidth - mnWidth;
-		$("div.body").css({width: divBodyWd+'px'});**/
 
 		divBodyHg = $("div.body").css("height");
 		if(parseInt(divBodyHg) < 500){
 			var divBodyHg = "700px";
 		}
 		$("div#scrollayer-mod").css("height",divBodyHg);
-		//console.log(divBodyHg);
 	})
-
-/**
-	if($("li span").hasClass("active")){
-		//alert("test");
-		//$("")
-		$(this).parent().show();
-	}
-**/
 
 	$("span.active").parents().eq(1).show();
 	$("ul.menu-mod li").click(function(){
 		$(this).children("ul").slideToggle();
 		$("ul.menu-mod li").not(this).children("ul").slideUp();
-		//$("a span.sparrow i", this).toggleClass("fa-chevron-down fa-chevron-up");
-		/**if($("span.sparrow i").not(this).hasClass("fa-sort-down")){
-			$("span.sparrow i").not(this).toggleClass("fa-sort-down fa-sort-up");
-		}**/
 	})
 	$("input#new_test_password").attr("type","text");
 	$("acronym.okbox").html("&check;");
@@ -822,7 +813,6 @@ $('.sel-edit-test,select#display_mode,select#omrdir').selectize({
 			$("td#time_begin").show();
 			colspan = colspan + 1;
 			statistik = statistik + 1;
-			//alert(colspan);
 			$("td#berhasil").attr("colspan",colspan);
 			$("th#statistik").attr("colspan",statistik);
             } else {
@@ -830,7 +820,6 @@ $('.sel-edit-test,select#display_mode,select#omrdir').selectize({
 			$("td#time_begin").hide();
 			colspan = colspan - 1;
 			statistik = statistik - 1;
-			//alert(statistik);
 			$("td#berhasil").attr("colspan",colspan);
 			$("th#statistik").attr("colspan",statistik);
             }
@@ -844,7 +833,6 @@ $('.sel-edit-test,select#display_mode,select#omrdir').selectize({
 			$("td#test_time").show();
 			colspan = colspan + 1;
 			statistik = statistik + 1;
-			//alert(colspan);
 			$("td#berhasil").attr("colspan",colspan);
 			$("th#statistik").attr("colspan",statistik);
             } else {
@@ -852,7 +840,6 @@ $('.sel-edit-test,select#display_mode,select#omrdir').selectize({
 			$("td#test_time").hide();
 			colspan = colspan - 1;
 			statistik = statistik - 1;
-			//alert(statistik);
 			$("td#berhasil").attr("colspan",colspan);
 			$("th#statistik").attr("colspan",statistik);
             }
@@ -865,18 +852,12 @@ $('.sel-edit-test,select#display_mode,select#omrdir').selectize({
                 $("th#sisa_durasi").show();
 			$("td#sisa_durasi").show();
 			colspan = colspan + 1;
-			//statistik = statistik + 1;
-			//alert(colspan);
 			$("td#berhasil").attr("colspan",colspan);
-			//$("th#statistik").attr("colspan",statistik);
             } else {
 	            $("th#sisa_durasi").hide();
 			$("td#sisa_durasi").hide();
 			colspan = colspan - 1;
-			//statistik = statistik - 1;
-			//alert(statistik);
 			$("td#berhasil").attr("colspan",colspan);
-			//$("th#statistik").attr("colspan",statistik);
             }
 	});
 
@@ -885,66 +866,9 @@ $('.sel-edit-test,select#display_mode,select#omrdir').selectize({
 		return confirm('Apakah yakin ingin '+btnTitle+'?');
 	});
 
-//	$("#exportPDF").mousedown(function(){
-//		$("span#menuHide").trigger("click");
-//
-//		var ml = parseInt($("div#scrollayer-mod").css("margin-left"));
-//		while ( ml > -300 ) {
-//			//alert(ml);
-//			if(ml < -298){
-//				//window.print();
-//				//alert(ml);
-//				var window.ml = ml;
-//			}
-//			ml--;
-//		}
-//
-//		alert(window.ml);
-
-
-//	})
-
-//	$("#exportPDF").mouseup(function(){
-//	})
-
-
 	$("#exportPDF").mouseup(function(){
-		//window.print();
 		hidemenuPrint();
 	})
-
-
-
-
-/**
-	$("#exportPDF").click(function (e){
-		//$("span#menuHide").trigger("click").delay(10);
-		$("div#scrollayer-mod").css("display","none");
-		$("div.body").css("width","100%");
-		window.print();
-	});
-**/
-
-//	$("#printMe").click(function (e) {
-//		$("th#checkbox").hide();
-//		$("td#checkbox").hide();
-//		$("th#sisa_durasi").css("width","1px");
-//		$("td#sisa_durasi").css("width","1px");
-//		$("table.userselect tr").css("height","25px");
-
-//		var thNum = $("table#userselect > thead > tr:first > th").length;
-
-//		$("td#berhasil").attr("colspan",thNum);
-//		$("th#statistik").attr("colspan","8");
-//		$("td.sisa_durasi_bawah").attr("colspan","1");
-//		$("td#checkbox input[type='checkbox']").remove();
-
-//		location.reload();
-
-//		window.open('data:application/vnd.ms-excel,' + encodeURIComponent(item_html));
-
-//	});
-
 
 	function prepExcelExp() {
 		$("th#checkbox").hide();
@@ -1008,10 +932,6 @@ $('.sel-edit-test,select#display_mode,select#omrdir').selectize({
 	}
 
 });
-//$("select#word_import_subject_module_id").click(function(){
-//	alert("sss");
-//	$("div#modal-default").show();
-//});
 function hidemenuPrint(){
 	$("#menuHide").trigger("click");
 	var menuPos = $("#scrollayer-mod").css("left");
@@ -1033,6 +953,7 @@ if(f_sc_name('tmf_show_offline_sheet.php')){
 	input[type=submit], div.rowl hr, div.rowl h2, span#menuHide {display:none}
 	div.body{width:100% !important}
 
+	div#qDesc {overflow:auto}
 	#demo {display:flex;justify-contents:center;align-items:center}
 	
 	textarea#dataJawaban {

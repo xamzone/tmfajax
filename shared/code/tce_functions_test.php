@@ -1789,6 +1789,10 @@ function F_updateQuestionLog($test_id, $testlog_id, $answpos = array(), $answer_
 // Function to update question log when answer key changed
 function F_updateQuestionLogRegrade($test_id, $testlog_id, $answpos = array(), $answer_text = '', $reaction_time = 0)
 {
+	if($test_id===0){
+		echo '<p>Pilih terlebih dahulu nama test/ujian, <a href="tce_show_result_allusers.php">klik disini untuk kembali</a></p>';
+		die();
+	}
 //print_r($answpos);
 //echo $test_id."<br/>".$testlog_id."<br/>".$answpos."<br/>".$answer_tex."<br/>".$reaction_time."<br/>".$ragu;
 //	die();

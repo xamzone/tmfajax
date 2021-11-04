@@ -5,10 +5,10 @@ $pagelevel = K_AUTH_ADMIN_USERS;
 require_once('../../shared/code/tce_authorization.php');
 require_once('../../shared/config/tce_user_registration.php');
 
-
-/* if(isset($_GET['imglogo'])){
+$json = unserialize(file_get_contents(K_PATH_MAIN.'shared/config/tmf_general_settings.json'));
+if(isset($_GET['imglogo'])){
 	foreach(glob(K_PATH_CACHE.'logo/*') as $filename){
-		echo '<option value="'.basename($filename).'" ';
+		echo '<option data-img-src="../../cache/logo/'.basename($filename).'" value="'.basename($filename).'" ';
 		if(basename($filename)===$json['logoImg']){
 			echo ' selected="selected"';
 		}
@@ -16,35 +16,9 @@ require_once('../../shared/config/tce_user_registration.php');
 		// echo basename($filename);
 	}
 	die();	
-} */
-
-$thispage_title = "General Settings";
-$thispage_title_icon = "<i class='fas fa-cogs'></i> ";
-
-require_once('tce_page_header.php');
-require_once('../../shared/code/tce_functions_form.php');
-
-/**
-<script>
-
-	function getImgLogo(){
-		$.ajax({
-				'url': 'tmf_general_settings.php?imglogo',
-				'type': 'GET',
-				'beforeSend': function(result){
-					$('#logoImg').html('<option>Loading... Please wait!</option>');
-				},
-				'success': function(result){
-					$('#logoImg').html(result);
-				}		
-		});
-	}	
+}
 
 
-</script>
-**/
-
-// var_dump($_POST);
 if (!isset($_POST['answer_all_questions']) or (empty($_POST['answer_all_questions']))) {
     $answer_all_questions = false;
 } else {
@@ -172,6 +146,7 @@ if (!isset($_POST['enable_ccs']) or (empty($_POST['enable_ccs']))) {
 }
 
 if(isset($_POST['update'])){
+	//echo F_print_error('MESSAGE', 'Sukses menyimpan perubahan. Apabila Logo tidak berubah coba refresh/reload halaman');
 	$arr = array();
 	$arr['siteName'] = urlencode(stripcslashes(strip_tags($_POST['siteName'])));
 	$arr['siteDesc'] = urlencode(stripcslashes(strip_tags($_POST['siteDesc'])));
@@ -275,6 +250,9 @@ if(isset($_POST['update'])){
 	fwrite($fpm, stripcslashes(json_encode($manifest_arr)));
 	fclose($fpm);
 	chmod($gsfile, 0444);
+	
+	header('Location: tmf_general_settings.php');
+	// die();
 }
 
 if(isset($_POST['update-greeting'])){
@@ -377,7 +355,50 @@ if(isset($_POST['update-colorscheme'])){
 
 	chmod($csfile, 0444);
 }
-$json = unserialize(file_get_contents(K_PATH_MAIN.'shared/config/tmf_general_settings.json'));
+
+
+$thispage_title = "General Settings";
+$thispage_title_icon = "<i class='fas fa-cogs'></i> ";
+
+require_once('tce_page_header.php');
+
+echo '<link rel="stylesheet" type="text/css" href="../../shared/jscripts/image-picker/image-picker.css" />'.K_NEWLINE;
+echo '<style>
+	.thumbnail img{width:100px;max-width:100%}
+	ul.thumbnails.image_picker_selector{padding-top:10px}
+	div.thumbnail{position:relative}
+	.delbtn{position:absolute;top:-9px;right:-8px;background:#fff4f8;color:#dc4d7e;/*border:1px solid #a9a9a9;*/box-shadow: -1px 1px 2px 0px rgba(233,30,99,0.5);font-weight:700;width:7px;height:7px;display: flex;justify-content:center;align-items:center;padding:5px;border-radius:100px;cursor:pointer;font-size:large}
+</style>';
+echo '<script src="../../shared/jscripts/image-picker/image-picker.min.js"></script>'.K_NEWLINE;
+
+echo '<link href="../../shared/jscripts/vendor/dropzonejs/dropzone.css" rel="stylesheet">'.K_NEWLINE;
+echo '<script src="../../shared/jscripts/vendor/dropzonejs/dropzone.js"></script>'.K_NEWLINE;
+echo '<style>.dropzone{border: 2px dashed rgba(0, 0, 0, 0.3);border-radius:10px}</style>'.K_NEWLINE;
+
+require_once('../../shared/code/tce_functions_form.php');
+
+/**
+<script>
+
+	function getImgLogo(){
+		$.ajax({
+				'url': 'tmf_general_settings.php?imglogo',
+				'type': 'GET',
+				'beforeSend': function(result){
+					$('#logoImg').html('<option>Loading... Please wait!</option>');
+				},
+				'success': function(result){
+					$('#logoImg').html(result);
+				}		
+		});
+	}	
+
+
+</script>
+**/
+
+// var_dump($_POST);
+
 $jsonGreetings = unserialize(file_get_contents(K_PATH_MAIN.'public/config/tmf_greetings.json'));
 $lbam = unserialize(file_get_contents(K_PATH_MAIN.'public/config/tmf_additional_info_login.json'));
 $tm = unserialize(file_get_contents(K_PATH_MAIN.'public/config/tmf_timer_warning.json'));
@@ -397,8 +418,481 @@ echo getFormRowTextInput('siteDesc', 'Site Description', 'Site Description', '',
 echo getFormRowTextInput('siteAuthor', 'Site Author', 'Site Author', '', urldecode(stripcslashes($json['siteAuthor'])), '', 255, false, false, false);
 echo getFormRowTextInput('siteReplyTo', 'Site Reply-to', 'Site Reply-to', '', urldecode(stripcslashes($json['siteReplyTo'])), '', 255, false, false, false);
 echo getFormRowTextInput('siteKeyword', 'Site Keyword', 'Site Keyword', '', urldecode(stripcslashes($json['siteKeyword'])), '', 255, false, false, false);
-echo getFormRowTextInput('timezone', 'Timezone Setting', 'Timezone Setting', 'Set your own timezone here.<br/>Possible values are listed on:<br/><a href="http://php.net/manual/en/timezones.php">http://php.net/manual/en/timezones.php</a>', $json['timezone'], '', 255, false, false, false);
-echo getFormRowTextInput('defLang', 'Default Language', 'Default Language', '2-letters code for default language.<br/><i>example:</i> ar, az, bg, br, cn, de, el, en, es, fa, fr, he, hi, hu, id, it, jp, mr, ms, nl, pl, ro, ru, tr, ur, vn', $json['defLang'], '', 255, false, false, false);
+
+$timezones = array(
+    'America/Adak' => '(GMT-10:00) America/Adak (Hawaii-Aleutian Standard Time)',
+	'America/Atka' => '(GMT-10:00) America/Atka (Hawaii-Aleutian Standard Time)',
+	'America/Anchorage' => '(GMT-9:00) America/Anchorage (Alaska Standard Time)',
+	'America/Juneau' => '(GMT-9:00) America/Juneau (Alaska Standard Time)',
+	'America/Nome' => '(GMT-9:00) America/Nome (Alaska Standard Time)',
+	'America/Yakutat' => '(GMT-9:00) America/Yakutat (Alaska Standard Time)',
+	'America/Dawson' => '(GMT-8:00) America/Dawson (Pacific Standard Time)',
+	'America/Ensenada' => '(GMT-8:00) America/Ensenada (Pacific Standard Time)',
+	'America/Los_Angeles' => '(GMT-8:00) America/Los_Angeles (Pacific Standard Time)',
+	'America/Tijuana' => '(GMT-8:00) America/Tijuana (Pacific Standard Time)',
+	'America/Vancouver' => '(GMT-8:00) America/Vancouver (Pacific Standard Time)',
+	'America/Whitehorse' => '(GMT-8:00) America/Whitehorse (Pacific Standard Time)',
+	'Canada/Pacific' => '(GMT-8:00) Canada/Pacific (Pacific Standard Time)',
+	'Canada/Yukon' => '(GMT-8:00) Canada/Yukon (Pacific Standard Time)',
+	'Mexico/BajaNorte' => '(GMT-8:00) Mexico/BajaNorte (Pacific Standard Time)',
+	'America/Boise' => '(GMT-7:00) America/Boise (Mountain Standard Time)',
+	'America/Cambridge_Bay' => '(GMT-7:00) America/Cambridge_Bay (Mountain Standard Time)',
+	'America/Chihuahua' => '(GMT-7:00) America/Chihuahua (Mountain Standard Time)',
+	'America/Dawson_Creek' => '(GMT-7:00) America/Dawson_Creek (Mountain Standard Time)',
+	'America/Denver' => '(GMT-7:00) America/Denver (Mountain Standard Time)',
+	'America/Edmonton' => '(GMT-7:00) America/Edmonton (Mountain Standard Time)',
+	'America/Hermosillo' => '(GMT-7:00) America/Hermosillo (Mountain Standard Time)',
+	'America/Inuvik' => '(GMT-7:00) America/Inuvik (Mountain Standard Time)',
+	'America/Mazatlan' => '(GMT-7:00) America/Mazatlan (Mountain Standard Time)',
+	'America/Phoenix' => '(GMT-7:00) America/Phoenix (Mountain Standard Time)',
+	'America/Shiprock' => '(GMT-7:00) America/Shiprock (Mountain Standard Time)',
+	'America/Yellowknife' => '(GMT-7:00) America/Yellowknife (Mountain Standard Time)',
+	'Canada/Mountain' => '(GMT-7:00) Canada/Mountain (Mountain Standard Time)',
+	'Mexico/BajaSur' => '(GMT-7:00) Mexico/BajaSur (Mountain Standard Time)',
+	'America/Belize' => '(GMT-6:00) America/Belize (Central Standard Time)',
+	'America/Cancun' => '(GMT-6:00) America/Cancun (Central Standard Time)',
+	'America/Chicago' => '(GMT-6:00) America/Chicago (Central Standard Time)',
+	'America/Costa_Rica' => '(GMT-6:00) America/Costa_Rica (Central Standard Time)',
+	'America/El_Salvador' => '(GMT-6:00) America/El_Salvador (Central Standard Time)',
+	'America/Guatemala' => '(GMT-6:00) America/Guatemala (Central Standard Time)',
+	'America/Knox_IN' => '(GMT-6:00) America/Knox_IN (Central Standard Time)',
+	'America/Managua' => '(GMT-6:00) America/Managua (Central Standard Time)',
+	'America/Menominee' => '(GMT-6:00) America/Menominee (Central Standard Time)',
+	'America/Merida' => '(GMT-6:00) America/Merida (Central Standard Time)',
+	'America/Mexico_City' => '(GMT-6:00) America/Mexico_City (Central Standard Time)',
+	'America/Monterrey' => '(GMT-6:00) America/Monterrey (Central Standard Time)',
+	'America/Rainy_River' => '(GMT-6:00) America/Rainy_River (Central Standard Time)',
+	'America/Rankin_Inlet' => '(GMT-6:00) America/Rankin_Inlet (Central Standard Time)',
+	'America/Regina' => '(GMT-6:00) America/Regina (Central Standard Time)',
+	'America/Swift_Current' => '(GMT-6:00) America/Swift_Current (Central Standard Time)',
+	'America/Tegucigalpa' => '(GMT-6:00) America/Tegucigalpa (Central Standard Time)',
+	'America/Winnipeg' => '(GMT-6:00) America/Winnipeg (Central Standard Time)',
+	'Canada/Central' => '(GMT-6:00) Canada/Central (Central Standard Time)',
+	'Canada/East-Saskatchewan' => '(GMT-6:00) Canada/East-Saskatchewan (Central Standard Time)',
+	'Canada/Saskatchewan' => '(GMT-6:00) Canada/Saskatchewan (Central Standard Time)',
+	'Chile/EasterIsland' => '(GMT-6:00) Chile/EasterIsland (Easter Is. Time)',
+	'Mexico/General' => '(GMT-6:00) Mexico/General (Central Standard Time)',
+	'America/Atikokan' => '(GMT-5:00) America/Atikokan (Eastern Standard Time)',
+	'America/Bogota' => '(GMT-5:00) America/Bogota (Colombia Time)',
+	'America/Cayman' => '(GMT-5:00) America/Cayman (Eastern Standard Time)',
+	'America/Coral_Harbour' => '(GMT-5:00) America/Coral_Harbour (Eastern Standard Time)',
+	'America/Detroit' => '(GMT-5:00) America/Detroit (Eastern Standard Time)',
+	'America/Fort_Wayne' => '(GMT-5:00) America/Fort_Wayne (Eastern Standard Time)',
+	'America/Grand_Turk' => '(GMT-5:00) America/Grand_Turk (Eastern Standard Time)',
+	'America/Guayaquil' => '(GMT-5:00) America/Guayaquil (Ecuador Time)',
+	'America/Havana' => '(GMT-5:00) America/Havana (Cuba Standard Time)',
+	'America/Indianapolis' => '(GMT-5:00) America/Indianapolis (Eastern Standard Time)',
+	'America/Iqaluit' => '(GMT-5:00) America/Iqaluit (Eastern Standard Time)',
+	'America/Jamaica' => '(GMT-5:00) America/Jamaica (Eastern Standard Time)',
+	'America/Lima' => '(GMT-5:00) America/Lima (Peru Time)',
+	'America/Louisville' => '(GMT-5:00) America/Louisville (Eastern Standard Time)',
+	'America/Montreal' => '(GMT-5:00) America/Montreal (Eastern Standard Time)',
+	'America/Nassau' => '(GMT-5:00) America/Nassau (Eastern Standard Time)',
+	'America/New_York' => '(GMT-5:00) America/New_York (Eastern Standard Time)',
+	'America/Nipigon' => '(GMT-5:00) America/Nipigon (Eastern Standard Time)',
+	'America/Panama' => '(GMT-5:00) America/Panama (Eastern Standard Time)',
+	'America/Pangnirtung' => '(GMT-5:00) America/Pangnirtung (Eastern Standard Time)',
+	'America/Port-au-Prince' => '(GMT-5:00) America/Port-au-Prince (Eastern Standard Time)',
+	'America/Resolute' => '(GMT-5:00) America/Resolute (Eastern Standard Time)',
+	'America/Thunder_Bay' => '(GMT-5:00) America/Thunder_Bay (Eastern Standard Time)',
+	'America/Toronto' => '(GMT-5:00) America/Toronto (Eastern Standard Time)',
+	'Canada/Eastern' => '(GMT-5:00) Canada/Eastern (Eastern Standard Time)',
+	'America/Caracas' => '(GMT-4:-30) America/Caracas (Venezuela Time)',
+	'America/Anguilla' => '(GMT-4:00) America/Anguilla (Atlantic Standard Time)',
+	'America/Antigua' => '(GMT-4:00) America/Antigua (Atlantic Standard Time)',
+	'America/Aruba' => '(GMT-4:00) America/Aruba (Atlantic Standard Time)',
+	'America/Asuncion' => '(GMT-4:00) America/Asuncion (Paraguay Time)',
+	'America/Barbados' => '(GMT-4:00) America/Barbados (Atlantic Standard Time)',
+	'America/Blanc-Sablon' => '(GMT-4:00) America/Blanc-Sablon (Atlantic Standard Time)',
+	'America/Boa_Vista' => '(GMT-4:00) America/Boa_Vista (Amazon Time)',
+	'America/Campo_Grande' => '(GMT-4:00) America/Campo_Grande (Amazon Time)',
+	'America/Cuiaba' => '(GMT-4:00) America/Cuiaba (Amazon Time)',
+	'America/Curacao' => '(GMT-4:00) America/Curacao (Atlantic Standard Time)',
+	'America/Dominica' => '(GMT-4:00) America/Dominica (Atlantic Standard Time)',
+	'America/Eirunepe' => '(GMT-4:00) America/Eirunepe (Amazon Time)',
+	'America/Glace_Bay' => '(GMT-4:00) America/Glace_Bay (Atlantic Standard Time)',
+	'America/Goose_Bay' => '(GMT-4:00) America/Goose_Bay (Atlantic Standard Time)',
+	'America/Grenada' => '(GMT-4:00) America/Grenada (Atlantic Standard Time)',
+	'America/Guadeloupe' => '(GMT-4:00) America/Guadeloupe (Atlantic Standard Time)',
+	'America/Guyana' => '(GMT-4:00) America/Guyana (Guyana Time)',
+	'America/Halifax' => '(GMT-4:00) America/Halifax (Atlantic Standard Time)',
+	'America/La_Paz' => '(GMT-4:00) America/La_Paz (Bolivia Time)',
+	'America/Manaus' => '(GMT-4:00) America/Manaus (Amazon Time)',
+	'America/Marigot' => '(GMT-4:00) America/Marigot (Atlantic Standard Time)',
+	'America/Martinique' => '(GMT-4:00) America/Martinique (Atlantic Standard Time)',
+	'America/Moncton' => '(GMT-4:00) America/Moncton (Atlantic Standard Time)',
+	'America/Montserrat' => '(GMT-4:00) America/Montserrat (Atlantic Standard Time)',
+	'America/Port_of_Spain' => '(GMT-4:00) America/Port_of_Spain (Atlantic Standard Time)',
+	'America/Porto_Acre' => '(GMT-4:00) America/Porto_Acre (Amazon Time)',
+	'America/Porto_Velho' => '(GMT-4:00) America/Porto_Velho (Amazon Time)',
+	'America/Puerto_Rico' => '(GMT-4:00) America/Puerto_Rico (Atlantic Standard Time)',
+	'America/Rio_Branco' => '(GMT-4:00) America/Rio_Branco (Amazon Time)',
+	'America/Santiago' => '(GMT-4:00) America/Santiago (Chile Time)',
+	'America/Santo_Domingo' => '(GMT-4:00) America/Santo_Domingo (Atlantic Standard Time)',
+	'America/St_Barthelemy' => '(GMT-4:00) America/St_Barthelemy (Atlantic Standard Time)',
+	'America/St_Kitts' => '(GMT-4:00) America/St_Kitts (Atlantic Standard Time)',
+	'America/St_Lucia' => '(GMT-4:00) America/St_Lucia (Atlantic Standard Time)',
+	'America/St_Thomas' => '(GMT-4:00) America/St_Thomas (Atlantic Standard Time)',
+	'America/St_Vincent' => '(GMT-4:00) America/St_Vincent (Atlantic Standard Time)',
+	'America/Thule' => '(GMT-4:00) America/Thule (Atlantic Standard Time)',
+	'America/Tortola' => '(GMT-4:00) America/Tortola (Atlantic Standard Time)',
+	'America/Virgin' => '(GMT-4:00) America/Virgin (Atlantic Standard Time)',
+	'Antarctica/Palmer' => '(GMT-4:00) Antarctica/Palmer (Chile Time)',
+	'Atlantic/Bermuda' => '(GMT-4:00) Atlantic/Bermuda (Atlantic Standard Time)',
+	'Atlantic/Stanley' => '(GMT-4:00) Atlantic/Stanley (Falkland Is. Time)',
+	'Brazil/Acre' => '(GMT-4:00) Brazil/Acre (Amazon Time)',
+	'Brazil/West' => '(GMT-4:00) Brazil/West (Amazon Time)',
+	'Canada/Atlantic' => '(GMT-4:00) Canada/Atlantic (Atlantic Standard Time)',
+	'Chile/Continental' => '(GMT-4:00) Chile/Continental (Chile Time)',
+	'America/St_Johns' => '(GMT-3:-30) America/St_Johns (Newfoundland Standard Time)',
+	'Canada/Newfoundland' => '(GMT-3:-30) Canada/Newfoundland (Newfoundland Standard Time)',
+	'America/Araguaina' => '(GMT-3:00) America/Araguaina (Brasilia Time)',
+	'America/Bahia' => '(GMT-3:00) America/Bahia (Brasilia Time)',
+	'America/Belem' => '(GMT-3:00) America/Belem (Brasilia Time)',
+	'America/Buenos_Aires' => '(GMT-3:00) America/Buenos_Aires (Argentine Time)',
+	'America/Catamarca' => '(GMT-3:00) America/Catamarca (Argentine Time)',
+	'America/Cayenne' => '(GMT-3:00) America/Cayenne (French Guiana Time)',
+	'America/Cordoba' => '(GMT-3:00) America/Cordoba (Argentine Time)',
+	'America/Fortaleza' => '(GMT-3:00) America/Fortaleza (Brasilia Time)',
+	'America/Godthab' => '(GMT-3:00) America/Godthab (Western Greenland Time)',
+	'America/Jujuy' => '(GMT-3:00) America/Jujuy (Argentine Time)',
+	'America/Maceio' => '(GMT-3:00) America/Maceio (Brasilia Time)',
+	'America/Mendoza' => '(GMT-3:00) America/Mendoza (Argentine Time)',
+	'America/Miquelon' => '(GMT-3:00) America/Miquelon (Pierre & Miquelon Standard Time)',
+	'America/Montevideo' => '(GMT-3:00) America/Montevideo (Uruguay Time)',
+	'America/Paramaribo' => '(GMT-3:00) America/Paramaribo (Suriname Time)',
+	'America/Recife' => '(GMT-3:00) America/Recife (Brasilia Time)',
+	'America/Rosario' => '(GMT-3:00) America/Rosario (Argentine Time)',
+	'America/Santarem' => '(GMT-3:00) America/Santarem (Brasilia Time)',
+	'America/Sao_Paulo' => '(GMT-3:00) America/Sao_Paulo (Brasilia Time)',
+	'Antarctica/Rothera' => '(GMT-3:00) Antarctica/Rothera (Rothera Time)',
+	'Brazil/East' => '(GMT-3:00) Brazil/East (Brasilia Time)',
+	'America/Noronha' => '(GMT-2:00) America/Noronha (Fernando de Noronha Time)',
+	'Atlantic/South_Georgia' => '(GMT-2:00) Atlantic/South_Georgia (South Georgia Standard Time)',
+	'Brazil/DeNoronha' => '(GMT-2:00) Brazil/DeNoronha (Fernando de Noronha Time)',
+	'America/Scoresbysund' => '(GMT-1:00) America/Scoresbysund (Eastern Greenland Time)',
+	'Atlantic/Azores' => '(GMT-1:00) Atlantic/Azores (Azores Time)',
+	'Atlantic/Cape_Verde' => '(GMT-1:00) Atlantic/Cape_Verde (Cape Verde Time)',
+	'Africa/Abidjan' => '(GMT+0:00) Africa/Abidjan (Greenwich Mean Time)',
+	'Africa/Accra' => '(GMT+0:00) Africa/Accra (Ghana Mean Time)',
+	'Africa/Bamako' => '(GMT+0:00) Africa/Bamako (Greenwich Mean Time)',
+	'Africa/Banjul' => '(GMT+0:00) Africa/Banjul (Greenwich Mean Time)',
+	'Africa/Bissau' => '(GMT+0:00) Africa/Bissau (Greenwich Mean Time)',
+	'Africa/Casablanca' => '(GMT+0:00) Africa/Casablanca (Western European Time)',
+	'Africa/Conakry' => '(GMT+0:00) Africa/Conakry (Greenwich Mean Time)',
+	'Africa/Dakar' => '(GMT+0:00) Africa/Dakar (Greenwich Mean Time)',
+	'Africa/El_Aaiun' => '(GMT+0:00) Africa/El_Aaiun (Western European Time)',
+	'Africa/Freetown' => '(GMT+0:00) Africa/Freetown (Greenwich Mean Time)',
+	'Africa/Lome' => '(GMT+0:00) Africa/Lome (Greenwich Mean Time)',
+	'Africa/Monrovia' => '(GMT+0:00) Africa/Monrovia (Greenwich Mean Time)',
+	'Africa/Nouakchott' => '(GMT+0:00) Africa/Nouakchott (Greenwich Mean Time)',
+	'Africa/Ouagadougou' => '(GMT+0:00) Africa/Ouagadougou (Greenwich Mean Time)',
+	'Africa/Sao_Tome' => '(GMT+0:00) Africa/Sao_Tome (Greenwich Mean Time)',
+	'Africa/Timbuktu' => '(GMT+0:00) Africa/Timbuktu (Greenwich Mean Time)',
+	'America/Danmarkshavn' => '(GMT+0:00) America/Danmarkshavn (Greenwich Mean Time)',
+	'Atlantic/Canary' => '(GMT+0:00) Atlantic/Canary (Western European Time)',
+	'Atlantic/Faeroe' => '(GMT+0:00) Atlantic/Faeroe (Western European Time)',
+	'Atlantic/Faroe' => '(GMT+0:00) Atlantic/Faroe (Western European Time)',
+	'Atlantic/Madeira' => '(GMT+0:00) Atlantic/Madeira (Western European Time)',
+	'Atlantic/Reykjavik' => '(GMT+0:00) Atlantic/Reykjavik (Greenwich Mean Time)',
+	'Atlantic/St_Helena' => '(GMT+0:00) Atlantic/St_Helena (Greenwich Mean Time)',
+	'Europe/Belfast' => '(GMT+0:00) Europe/Belfast (Greenwich Mean Time)',
+	'Europe/Dublin' => '(GMT+0:00) Europe/Dublin (Greenwich Mean Time)',
+	'Europe/Guernsey' => '(GMT+0:00) Europe/Guernsey (Greenwich Mean Time)',
+	'Europe/Isle_of_Man' => '(GMT+0:00) Europe/Isle_of_Man (Greenwich Mean Time)',
+	'Europe/Jersey' => '(GMT+0:00) Europe/Jersey (Greenwich Mean Time)',
+	'Europe/Lisbon' => '(GMT+0:00) Europe/Lisbon (Western European Time)',
+	'Europe/London' => '(GMT+0:00) Europe/London (Greenwich Mean Time)',
+	'Africa/Algiers' => '(GMT+1:00) Africa/Algiers (Central European Time)',
+	'Africa/Bangui' => '(GMT+1:00) Africa/Bangui (Western African Time)',
+	'Africa/Brazzaville' => '(GMT+1:00) Africa/Brazzaville (Western African Time)',
+	'Africa/Ceuta' => '(GMT+1:00) Africa/Ceuta (Central European Time)',
+	'Africa/Douala' => '(GMT+1:00) Africa/Douala (Western African Time)',
+	'Africa/Kinshasa' => '(GMT+1:00) Africa/Kinshasa (Western African Time)',
+	'Africa/Lagos' => '(GMT+1:00) Africa/Lagos (Western African Time)',
+	'Africa/Libreville' => '(GMT+1:00) Africa/Libreville (Western African Time)',
+	'Africa/Luanda' => '(GMT+1:00) Africa/Luanda (Western African Time)',
+	'Africa/Malabo' => '(GMT+1:00) Africa/Malabo (Western African Time)',
+	'Africa/Ndjamena' => '(GMT+1:00) Africa/Ndjamena (Western African Time)',
+	'Africa/Niamey' => '(GMT+1:00) Africa/Niamey (Western African Time)',
+	'Africa/Porto-Novo' => '(GMT+1:00) Africa/Porto-Novo (Western African Time)',
+	'Africa/Tunis' => '(GMT+1:00) Africa/Tunis (Central European Time)',
+	'Africa/Windhoek' => '(GMT+1:00) Africa/Windhoek (Western African Time)',
+	'Arctic/Longyearbyen' => '(GMT+1:00) Arctic/Longyearbyen (Central European Time)',
+	'Atlantic/Jan_Mayen' => '(GMT+1:00) Atlantic/Jan_Mayen (Central European Time)',
+	'Europe/Amsterdam' => '(GMT+1:00) Europe/Amsterdam (Central European Time)',
+	'Europe/Andorra' => '(GMT+1:00) Europe/Andorra (Central European Time)',
+	'Europe/Belgrade' => '(GMT+1:00) Europe/Belgrade (Central European Time)',
+	'Europe/Berlin' => '(GMT+1:00) Europe/Berlin (Central European Time)',
+	'Europe/Bratislava' => '(GMT+1:00) Europe/Bratislava (Central European Time)',
+	'Europe/Brussels' => '(GMT+1:00) Europe/Brussels (Central European Time)',
+	'Europe/Budapest' => '(GMT+1:00) Europe/Budapest (Central European Time)',
+	'Europe/Copenhagen' => '(GMT+1:00) Europe/Copenhagen (Central European Time)',
+	'Europe/Gibraltar' => '(GMT+1:00) Europe/Gibraltar (Central European Time)',
+	'Europe/Ljubljana' => '(GMT+1:00) Europe/Ljubljana (Central European Time)',
+	'Europe/Luxembourg' => '(GMT+1:00) Europe/Luxembourg (Central European Time)',
+	'Europe/Madrid' => '(GMT+1:00) Europe/Madrid (Central European Time)',
+	'Europe/Malta' => '(GMT+1:00) Europe/Malta (Central European Time)',
+	'Europe/Monaco' => '(GMT+1:00) Europe/Monaco (Central European Time)',
+	'Europe/Oslo' => '(GMT+1:00) Europe/Oslo (Central European Time)',
+	'Europe/Paris' => '(GMT+1:00) Europe/Paris (Central European Time)',
+	'Europe/Podgorica' => '(GMT+1:00) Europe/Podgorica (Central European Time)',
+	'Europe/Prague' => '(GMT+1:00) Europe/Prague (Central European Time)',
+	'Europe/Rome' => '(GMT+1:00) Europe/Rome (Central European Time)',
+	'Europe/San_Marino' => '(GMT+1:00) Europe/San_Marino (Central European Time)',
+	'Europe/Sarajevo' => '(GMT+1:00) Europe/Sarajevo (Central European Time)',
+	'Europe/Skopje' => '(GMT+1:00) Europe/Skopje (Central European Time)',
+	'Europe/Stockholm' => '(GMT+1:00) Europe/Stockholm (Central European Time)',
+	'Europe/Tirane' => '(GMT+1:00) Europe/Tirane (Central European Time)',
+	'Europe/Vaduz' => '(GMT+1:00) Europe/Vaduz (Central European Time)',
+	'Europe/Vatican' => '(GMT+1:00) Europe/Vatican (Central European Time)',
+	'Europe/Vienna' => '(GMT+1:00) Europe/Vienna (Central European Time)',
+	'Europe/Warsaw' => '(GMT+1:00) Europe/Warsaw (Central European Time)',
+	'Europe/Zagreb' => '(GMT+1:00) Europe/Zagreb (Central European Time)',
+	'Europe/Zurich' => '(GMT+1:00) Europe/Zurich (Central European Time)',
+	'Africa/Blantyre' => '(GMT+2:00) Africa/Blantyre (Central African Time)',
+	'Africa/Bujumbura' => '(GMT+2:00) Africa/Bujumbura (Central African Time)',
+	'Africa/Cairo' => '(GMT+2:00) Africa/Cairo (Eastern European Time)',
+	'Africa/Gaborone' => '(GMT+2:00) Africa/Gaborone (Central African Time)',
+	'Africa/Harare' => '(GMT+2:00) Africa/Harare (Central African Time)',
+	'Africa/Johannesburg' => '(GMT+2:00) Africa/Johannesburg (South Africa Standard Time)',
+	'Africa/Kigali' => '(GMT+2:00) Africa/Kigali (Central African Time)',
+	'Africa/Lubumbashi' => '(GMT+2:00) Africa/Lubumbashi (Central African Time)',
+	'Africa/Lusaka' => '(GMT+2:00) Africa/Lusaka (Central African Time)',
+	'Africa/Maputo' => '(GMT+2:00) Africa/Maputo (Central African Time)',
+	'Africa/Maseru' => '(GMT+2:00) Africa/Maseru (South Africa Standard Time)',
+	'Africa/Mbabane' => '(GMT+2:00) Africa/Mbabane (South Africa Standard Time)',
+	'Africa/Tripoli' => '(GMT+2:00) Africa/Tripoli (Eastern European Time)',
+	'Asia/Amman' => '(GMT+2:00) Asia/Amman (Eastern European Time)',
+	'Asia/Beirut' => '(GMT+2:00) Asia/Beirut (Eastern European Time)',
+	'Asia/Damascus' => '(GMT+2:00) Asia/Damascus (Eastern European Time)',
+	'Asia/Gaza' => '(GMT+2:00) Asia/Gaza (Eastern European Time)',
+	'Asia/Istanbul' => '(GMT+2:00) Asia/Istanbul (Eastern European Time)',
+	'Asia/Jerusalem' => '(GMT+2:00) Asia/Jerusalem (Israel Standard Time)',
+	'Asia/Nicosia' => '(GMT+2:00) Asia/Nicosia (Eastern European Time)',
+	'Asia/Tel_Aviv' => '(GMT+2:00) Asia/Tel_Aviv (Israel Standard Time)',
+	'Europe/Athens' => '(GMT+2:00) Europe/Athens (Eastern European Time)',
+	'Europe/Bucharest' => '(GMT+2:00) Europe/Bucharest (Eastern European Time)',
+	'Europe/Chisinau' => '(GMT+2:00) Europe/Chisinau (Eastern European Time)',
+	'Europe/Helsinki' => '(GMT+2:00) Europe/Helsinki (Eastern European Time)',
+	'Europe/Istanbul' => '(GMT+2:00) Europe/Istanbul (Eastern European Time)',
+	'Europe/Kaliningrad' => '(GMT+2:00) Europe/Kaliningrad (Eastern European Time)',
+	'Europe/Kiev' => '(GMT+2:00) Europe/Kiev (Eastern European Time)',
+	'Europe/Mariehamn' => '(GMT+2:00) Europe/Mariehamn (Eastern European Time)',
+	'Europe/Minsk' => '(GMT+2:00) Europe/Minsk (Eastern European Time)',
+	'Europe/Nicosia' => '(GMT+2:00) Europe/Nicosia (Eastern European Time)',
+	'Europe/Riga' => '(GMT+2:00) Europe/Riga (Eastern European Time)',
+	'Europe/Simferopol' => '(GMT+2:00) Europe/Simferopol (Eastern European Time)',
+	'Europe/Sofia' => '(GMT+2:00) Europe/Sofia (Eastern European Time)',
+	'Europe/Tallinn' => '(GMT+2:00) Europe/Tallinn (Eastern European Time)',
+	'Europe/Tiraspol' => '(GMT+2:00) Europe/Tiraspol (Eastern European Time)',
+	'Europe/Uzhgorod' => '(GMT+2:00) Europe/Uzhgorod (Eastern European Time)',
+	'Europe/Vilnius' => '(GMT+2:00) Europe/Vilnius (Eastern European Time)',
+	'Europe/Zaporozhye' => '(GMT+2:00) Europe/Zaporozhye (Eastern European Time)',
+	'Africa/Addis_Ababa' => '(GMT+3:00) Africa/Addis_Ababa (Eastern African Time)',
+	'Africa/Asmara' => '(GMT+3:00) Africa/Asmara (Eastern African Time)',
+	'Africa/Asmera' => '(GMT+3:00) Africa/Asmera (Eastern African Time)',
+	'Africa/Dar_es_Salaam' => '(GMT+3:00) Africa/Dar_es_Salaam (Eastern African Time)',
+	'Africa/Djibouti' => '(GMT+3:00) Africa/Djibouti (Eastern African Time)',
+	'Africa/Kampala' => '(GMT+3:00) Africa/Kampala (Eastern African Time)',
+	'Africa/Khartoum' => '(GMT+3:00) Africa/Khartoum (Eastern African Time)',
+	'Africa/Mogadishu' => '(GMT+3:00) Africa/Mogadishu (Eastern African Time)',
+	'Africa/Nairobi' => '(GMT+3:00) Africa/Nairobi (Eastern African Time)',
+	'Antarctica/Syowa' => '(GMT+3:00) Antarctica/Syowa (Syowa Time)',
+	'Asia/Aden' => '(GMT+3:00) Asia/Aden (Arabia Standard Time)',
+	'Asia/Baghdad' => '(GMT+3:00) Asia/Baghdad (Arabia Standard Time)',
+	'Asia/Bahrain' => '(GMT+3:00) Asia/Bahrain (Arabia Standard Time)',
+	'Asia/Kuwait' => '(GMT+3:00) Asia/Kuwait (Arabia Standard Time)',
+	'Asia/Qatar' => '(GMT+3:00) Asia/Qatar (Arabia Standard Time)',
+	'Europe/Moscow' => '(GMT+3:00) Europe/Moscow (Moscow Standard Time)',
+	'Europe/Volgograd' => '(GMT+3:00) Europe/Volgograd (Volgograd Time)',
+	'Indian/Antananarivo' => '(GMT+3:00) Indian/Antananarivo (Eastern African Time)',
+	'Indian/Comoro' => '(GMT+3:00) Indian/Comoro (Eastern African Time)',
+	'Indian/Mayotte' => '(GMT+3:00) Indian/Mayotte (Eastern African Time)',
+	'Asia/Tehran' => '(GMT+3:30) Asia/Tehran (Iran Standard Time)',
+	'Asia/Baku' => '(GMT+4:00) Asia/Baku (Azerbaijan Time)',
+	'Asia/Dubai' => '(GMT+4:00) Asia/Dubai (Gulf Standard Time)',
+	'Asia/Muscat' => '(GMT+4:00) Asia/Muscat (Gulf Standard Time)',
+	'Asia/Tbilisi' => '(GMT+4:00) Asia/Tbilisi (Georgia Time)',
+	'Asia/Yerevan' => '(GMT+4:00) Asia/Yerevan (Armenia Time)',
+	'Europe/Samara' => '(GMT+4:00) Europe/Samara (Samara Time)',
+	'Indian/Mahe' => '(GMT+4:00) Indian/Mahe (Seychelles Time)',
+	'Indian/Mauritius' => '(GMT+4:00) Indian/Mauritius (Mauritius Time)',
+	'Indian/Reunion' => '(GMT+4:00) Indian/Reunion (Reunion Time)',
+	'Asia/Kabul' => '(GMT+4:30) Asia/Kabul (Afghanistan Time)',
+	'Asia/Aqtau' => '(GMT+5:00) Asia/Aqtau (Aqtau Time)',
+	'Asia/Aqtobe' => '(GMT+5:00) Asia/Aqtobe (Aqtobe Time)',
+	'Asia/Ashgabat' => '(GMT+5:00) Asia/Ashgabat (Turkmenistan Time)',
+	'Asia/Ashkhabad' => '(GMT+5:00) Asia/Ashkhabad (Turkmenistan Time)',
+	'Asia/Dushanbe' => '(GMT+5:00) Asia/Dushanbe (Tajikistan Time)',
+	'Asia/Karachi' => '(GMT+5:00) Asia/Karachi (Pakistan Time)',
+	'Asia/Oral' => '(GMT+5:00) Asia/Oral (Oral Time)',
+	'Asia/Samarkand' => '(GMT+5:00) Asia/Samarkand (Uzbekistan Time)',
+	'Asia/Tashkent' => '(GMT+5:00) Asia/Tashkent (Uzbekistan Time)',
+	'Asia/Yekaterinburg' => '(GMT+5:00) Asia/Yekaterinburg (Yekaterinburg Time)',
+	'Indian/Kerguelen' => '(GMT+5:00) Indian/Kerguelen (French Southern & Antarctic Lands Time)',
+	'Indian/Maldives' => '(GMT+5:00) Indian/Maldives (Maldives Time)',
+	'Asia/Calcutta' => '(GMT+5:30) Asia/Calcutta (India Standard Time)',
+	'Asia/Colombo' => '(GMT+5:30) Asia/Colombo (India Standard Time)',
+	'Asia/Kolkata' => '(GMT+5:30) Asia/Kolkata (India Standard Time)',
+	'Asia/Katmandu' => '(GMT+5:45) Asia/Katmandu (Nepal Time)',
+	'Antarctica/Mawson' => '(GMT+6:00) Antarctica/Mawson (Mawson Time)',
+	'Antarctica/Vostok' => '(GMT+6:00) Antarctica/Vostok (Vostok Time)',
+	'Asia/Almaty' => '(GMT+6:00) Asia/Almaty (Alma-Ata Time)',
+	'Asia/Bishkek' => '(GMT+6:00) Asia/Bishkek (Kirgizstan Time)',
+	'Asia/Dacca' => '(GMT+6:00) Asia/Dacca (Bangladesh Time)',
+	'Asia/Dhaka' => '(GMT+6:00) Asia/Dhaka (Bangladesh Time)',
+	'Asia/Novosibirsk' => '(GMT+6:00) Asia/Novosibirsk (Novosibirsk Time)',
+	'Asia/Omsk' => '(GMT+6:00) Asia/Omsk (Omsk Time)',
+	'Asia/Qyzylorda' => '(GMT+6:00) Asia/Qyzylorda (Qyzylorda Time)',
+	'Asia/Thimbu' => '(GMT+6:00) Asia/Thimbu (Bhutan Time)',
+	'Asia/Thimphu' => '(GMT+6:00) Asia/Thimphu (Bhutan Time)',
+	'Indian/Chagos' => '(GMT+6:00) Indian/Chagos (Indian Ocean Territory Time)',
+	'Asia/Rangoon' => '(GMT+6:30) Asia/Rangoon (Myanmar Time)',
+	'Indian/Cocos' => '(GMT+6:30) Indian/Cocos (Cocos Islands Time)',
+	'Antarctica/Davis' => '(GMT+7:00) Antarctica/Davis (Davis Time)',
+	'Asia/Bangkok' => '(GMT+7:00) Asia/Bangkok (Indochina Time)',
+	'Asia/Ho_Chi_Minh' => '(GMT+7:00) Asia/Ho_Chi_Minh (Indochina Time)',
+	'Asia/Hovd' => '(GMT+7:00) Asia/Hovd (Hovd Time)',
+	'Asia/Jakarta' => '(GMT+7:00) Asia/Jakarta (West Indonesia Time)',
+	'Asia/Krasnoyarsk' => '(GMT+7:00) Asia/Krasnoyarsk (Krasnoyarsk Time)',
+	'Asia/Phnom_Penh' => '(GMT+7:00) Asia/Phnom_Penh (Indochina Time)',
+	'Asia/Pontianak' => '(GMT+7:00) Asia/Pontianak (West Indonesia Time)',
+	'Asia/Saigon' => '(GMT+7:00) Asia/Saigon (Indochina Time)',
+	'Asia/Vientiane' => '(GMT+7:00) Asia/Vientiane (Indochina Time)',
+	'Indian/Christmas' => '(GMT+7:00) Indian/Christmas (Christmas Island Time)',
+	'Antarctica/Casey' => '(GMT+8:00) Antarctica/Casey (Western Standard Time (Australia))',
+	'Asia/Brunei' => '(GMT+8:00) Asia/Brunei (Brunei Time)',
+	'Asia/Choibalsan' => '(GMT+8:00) Asia/Choibalsan (Choibalsan Time)',
+	'Asia/Chongqing' => '(GMT+8:00) Asia/Chongqing (China Standard Time)',
+	'Asia/Chungking' => '(GMT+8:00) Asia/Chungking (China Standard Time)',
+	'Asia/Harbin' => '(GMT+8:00) Asia/Harbin (China Standard Time)',
+	'Asia/Hong_Kong' => '(GMT+8:00) Asia/Hong_Kong (Hong Kong Time)',
+	'Asia/Irkutsk' => '(GMT+8:00) Asia/Irkutsk (Irkutsk Time)',
+	'Asia/Kashgar' => '(GMT+8:00) Asia/Kashgar (China Standard Time)',
+	'Asia/Kuala_Lumpur' => '(GMT+8:00) Asia/Kuala_Lumpur (Malaysia Time)',
+	'Asia/Kuching' => '(GMT+8:00) Asia/Kuching (Malaysia Time)',
+	'Asia/Macao' => '(GMT+8:00) Asia/Macao (China Standard Time)',
+	'Asia/Macau' => '(GMT+8:00) Asia/Macau (China Standard Time)',
+	'Asia/Makassar' => '(GMT+8:00) Asia/Makassar (Central Indonesia Time)',
+	'Asia/Manila' => '(GMT+8:00) Asia/Manila (Philippines Time)',
+	'Asia/Shanghai' => '(GMT+8:00) Asia/Shanghai (China Standard Time)',
+	'Asia/Singapore' => '(GMT+8:00) Asia/Singapore (Singapore Time)',
+	'Asia/Taipei' => '(GMT+8:00) Asia/Taipei (China Standard Time)',
+	'Asia/Ujung_Pandang' => '(GMT+8:00) Asia/Ujung_Pandang (Central Indonesia Time)',
+	'Asia/Ulaanbaatar' => '(GMT+8:00) Asia/Ulaanbaatar (Ulaanbaatar Time)',
+	'Asia/Ulan_Bator' => '(GMT+8:00) Asia/Ulan_Bator (Ulaanbaatar Time)',
+	'Asia/Urumqi' => '(GMT+8:00) Asia/Urumqi (China Standard Time)',
+	'Australia/Perth' => '(GMT+8:00) Australia/Perth (Western Standard Time (Australia))',
+	'Australia/West' => '(GMT+8:00) Australia/West (Western Standard Time (Australia))',
+	'Australia/Eucla' => '(GMT+8:45) Australia/Eucla (Central Western Standard Time (Australia))',
+	'Asia/Dili' => '(GMT+9:00) Asia/Dili (Timor-Leste Time)',
+	'Asia/Jayapura' => '(GMT+9:00) Asia/Jayapura (East Indonesia Time)',
+	'Asia/Pyongyang' => '(GMT+9:00) Asia/Pyongyang (Korea Standard Time)',
+	'Asia/Seoul' => '(GMT+9:00) Asia/Seoul (Korea Standard Time)',
+	'Asia/Tokyo' => '(GMT+9:00) Asia/Tokyo (Japan Standard Time)',
+	'Asia/Yakutsk' => '(GMT+9:00) Asia/Yakutsk (Yakutsk Time)',
+	'Australia/Adelaide' => '(GMT+9:30) Australia/Adelaide (Central Standard Time (South Australia))',
+	'Australia/Broken_Hill' => '(GMT+9:30) Australia/Broken_Hill (Central Standard Time (South Australia/New South Wales))',
+	'Australia/Darwin' => '(GMT+9:30) Australia/Darwin (Central Standard Time (Northern Territory))',
+	'Australia/North' => '(GMT+9:30) Australia/North (Central Standard Time (Northern Territory))',
+	'Australia/South' => '(GMT+9:30) Australia/South (Central Standard Time (South Australia))',
+	'Australia/Yancowinna' => '(GMT+9:30) Australia/Yancowinna (Central Standard Time (South Australia/New South Wales))',
+	'Antarctica/DumontDUrville' => '(GMT+10:00) Antarctica/DumontDUrville (Dumont-d\'Urville Time)',
+	'Asia/Sakhalin' => '(GMT+10:00) Asia/Sakhalin (Sakhalin Time)',
+	'Asia/Vladivostok' => '(GMT+10:00) Asia/Vladivostok (Vladivostok Time)',
+	'Australia/ACT' => '(GMT+10:00) Australia/ACT (Eastern Standard Time (New South Wales))',
+	'Australia/Brisbane' => '(GMT+10:00) Australia/Brisbane (Eastern Standard Time (Queensland))',
+	'Australia/Canberra' => '(GMT+10:00) Australia/Canberra (Eastern Standard Time (New South Wales))',
+	'Australia/Currie' => '(GMT+10:00) Australia/Currie (Eastern Standard Time (New South Wales))',
+	'Australia/Hobart' => '(GMT+10:00) Australia/Hobart (Eastern Standard Time (Tasmania))',
+	'Australia/Lindeman' => '(GMT+10:00) Australia/Lindeman (Eastern Standard Time (Queensland))',
+	'Australia/Melbourne' => '(GMT+10:00) Australia/Melbourne (Eastern Standard Time (Victoria))',
+	'Australia/NSW' => '(GMT+10:00) Australia/NSW (Eastern Standard Time (New South Wales))',
+	'Australia/Queensland' => '(GMT+10:00) Australia/Queensland (Eastern Standard Time (Queensland))',
+	'Australia/Sydney' => '(GMT+10:00) Australia/Sydney (Eastern Standard Time (New South Wales))',
+	'Australia/Tasmania' => '(GMT+10:00) Australia/Tasmania (Eastern Standard Time (Tasmania))',
+	'Australia/Victoria' => '(GMT+10:00) Australia/Victoria (Eastern Standard Time (Victoria))',
+	'Australia/LHI' => '(GMT+10:30) Australia/LHI (Lord Howe Standard Time)',
+	'Australia/Lord_Howe' => '(GMT+10:30) Australia/Lord_Howe (Lord Howe Standard Time)',
+	'Asia/Magadan' => '(GMT+11:00) Asia/Magadan (Magadan Time)',
+	'Antarctica/McMurdo' => '(GMT+12:00) Antarctica/McMurdo (New Zealand Standard Time)',
+	'Antarctica/South_Pole' => '(GMT+12:00) Antarctica/South_Pole (New Zealand Standard Time)',
+	'Asia/Anadyr' => '(GMT+12:00) Asia/Anadyr (Anadyr Time)',
+	'Asia/Kamchatka' => '(GMT+12:00) Asia/Kamchatka (Petropavlovsk-Kamchatski Time)'
+);
+
+//echo getFormRowTextInput('timezone', 'Timezone Setting', 'Timezone Setting', 'Set your own timezone here.<br/>Possible values are listed on:<br/><a href="http://php.net/manual/en/timezones.php">http://php.net/manual/en/timezones.php</a>', $json['timezone'], '', 255, false, false, false);
+
+echo '<div class="row">'.K_NEWLINE;
+echo '<span class="label">'.K_NEWLINE;
+echo '<label for="timezone">Timezone</label>'.K_NEWLINE;
+echo '</span>'.K_NEWLINE;
+echo '<span class="formw">'.K_NEWLINE;
+echo '<select name="timezone" id="timezone" size="0">'.K_NEWLINE;
+
+// echo '<option value=""></option>'.K_NEWLINE;
+foreach($timezones as $key => $value){
+	echo '<option value="'.$key.'" ';
+	if($key===$json['timezone']){
+		echo ' selected="selected"';
+	}
+	echo '>'.$value.'</option>'.K_NEWLINE;
+}
+echo '</select>'.K_NEWLINE;
+echo '</span>'.K_NEWLINE;
+echo '</div>'.K_NEWLINE;
+
+$language = array(
+    'ar' => 'Arabian',
+    'az' => 'Azerbaijani',
+    'bg' => 'Bulgarian',
+    'br' => 'Brazilian Portuguese',
+    'cn' => 'Chinese',
+    'de' => 'German',
+    'el' => 'Greek',
+    'en' => 'English',
+    'es' => 'Spanish',
+    'fa' => 'Farsi',
+    'fr' => 'French',
+    'he' => 'Hebrew',
+    'hi' => 'Hindi',
+    'hu' => 'Hungarian',
+    'id' => 'Indonesian',
+    'it' => 'Italian',
+    'jp' => 'Japanese',
+    'mr' => 'Marathi',
+    'ms' => 'Malay (Bahasa Melayu)',
+    'nl' => 'Dutch',
+    'pl' => 'Polish',
+    'ro' => 'Romanian',
+    'ru' => 'Russian',
+    'tr' => 'Turkish',
+    'ur' => 'Urdu',
+    'vn' => 'Vietnamese'
+);
+
+echo '<div class="row">'.K_NEWLINE;
+echo '<span class="label">'.K_NEWLINE;
+echo '<label for="defLang">Default Language</label>'.K_NEWLINE;
+echo '</span>'.K_NEWLINE;
+echo '<span class="formw">'.K_NEWLINE;
+echo '<select name="defLang" id="defLang" size="0">'.K_NEWLINE;
+
+// echo '<option value=""></option>'.K_NEWLINE;
+foreach($language as $key => $value){
+	echo '<option value="'.$key.'" ';
+	if($key===$json['defLang']){
+		echo ' selected="selected"';
+	}
+	echo '>'.$value.'</option>'.K_NEWLINE;
+}
+echo '</select>'.K_NEWLINE;
+echo '</span>'.K_NEWLINE;
+echo '</div>'.K_NEWLINE;
+
+// echo getFormRowTextInput('defLang', 'Default Language', 'Default Language', '2-letters code for default language.<br/><i>example:</i> ar, az, bg, br, cn, de, el, en, es, fa, fr, he, hi, hu, id, it, jp, mr, ms, nl, pl, ro, ru, tr, ur, vn', $json['defLang'], '', 255, false, false, false);
+
 echo getFormRowCheckBox('enable_langsel', 'Enable Language Selector', 'If enable, show language selector on top right of the page<br/><i>default value: enable</i>', 'If enable, show language selector on top right of the page<br/><i>default value: enable</i>', 1, $json['enable_langsel'], false, '');
 echo getFormRowCheckBox('pubPageHelp', 'Public Page Help', 'If enable, display page help on the bottom of the page. default value: disable', 'If enable, display page help on the bottom of the page.<br/><i>default value: disable</i>', 1, $json['pubPageHelp'], false, '');
 echo getFormRowCheckBox('forgotPass', 'Show Forgot Password Link', 'If enable, show link to reset user password<br/><i>default value: enable</i>', 'If enable, show link to reset user password<br/><i>default value: enable</i>', 1, $json['forgotPass'], false, '');
@@ -453,18 +947,24 @@ echo '<div class="row">'.K_NEWLINE;
 echo '<span class="label">'.K_NEWLINE;
 echo '<label for="logoImg">Logo Image</label>'.K_NEWLINE;
 echo '</span>'.K_NEWLINE;
-echo '<span class="formw">'.K_NEWLINE;
-echo '<select name="logoImg" id="logoImg" size="0">'.K_NEWLINE;
+echo '<span class="formw" style="display:block">'.K_NEWLINE;
+//echo '<img src="../../cache/logo/'.$json['logoImg'].'" width="100px" />&nbsp;'.K_NEWLINE;
+echo '<div id="selected-logo"></div>'.K_NEWLINE;
+echo '<div id="logo-selection-cont" class="brad-5 borderStd p-10 mt-1em bg-white">'.K_NEWLINE;
+echo '<span style="align-items:center;cursor:pointer;margin:0 0 0.5em 0" class="ft-bold labeldesc bg-white p-5 d-flex brad-5 ta-center borderStd" onclick="$(\'#logoImg\').imagepicker();$(\'#logoImg-cont\').slideToggle();addDelBtn()">Select Logo</span>'.K_NEWLINE;
+echo '<div id="logoImg-cont" style="display:none"><select name="logoImg" id="logoImg" size="0" class="image-picker">'.K_NEWLINE;
 foreach(glob(K_PATH_CACHE.'logo/*') as $filename){
-	echo '<option value="'.basename($filename).'" ';
+	echo '<option data-img-src="../../cache/logo/'.basename($filename).'" value="'.basename($filename).'" ';
 	if(basename($filename)===$json['logoImg']){
 		echo ' selected="selected"';
 	}
 	echo '>'.basename($filename).'</option>'.K_NEWLINE;
-	// echo basename($filename);
 }
-echo '</select>'.K_NEWLINE;
-echo '<span class="labeldesc">upload your institution logo image from <a href="tce_filemanager.php?d='.urlencode(K_PATH_CACHE).'logo%2F&v=1" target="blank">File Manager</a></span></span>'.K_NEWLINE;
+echo '</select></div>'.K_NEWLINE;
+
+// echo '<span class="labeldesc">upload your institution logo image from <a href="tce_filemanager.php?d='.urlencode(K_PATH_CACHE).'logo%2F&v=1" target="blank">File Manager</a></span></span>'.K_NEWLINE;
+echo '<span style="align-items: center;cursor: pointer;margin:0 0 0.5em 0" class="ft-bold labeldesc bg-dark p-5 d-flex brad-5 ft-white ta-center" onclick="$(\'#floatdiv\').toggle();$(\'#upload_mediafile_form\').show();$(\'#logoImg-cont\').show()">Upload Logo</span>'.K_NEWLINE;
+echo '</div>'.K_NEWLINE;
 echo '</div>'.K_NEWLINE;
 
 echo '</fieldset>';
@@ -648,7 +1148,7 @@ echo '<input type="hidden" id="--col-3t" name="--col-3t" value="'.$cscheme['--co
 echo '<input type="hidden" id="--col-4t" name="--col-4t" value="'.$cscheme['--col-4'].'33"/>';
 echo '<input type="hidden" id="--col-7t" name="--col-7t" value="'.$cscheme['--col-7'].'33"/>';
 echo '<input type="hidden" id="--col-9t" name="--col-9t" value="'.$cscheme['--col-9'].'33"/>';
-echo '<input type="hidden" id="--col-9t" name="--col-9t" value="'.$cscheme['--col-9'].'33"/>';
+// echo '<input type="hidden" id="--col-9t" name="--col-9t" value="'.$cscheme['--col-9'].'33"/>';
 echo '<input type="hidden" id="--col-10t" name="--col-10t" value="'.$cscheme['--col-10'].'33"/>';
 echo '<input type="hidden" id="--col-15t" name="--col-15t" value="'.$cscheme['--col-15'].'33"/>';
 echo '<input type="hidden" id="--bor-col1" name="--bor-col1" value="'.$cscheme['--bor-1'].'"/>';
@@ -664,11 +1164,52 @@ echo '</form>';
 echo '</div>';
 echo '</div>';
 
-
-require_once('../code/tce_page_footer.php');
-
-// echo ''.K_NEWLINE;
-
-// echo '</script>'.K_NEWLINE;
-
 ?>
+
+<div id="floatdiv" style="padding:5%;display:none;position:fixed;width:100%;height:100%;left: 50%;top: 50%;transform: translate(-50%, -50%);z-index:99;background:#000000aa">
+	<div class="brad-5" style="background:#fff;padding:1em;margin:5%;position:relative">
+		<div class="delbtn" onclick="$('#floatdiv').toggle();getImg()">&times;</div>
+		<div id="floatdiv-content">
+			<form style="display:none;margin-top:0" id="upload_mediafile_form" action="tmf_upload_mediafile_gs.php?path=logo" class="dropzone w-100p dz-clickable" style="display:block"><div class="dz-default dz-message"><button class="dz-button" type="button">Drop files here to upload</button></div></form>
+		</div>
+	</div>
+</div>
+
+
+<?php
+require_once('../code/tce_page_footer.php');
+?>
+<script>
+
+	$("#timezone").select2();	
+	$("#defLang").select2();	
+		
+	//$("#logoImg").imagepicker();
+	function getImg(){
+		$.ajax({
+			'url': 'tmf_general_settings.php?imglogo',
+			'type': 'GET',
+			'success': function(result){$("#logoImg").html(result);$("#logoImg").imagepicker();addDelBtn()}
+		})
+	}
+	
+	function delFile(a){
+		if(confirm("Are you sure want to delete the file?")){
+			$.ajax({
+				'url': 'tmf_delete_file.php?path='+a,
+				'type': 'GET',
+				'success': function(result){alert(result);getImg()}
+			})
+		}else{
+			getImg();
+		}
+	}
+	
+	function addDelBtn(){
+		let imgSrc = $("div.thumbnail img").attr("src");
+		$("div.thumbnail").append("<div class=\"delbtn\" onclick=\"delFile(this.previousSibling.getAttribute(\'src\'))\">&times;</div>")
+	}
+	
+	$("#selected-logo").html("<img src=\'"+$("#logoImg option[selected=selected]").attr("data-img-src")+"\' />");
+</script>
+
