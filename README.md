@@ -23,6 +23,7 @@ Daftar Ujian
 - Uraian panjang dengan kemampuan tambahan upload jawaban dari gambar / foto
 
 ## Fitur improvement dari TCExam
+- Lebih gesit dan ringan, sudah dipakai pada shared hosting mampu 300an user serentak. Hosting yang kami coba adalah shared hosting unlimited dari Niagahoster. Silakan bisa order hosting nya pada link https://www.niagahoster.co.id/ref/102671 gunakan kode kupon "tmfcbtakm" tanpa tanda kutip untuk mendapatkan diskon 5%.
 - Input Soal lebih mudah, melalui Template MS Excel
 - Disediakan layanan online utk input soal melalui Template MS Word.
 - Fitur Mode Darurat (Lembar Halaman Offline), yang memungkinkan proses ujian tanpa kuota, tanpa sinyal dan tanpa server.
@@ -38,7 +39,6 @@ Daftar Ujian
 - Theme yang lebih modern dan fresh :)
 - Export dan Import user melalui format file Excel
 - Terdapat fitur pengumuman Surat Keterangan Lulus Online, namun dengan teknik yang masih sederhana.
-- Lebih gesit dan ringan, sudah dipakai pada shared hosting mampu 300an user serentak.
 
 ## Panduan
 Panduan instalasi dan tutorial lainnya silakan bisa dipelajari di https://bit.ly/3f0Oq5D
@@ -53,6 +53,8 @@ Apabila berminat ingin bergabung dalam tim pengembangan, silakan japri Author me
 1. Blog: [mamans86.blogspot.com](https://mamans86.blogspot.com)
 2. Telegram: [@mamans86](https://t.me/mamans86)
 3. Email: mamansulaeman86@gmail.com
+
+## Rekomendasi 
 
 ## Community / Telegram Group
 1. [TCExam Mobile Friendly (Indonesian Language)](https://t.me/tmfcbtakm)
